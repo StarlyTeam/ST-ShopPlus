@@ -1,0 +1,36 @@
+# 클릭 설정
+# LEFT : 좌클릭
+# SHIFT_LEFT : Shift + 좌클릭
+# RIGHT : 우클릭
+# SHIFT_RIGHT : Shift + 우클릭
+# MIDDLE : 가운데 클릭
+# NONE : 사용 안함
+click:
+
+  # 구매
+  buy: LEFT
+
+  # 64개 구매
+  buy-64: SHIFT_LEFT
+
+  # 판매
+  sell: RIGHT
+
+  # 64개 판매
+  sell-64: SHIFT_RIGHT
+
+
+# 아이템 로어 설정
+lore:
+
+  # 상점 아이템
+  # {sellPrice} : 상품의 판매가격
+  # {buyPrice} : 상품의 구매가격
+  shopItem:
+    - "&r&7---------------------------------------"
+    - "&r&e› &f상품을 우클릭하여 구매하실 수 있습니다."
+    - "&r&e› &f상품을 좌클릭하여 판매하실 수 있습니다."
+    - "&r"
+    - "&r&e› &f구매가격: {buyPrice}"
+    - "&r&e› &f판매가격: {sellPrice}"
+    - "&r&7---------------------------------------"

@@ -1,0 +1,75 @@
+package net.starly.shop.event;
+
+import lombok.AllArgsConstructor;
+import net.starly.core.jb.util.Pair;
+import net.starly.shop.ShopMain;
+import net.starly.shop.data.ChatInputMap;
+import net.starly.shop.data.InventoryOpenMap;
+import net.starly.shop.enums.ChatInputType;
+import net.starly.shop.enums.InventoryOpenType;
+import net.starly.shop.shop.ShopData;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+@AllArgsConstructor
+public class AsyncPlayerChatListener implements Listener {
+    private final InventoryOpenMap inventoryOpenMap;
+    private final ChatInputMap chatInputMap;
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        if (player == null) return;
+        if (!chatInputMap.has(player)) return;
+
+        ChatInputType chatInputType = chatInputMap.get(player).getFirst();
+        ShopData shopData = chatInputMap.get(player).getSecond().getFirst();
+        int slot = chatInputMap.get(player).getSecond().getSecond();
+        chatInputMap.remove(player);
+        event.setCancelled(true);
+
+        if (chatInputType == ChatInputType.BUY_PRICE) {
+            try {
+                int buyPrice = Integer.parseInt(event.getMessage());
+
+                if (buyPrice != -1 && buyPrice < 1) player.sendMessage("음수로 구매금액을 설정하실 수 없습니다.");
+                else {
+                    shopData.setBuyPrice(slot, buyPrice);
+                    player.sendMessage("구매가격을 설정했습니다 : " + event.getMessage());
+                }
+            } catch (Exception ignored) {
+                player.sendMessage("숫자만 입력하실 수 있습니다.");
+            }
+
+            chatInputMap.remove(player);
+
+            Bukkit.getServer().getScheduler().runTaskLater(ShopMain.getPlugin(), () -> {
+                player.openInventory(shopData.getItemDetailSettingInv());
+                inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
+            }, 1);
+        } else if (chatInputType == ChatInputType.SELL_PRICE) {
+            try {
+                int sellPrice = Integer.parseInt(event.getMessage());
+
+                if (sellPrice != -1 && sellPrice < 1) player.sendMessage("음수로 판매금액을 설정하실 수 없습니다.");
+                else {
+                    shopData.setSellPrice(slot, sellPrice);
+                    player.sendMessage("판매가격을 설정했습니다 : " + event.getMessage());
+                }
+            } catch (Exception ignored) {
+                player.sendMessage("숫자만 입력하실 수 있습니다.");
+            }
+
+            chatInputMap.remove(player);
+
+            Bukkit.getServer().getScheduler().runTaskLater(ShopMain.getPlugin(), () -> {
+                player.openInventory(shopData.getItemDetailSettingInv());
+                inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
+            }, 1);
+        }
+    }
+}
