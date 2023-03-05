@@ -10,6 +10,7 @@ import net.starly.shop.data.InventoryOpenMap;
 import net.starly.shop.event.AsyncPlayerChatListener;
 import net.starly.shop.event.InventoryClickListener;
 import net.starly.shop.event.InventoryCloseListener;
+import net.starly.shop.event.PlayerCommandPreprocessListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,6 +52,7 @@ public class ShopMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryClickListener(inventoryOpenMap, economy, chatInputMap), plugin);
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(inventoryOpenMap), plugin);
         getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(inventoryOpenMap, chatInputMap), plugin);
+        getServer().getPluginManager().registerEvents(new PlayerCommandPreprocessListener(chatInputMap), plugin);
     }
 
     public static JavaPlugin getPlugin() {

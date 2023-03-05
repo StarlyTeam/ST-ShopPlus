@@ -39,13 +39,17 @@ public class AsyncPlayerChatListener implements Listener {
             try {
                 int buyPrice = Integer.parseInt(event.getMessage());
 
-                if (buyPrice != -1 && buyPrice < 1) player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
-                else {
+                if (buyPrice != -1 && buyPrice < 1) {
+                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
+                } else {
                     shopData.setBuyPrice(slot, buyPrice);
                     player.sendMessage(msgConfig.getMessage("messages.buyPriceSet").replace("{price}", event.getMessage()));
                 }
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
                 player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return;
             }
 
             chatInputMap.remove(player);
@@ -58,13 +62,17 @@ public class AsyncPlayerChatListener implements Listener {
             try {
                 int sellPrice = Integer.parseInt(event.getMessage());
 
-                if (sellPrice != -1 && sellPrice < 1) player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
-                else {
+                if (sellPrice != -1 && sellPrice < 1) {
+                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
+                } else {
                     shopData.setSellPrice(slot, sellPrice);
-                    player.sendMessage(msgConfig.getMessage("errorMessages.sellPriceSet").replace("{price}", event.getMessage()));
+                    player.sendMessage(msgConfig.getMessage("messages.sellPriceSet").replace("{price}", event.getMessage()));
                 }
-            } catch (Exception ignored) {
+            } catch (NumberFormatException ignored) {
                 player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return;
             }
 
             chatInputMap.remove(player);

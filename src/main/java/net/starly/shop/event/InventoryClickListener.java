@@ -247,16 +247,18 @@ public class InventoryClickListener implements Listener {
                     Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
                         inventoryOpenMap.remove(player);
                         player.closeInventory();
-                        chatInputMap.set(player, new Pair<>(ChatInputType.SELL_PRICE, new Pair<>(shopData, slot)));
+
                         player.sendMessage(msgConfig.getMessage("messages.enterSellPrice"));
+                        chatInputMap.set(player, new Pair<>(ChatInputType.SELL_PRICE, new Pair<>(shopData, slot)));
                     }, 1);
                 } else if (clickType == ClickType.RIGHT) {
                     //구매가격
                     Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
                         inventoryOpenMap.remove(player);
                         player.closeInventory();
-                        chatInputMap.set(player, new Pair<>(ChatInputType.BUY_PRICE, new Pair<>(shopData, slot)));
+
                         player.sendMessage(msgConfig.getMessage("messages.enterBuyPrice"));
+                        chatInputMap.set(player, new Pair<>(ChatInputType.BUY_PRICE, new Pair<>(shopData, slot)));
                     }, 1);
                 } else if (clickType.isShiftClick()) {
                     //삭제
