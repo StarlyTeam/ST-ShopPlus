@@ -42,6 +42,7 @@ public class InventoryClickListener implements Listener {
         if (player == null) return;
         if (!inventoryOpenMap.has(player)) return;
 
+        Config msgConfig = ConfigContent.getInstance().getMsgConfig();
         ItemStack currentStack = event.getCurrentItem();
         int slot = event.getSlot();
         Config config = ConfigContent.getInstance().getConfig();
@@ -58,19 +59,19 @@ public class InventoryClickListener implements Listener {
 
                 if (clickType.name().equals(config.getString("click.buy"))) {
                     if (shopData.getBuyPrice(slot) == -1) {
-                        player.sendMessage("해당 상품은 구매하실 수 없습니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.cannotBuyThisItem"));
                         return;
                     }
 
                     ItemStack originStack = shopData.getItem(slot);
 
                     if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) {
-                        player.sendMessage("인벤토리 공간이 부족합니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.inventorySpaceIsNotEnough"));
                         return;
                     }
 
                     if (economy.getBalance(player) < shopData.getBuyPrice(slot)) {
-                        player.sendMessage("돈이 부족합니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.moneyIsNotEnough"));
                         return;
                     }
 
@@ -79,17 +80,17 @@ public class InventoryClickListener implements Listener {
                     player.sendMessage("§a§n§l" + shopData.getBuyPrice(slot) + "§f원을 지불하고 §a§n§l" + originStack.getAmount() + "개§f를 구매했습니다.");
                 } else if (clickType.name().equals(config.getString("click.buy-64"))) {
                     if (shopData.getBuyPrice(slot) == -1) {
-                        player.sendMessage("해당 상품은 구매하실 수 없습니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.cannotBuyThisItem"));
                         return;
                     }
 
                     ItemStack originStack = shopData.getItem(slot);
 
                     if (economy.getBalance(player) < shopData.getBuyPrice(slot)) {
-                        player.sendMessage("돈이 부족합니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.moneyIsNotEnough"));
                         return;
                     } else if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) {
-                        player.sendMessage("인벤토리 공간이 부족합니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.inventorySpaceIsNotEnough"));
                         return;
                     }
 
@@ -102,22 +103,18 @@ public class InventoryClickListener implements Listener {
                         totalPurchased++;
                     }
 
-                    if (totalPurchased != 64) {
-                        player.sendMessage("인벤토리 공간이 부족하거나 돈이 부족하여 " + totalPurchased + "개만 구매했습니다.");
-                    }
-
                     economy.withdrawPlayer(player, totalPurchased * shopData.getBuyPrice(slot));
                     player.sendMessage("§a§n§l" + totalPurchased * shopData.getBuyPrice(slot) + "§f원을 지불하고 §a§n§l" + totalPurchased + "개§f를 구매했습니다.");
                 } else if (clickType.name().equals(config.getString("click.sell"))) {
                     if (shopData.getSellPrice(slot) == -1) {
-                        player.sendMessage("해당 상품은 판매하실 수 없습니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.cannotSellThisItem"));
                         return;
                     }
 
                     ItemStack originStack = shopData.getItem(slot);
 
                     if (Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(originStack::equals)) {
-                        player.sendMessage("인벤토리에 아이템이 부족합니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.noItemInInventory"));
                         return;
                     }
 
@@ -136,24 +133,23 @@ public class InventoryClickListener implements Listener {
                     }
 
                     economy.depositPlayer(player, shopData.getSellPrice(slot));
-                    player.sendMessage("§a§n§l" + shopData.getSellPrice(slot) + "§f원을 지급받고 §a§n§l1개§f를 판매했습니다.");
+                    player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", shopData.getSellPrice(slot) + "").replace("{amount}", 1 + ""));
                 } else if (clickType.name().equals(config.getString("click.sell-64"))) {
                     if (shopData.getSellPrice(slot) == -1) {
-                        player.sendMessage("해당 상품은 판매하실 수 없습니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.cannotSellThisItem"));
                         return;
                     }
 
                     ItemStack originStack = shopData.getItem(slot);
 
                     if (Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(originStack::equals)) {
-                        player.sendMessage("인벤토리에 아이템이 부족합니다.");
+                        player.sendMessage(msgConfig.getMessage("errorMessages.noItemInInventory"));
                         return;
                     }
 
                     AtomicInteger totalSelled = new AtomicInteger();
                     Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(originStack::equals).forEach(s -> totalSelled.addAndGet(s.getAmount()));
-                    if (totalSelled.get() < 64) player.sendMessage("인벤토리에 아이템이 부족하여 " + totalSelled + "개만 판매했습니다.");
-                    else totalSelled.set(64);
+                    if (totalSelled.get() > 64) totalSelled.set(64);
 
                     int totalRemoved = 0;
                     for (int i = 0; i < 36; i++) {
@@ -182,7 +178,7 @@ public class InventoryClickListener implements Listener {
                     }
 
                     economy.depositPlayer(player, totalSelled.get() * shopData.getSellPrice(slot));
-                    player.sendMessage("§a§n§l" + totalSelled.get() * shopData.getSellPrice(slot) + "§f원을 지급받고 §a§n§l" + totalSelled + "개§f를 판매했습니다.");
+                    player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", totalSelled.get() * shopData.getSellPrice(slot) + "").replace("{amount}", totalSelled.get() + ""));
                 }
 
                 break;
@@ -199,7 +195,7 @@ public class InventoryClickListener implements Listener {
                 switch (buttonType) {
                     case SHOP_ENABLED: {
                         shopData.setEnabled(false);
-                        player.sendMessage("상점을 §c§n§l비활성화§f 했습니다.");
+                        player.sendMessage(msgConfig.getMessage("messages.shopDisabled"));
 
                         Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
                             player.openInventory(shopData.getShopSettingInv());
@@ -210,7 +206,7 @@ public class InventoryClickListener implements Listener {
 
                     case SHOP_DISABLED: {
                         shopData.setEnabled(true);
-                        player.sendMessage("상점을 §a§n§l활성화§f 했습니다.");
+                        player.sendMessage(msgConfig.getMessage("messages.shopEnabled"));
 
                         Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
                             player.openInventory(shopData.getShopSettingInv());
@@ -252,7 +248,7 @@ public class InventoryClickListener implements Listener {
                         inventoryOpenMap.remove(player);
                         player.closeInventory();
                         chatInputMap.set(player, new Pair<>(ChatInputType.SELL_PRICE, new Pair<>(shopData, slot)));
-                        player.sendMessage("변경할 판매가격을 채팅창에 입력해주세요. (판매하지 못하게 하려면 -1을 입력해주세요.)");
+                        player.sendMessage(msgConfig.getMessage("messages.enterSellPrice"));
                     }, 1);
                 } else if (clickType == ClickType.RIGHT) {
                     //구매가격
@@ -260,7 +256,7 @@ public class InventoryClickListener implements Listener {
                         inventoryOpenMap.remove(player);
                         player.closeInventory();
                         chatInputMap.set(player, new Pair<>(ChatInputType.BUY_PRICE, new Pair<>(shopData, slot)));
-                        player.sendMessage("변경할 구매가격을 채팅창에 입력해주세요. (구매하지 못하게 하려면 -1을 입력해주세요.)");
+                        player.sendMessage(msgConfig.getMessage("messages.enterBuyPrice"));
                     }, 1);
                 } else if (clickType.isShiftClick()) {
                     //삭제

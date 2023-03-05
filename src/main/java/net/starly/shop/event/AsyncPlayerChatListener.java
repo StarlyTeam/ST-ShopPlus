@@ -1,8 +1,10 @@
 package net.starly.shop.event;
 
 import lombok.AllArgsConstructor;
+import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
 import net.starly.shop.ShopMain;
+import net.starly.shop.context.ConfigContent;
 import net.starly.shop.data.ChatInputMap;
 import net.starly.shop.data.InventoryOpenMap;
 import net.starly.shop.enums.ChatInputType;
@@ -26,6 +28,7 @@ public class AsyncPlayerChatListener implements Listener {
         if (player == null) return;
         if (!chatInputMap.has(player)) return;
 
+        Config msgConfig = ConfigContent.getInstance().getMsgConfig();
         ChatInputType chatInputType = chatInputMap.get(player).getFirst();
         ShopData shopData = chatInputMap.get(player).getSecond().getFirst();
         int slot = chatInputMap.get(player).getSecond().getSecond();
@@ -36,13 +39,13 @@ public class AsyncPlayerChatListener implements Listener {
             try {
                 int buyPrice = Integer.parseInt(event.getMessage());
 
-                if (buyPrice != -1 && buyPrice < 1) player.sendMessage("음수로 구매금액을 설정하실 수 없습니다.");
+                if (buyPrice != -1 && buyPrice < 1) player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
                 else {
                     shopData.setBuyPrice(slot, buyPrice);
-                    player.sendMessage("구매가격을 설정했습니다 : " + event.getMessage());
+                    player.sendMessage(msgConfig.getMessage("messages.buyPriceSet").replace("{price}", event.getMessage()));
                 }
             } catch (Exception ignored) {
-                player.sendMessage("숫자만 입력하실 수 있습니다.");
+                player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
             }
 
             chatInputMap.remove(player);
@@ -55,13 +58,13 @@ public class AsyncPlayerChatListener implements Listener {
             try {
                 int sellPrice = Integer.parseInt(event.getMessage());
 
-                if (sellPrice != -1 && sellPrice < 1) player.sendMessage("음수로 판매금액을 설정하실 수 없습니다.");
+                if (sellPrice != -1 && sellPrice < 1) player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
                 else {
                     shopData.setSellPrice(slot, sellPrice);
-                    player.sendMessage("판매가격을 설정했습니다 : " + event.getMessage());
+                    player.sendMessage(msgConfig.getMessage("errorMessages.sellPriceSet").replace("{price}", event.getMessage()));
                 }
             } catch (Exception ignored) {
-                player.sendMessage("숫자만 입력하실 수 있습니다.");
+                player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
             }
 
             chatInputMap.remove(player);

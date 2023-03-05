@@ -27,6 +27,33 @@ messages:
       - "&8--------- < &6상점 목록 &8> ---------"
       - "{list}"
 
+  # 구매금액을 설정한 경우
+  # {price} : 구매금액
+  buyPriceSet: "&a구매금액을 {price}원으로 설정하였습니다."
+
+  # 판매금액을 설정한 경우
+  # {price} : 판매금액
+  sellPriceSet: "&a판매금액을 {price}원으로 설정하였습니다."
+  
+  
+  # 상점을 비활성화 한 경우
+  shopDisabled: "상점을 &c&n&l비활성화&f 했습니다."
+
+  # 상점을 활성화 한 경우
+  shopEnabled: "상점을 &a&n&l활성화&f 했습니다."
+  
+  
+  # 아이템을 판매한 경우
+  # {price} : 판매금액
+  # {amount} : 판매한 아이템 개수
+  itemSelled: "&a&n&l{price}&f원을 지급받고 &a&n&l{amount}&f개를 판매했습니다."
+
+
+  # 판매가격을 설정하려는 경우
+  enterSellPrice: "&a판매가격을 입력해주세요. &7(판매하지 못하게 하려면 -1을 입력해주세요)"
+
+  # 구매가격을 설정하려는 경우
+  enterBuyPrice: "&a구매가격을 입력해주세요. &7(구매하지 못하게 하려면 -1을 입력해주세요)"
 
 errorMessages:
 
@@ -39,6 +66,9 @@ errorMessages:
 
   # 상점 이름을 입력하지 않은 경우
   noShopName: "&c상점 이름을 입력해주세요."
+
+  # 상점이 이미 존재하는 경우
+  shopAlreadyExists: "&c입력하신 이름의 상점은 이미 존재합니다."
 
   # 상점 줄수를 입력하지 않은 경우
   noShopLine: "&c상점 줄수를 입력해주세요."
@@ -59,6 +89,24 @@ errorMessages:
   # 상점이 비활성화된 경우
   shopNotOpened: "&c입력하신 이름의 상점은 현재 비활성화되어 있습니다."
 
+  # 구매금액을 음수로 입력한 경우
+  wrongSellPrice: "구매금액이 잘못 되었습니다."
 
-  # 상점이 이미 존재하는 경우
-  shopAlreadyExists: "&c입력하신 이름의 상점은 이미 존재합니다."
+  # 판매금액을 음수로 입력한 경우
+  wrongBuyPrice: "판매금액이 잘못 되었습니다."
+
+
+  # 아이템을 구매할 수 없는 경우
+  cannotBuyThisItem: "&c해당 아이템을 구매할 수 없습니다."
+
+  # 인벤토리 공간이 부족한 경우
+  inventorySpaceIsNotEnough: "&c인벤토리 공간이 부족합니다."
+
+  # 돈이 부족한 경우
+  moneyIsNotEnough: "&c돈이 부족합니다."
+
+  # 아이템을 판매할 수 없는 경우
+  cannotSellThisItem: "&c해당 아이템을 판매할 수 없습니다."
+
+  # 인벤토리에 해당 아이템이 없는 경우
+  noItemInInventory: "&c인벤토리에 해당 아이템이 없습니다."
