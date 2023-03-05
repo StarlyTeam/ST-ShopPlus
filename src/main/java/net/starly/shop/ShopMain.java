@@ -4,6 +4,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.starly.core.bstats.Metrics;
 import net.starly.shop.command.ShopCmd;
 import net.starly.shop.command.tabcomplete.ShopTab;
+import net.starly.shop.context.ConfigContent;
 import net.starly.shop.data.ChatInputMap;
 import net.starly.shop.data.InventoryOpenMap;
 import net.starly.shop.event.AsyncPlayerChatListener;
@@ -34,6 +35,9 @@ public class ShopMain extends JavaPlugin {
 
         plugin = this;
         new Metrics(this, 12345); // TODO: 수정
+
+        // CONFIG
+        ConfigContent.getInstance();
 
         // VARIABLES
         InventoryOpenMap inventoryOpenMap = new InventoryOpenMap();

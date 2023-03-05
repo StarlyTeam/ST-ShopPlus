@@ -9,6 +9,7 @@ import net.starly.shop.data.InventoryOpenMap;
 import net.starly.shop.enums.InventoryOpenType;
 import net.starly.shop.shop.ShopData;
 import net.starly.shop.shop.ShopUtil;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -48,9 +49,6 @@ public class ShopCmd implements CommandExecutor {
                 } else if (args.length == 3) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.noShopTitle"));
                     return true;
-                } else if (args.length != 4) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
-                    return true;
                 }
 
                 if (!player.hasPermission("starly.shop.create")) {
@@ -74,7 +72,7 @@ public class ShopCmd implements CommandExecutor {
                     return true;
                 }
 
-                ShopUtil.createShop(args[1], line, String.join(" ", Arrays.copyOfRange(args, 3, args.length)));
+                ShopUtil.createShop(args[1], line, ChatColor.translateAlternateColorCodes('&', String.join(" ", Arrays.copyOfRange(args, 3, args.length))));
                 player.sendMessage(msgConfig.getMessage("messages.shopCreated"));
                 return true;
             }
