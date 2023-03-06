@@ -77,7 +77,7 @@ public class InventoryClickListener implements Listener {
 
                     economy.withdrawPlayer(player, shopData.getBuyPrice(slot));
                     player.getInventory().addItem(originStack);
-                    player.sendMessage("§a§n§l" + shopData.getBuyPrice(slot) + "§f원을 지불하고 §a§n§l" + originStack.getAmount() + "개§f를 구매했습니다.");
+                    player.sendMessage(msgConfig.getMessage("messages.itemBuyed").replace("{price}", shopData.getBuyPrice(slot) + "").replace("{amount}", 1 + ""));
                 } else if (clickType.name().equals(config.getString("click.buy-64"))) {
                     if (shopData.getBuyPrice(slot) == -1) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.cannotBuyThisItem"));
@@ -104,7 +104,7 @@ public class InventoryClickListener implements Listener {
                     }
 
                     economy.withdrawPlayer(player, totalPurchased * shopData.getBuyPrice(slot));
-                    player.sendMessage("§a§n§l" + totalPurchased * shopData.getBuyPrice(slot) + "§f원을 지불하고 §a§n§l" + totalPurchased + "개§f를 구매했습니다.");
+                    player.sendMessage(msgConfig.getMessage("messages.itemBuyed").replace("{price}", (shopData.getBuyPrice(slot) * totalPurchased) + "").replace("{amount}", totalPurchased + ""));
                 } else if (clickType.name().equals(config.getString("click.sell"))) {
                     if (shopData.getSellPrice(slot) == -1) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.cannotSellThisItem"));
@@ -178,7 +178,7 @@ public class InventoryClickListener implements Listener {
                     }
 
                     economy.depositPlayer(player, totalSelled.get() * shopData.getSellPrice(slot));
-                    player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", totalSelled.get() * shopData.getSellPrice(slot) + "").replace("{amount}", totalSelled.get() + ""));
+                    player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", (totalSelled.get() * shopData.getSellPrice(slot)) + "").replace("{amount}", totalSelled.get() + ""));
                 }
 
                 break;
