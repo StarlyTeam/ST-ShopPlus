@@ -3,7 +3,7 @@ package net.starly.shop.event;
 import lombok.AllArgsConstructor;
 import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
-import net.starly.shop.ShopPlusMain;
+import net.starly.shop.ShopMain;
 import net.starly.shop.context.ConfigContent;
 import net.starly.shop.data.ChatInputMap;
 import net.starly.shop.data.InventoryOpenMap;
@@ -54,7 +54,7 @@ public class AsyncPlayerChatListener implements Listener {
 
             chatInputMap.remove(player);
 
-            Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getPlugin(), () -> {
+            Bukkit.getServer().getScheduler().runTaskLater(ShopMain.getPlugin(), () -> {
                 player.openInventory(shopData.getItemDetailSettingInv());
                 inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
             }, 1);
@@ -77,7 +77,7 @@ public class AsyncPlayerChatListener implements Listener {
 
             chatInputMap.remove(player);
 
-            Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getPlugin(), () -> {
+            Bukkit.getServer().getScheduler().runTaskLater(ShopMain.getPlugin(), () -> {
                 player.openInventory(shopData.getItemDetailSettingInv());
                 inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
             }, 1);
