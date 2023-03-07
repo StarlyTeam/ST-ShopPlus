@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static net.starly.shop.ShopMain.*;
+import static net.starly.shop.ShopPlusMain.*;
 
 @AllArgsConstructor
 public class InventoryClickListener implements Listener {

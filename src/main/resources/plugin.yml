@@ -1,9 +1,9 @@
-name: ST-Shop
+name: ST-ShopPlus
 main: net.starly.shop.ShopMain
 author: Starly Team
 website: http://starly.kr/discord
 
-description: Shop Plugin.
+description: Shop+ Plugin.
 
 softdepend:
   - ST-Core
