@@ -2,7 +2,7 @@ package net.starly.shop.event;
 
 import lombok.AllArgsConstructor;
 import net.starly.core.jb.util.Pair;
-import net.starly.shop.ShopMain;
+import net.starly.shop.ShopPlusMain;
 import net.starly.shop.data.InventoryOpenMap;
 import net.starly.shop.shop.ShopData;
 import net.starly.shop.enums.InventoryOpenType;
@@ -32,10 +32,12 @@ public class InventoryCloseListener implements Listener {
             case ITEM_DETAIL_SETTING: {
                 if (openType == InventoryOpenType.ITEM_SETTING) {
                     Inventory inv = event.getInventory();
-                    for (int i = 0; i < inv.getSize(); i++) shopData.setItem(i, inv.getItem(i));
+                    for (int i = 0; i < inv.getSize(); i++) {
+                        if (shopData.getItem(i) != inv.getItem(i)) shopData.setItem(i, inv.getItem(i));
+                    }
                 }
 
-                Bukkit.getServer().getScheduler().runTaskLater(ShopMain.getPlugin(), () -> {
+                Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getPlugin(), () -> {
                     player.openInventory(shopData.getShopSettingInv());
                     inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
                 }, 1);

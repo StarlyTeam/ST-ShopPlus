@@ -13,8 +13,8 @@ import net.starly.shop.data.ChatInputMap;
 import net.starly.shop.data.InventoryOpenMap;
 import net.starly.shop.enums.ButtonType;
 import net.starly.shop.enums.ChatInputType;
-import net.starly.shop.shop.ShopData;
 import net.starly.shop.enums.InventoryOpenType;
+import net.starly.shop.shop.ShopData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static net.starly.shop.ShopMain.*;
+import static net.starly.shop.ShopPlusMain.getPlugin;
 
 @AllArgsConstructor
 public class InventoryClickListener implements Listener {
@@ -58,7 +58,7 @@ public class InventoryClickListener implements Listener {
                 if (event.getClickedInventory() == player.getInventory()) return;
 
                 if (clickType.name().equals(config.getString("click.buy"))) {
-                    if (shopData.getBuyPrice(slot) == -1) {
+                    if (!shopData.hasStock(slot) || shopData.getBuyPrice(slot) == -1) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.cannotBuyThisItem"));
                         return;
                     }
@@ -76,10 +76,11 @@ public class InventoryClickListener implements Listener {
                     }
 
                     economy.withdrawPlayer(player, shopData.getBuyPrice(slot));
+                    shopData.setStock(slot, shopData.getStock(slot) - 1);
                     player.getInventory().addItem(originStack);
                     player.sendMessage(msgConfig.getMessage("messages.itemBuyed").replace("{price}", shopData.getBuyPrice(slot) + "").replace("{amount}", 1 + ""));
                 } else if (clickType.name().equals(config.getString("click.buy-64"))) {
-                    if (shopData.getBuyPrice(slot) == -1) {
+                    if (!shopData.hasStock(slot) || shopData.getBuyPrice(slot) == -1) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.cannotBuyThisItem"));
                         return;
                     }
@@ -97,9 +98,11 @@ public class InventoryClickListener implements Listener {
                     int totalPurchased = 0;
                     for (int i = 0; i < 64; i++) {
                         if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) break;
+                        if (!shopData.hasStock(slot)) break;
                         if (economy.getBalance(player) < shopData.getBuyPrice(slot) * (totalPurchased + 1)) break;
 
                         player.getInventory().addItem(originStack);
+                        shopData.setStock(slot, shopData.getStock(slot) - 1);
                         totalPurchased++;
                     }
 
@@ -133,6 +136,7 @@ public class InventoryClickListener implements Listener {
                     }
 
                     economy.depositPlayer(player, shopData.getSellPrice(slot));
+                    shopData.setStock(slot, shopData.getStock(slot) + 1);
                     player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", shopData.getSellPrice(slot) + "").replace("{amount}", 1 + ""));
                 } else if (clickType.name().equals(config.getString("click.sell-64"))) {
                     if (shopData.getSellPrice(slot) == -1) {
@@ -155,10 +159,12 @@ public class InventoryClickListener implements Listener {
                     for (int i = 0; i < 36; i++) {
                         if (totalSelled.get() == totalRemoved) break;
 
+
                         ItemStack itemStack = player.getInventory().getItem(i);
                         if (itemStack == null || itemStack.getType() == Material.AIR) continue;
                         if (itemStack.getType() != originStack.getType()) continue;
 
+                        shopData.setStock(slot, shopData.getStock(slot) + 1);
 
                         if (itemStack.getAmount() == 64) {
                             player.getInventory().setItem(i, null);
@@ -179,8 +185,9 @@ public class InventoryClickListener implements Listener {
 
                     economy.depositPlayer(player, totalSelled.get() * shopData.getSellPrice(slot));
                     player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", (totalSelled.get() * shopData.getSellPrice(slot)) + "").replace("{amount}", totalSelled.get() + ""));
-                }
+                } else return;
 
+                event.getClickedInventory().setContents(shopData.getShopInv().getContents());
                 break;
             }
 
@@ -242,28 +249,43 @@ public class InventoryClickListener implements Listener {
             case ITEM_DETAIL_SETTING: {
                 if (event.getClickedInventory() == player.getInventory()) return;
 
-                if (clickType == ClickType.LEFT) {
-                    //판매가격
-                    Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
-                        inventoryOpenMap.remove(player);
-                        player.closeInventory();
-
-                        player.sendMessage(msgConfig.getMessage("messages.enterSellPrice"));
-                        chatInputMap.set(player, new Pair<>(ChatInputType.SELL_PRICE, new Pair<>(shopData, slot)));
-                    }, 1);
-                } else if (clickType == ClickType.RIGHT) {
+                if (clickType == ClickType.RIGHT) {
                     //구매가격
-                    Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
-                        inventoryOpenMap.remove(player);
-                        player.closeInventory();
+                    inventoryOpenMap.remove(player);
+                    player.closeInventory();
 
+                    Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
                         player.sendMessage(msgConfig.getMessage("messages.enterBuyPrice"));
                         chatInputMap.set(player, new Pair<>(ChatInputType.BUY_PRICE, new Pair<>(shopData, slot)));
                     }, 1);
-                } else if (clickType.isShiftClick()) {
+                } else if (clickType == ClickType.LEFT) {
+                    //판매가격
+                    inventoryOpenMap.remove(player);
+                    player.closeInventory();
+
+                    Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                        player.sendMessage(msgConfig.getMessage("messages.enterSellPrice"));
+                        chatInputMap.set(player, new Pair<>(ChatInputType.SELL_PRICE, new Pair<>(shopData, slot)));
+                    }, 1);
+                } else if (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT) {
                     //삭제
                     shopData.setItem(slot, null);
                     event.getClickedInventory().setItem(slot, null);
+                } else if (clickType == ClickType.DROP) {
+                    //재고 추가
+                    shopData.setStock(slot, shopData.getStock(slot) + 1);
+                    event.getClickedInventory().setItem(slot, shopData.getItemDetailSettingInv().getItem(slot));
+
+                    player.sendMessage(msgConfig.getMessage("messages.stockAdded"));
+                } else if (clickType == ClickType.CONTROL_DROP) {
+                    // 재고 설정
+                    inventoryOpenMap.remove(player);
+                    player.closeInventory();
+
+                    Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                        player.sendMessage(msgConfig.getMessage("messages.enterStock"));
+                        chatInputMap.set(player, new Pair<>(ChatInputType.STOCK, new Pair<>(shopData, slot)));
+                    }, 1);
                 }
 
                 break;

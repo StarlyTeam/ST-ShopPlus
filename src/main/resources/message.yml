@@ -26,14 +26,6 @@ messages:
     message:
       - "&8--------- < &6상점 목록 &8> ---------"
       - "{list}"
-
-  # 구매금액을 설정한 경우
-  # {price} : 구매금액
-  buyPriceSet: "&a구매금액을 {price}원으로 설정하였습니다."
-
-  # 판매금액을 설정한 경우
-  # {price} : 판매금액
-  sellPriceSet: "&a판매금액을 {price}원으로 설정하였습니다."
   
   
   # 상점을 비활성화 한 경우
@@ -56,12 +48,30 @@ messages:
   # {amount} : 구매한 아이템 개수
   itemBuyed: "&a&n&l{price}&f원을 지불하고 &a&n&l{amount}&f개를 구매했습니다."
 
+  # 재고를 추가한 경우
+  stockAdded: "&a아이템 재고에 1개를 추가했습니다."
+
 
   # 판매가격을 설정하려는 경우
   enterSellPrice: "&a판매가격을 입력해주세요. &7(판매 불가 : -1)"
 
+  # 구매금액을 설정한 경우
+  # {price} : 구매금액
+  buyPriceSet: "&a구매금액을 {price}원으로 설정하였습니다."
+
   # 구매가격을 설정하려는 경우
   enterBuyPrice: "&a구매가격을 입력해주세요. &7(구매 불가 : -1)"
+
+  # 판매금액을 설정한 경우
+  # {price} : 판매금액
+  sellPriceSet: "&a판매금액을 {price}원으로 설정하였습니다."
+
+  # 재고를 설정하려는 경우
+  enterStock: "&a재고를 입력해주세요. &7(재고 무제한 : -1)"
+
+  # 재고를 설정한 경우
+  # {stock} : 재고
+  stockSet: "&a재고를 {stock}개로 설정하였습니다."
 
   # 채팅 입력중 다른 행동을 취한 경우
   cancelledChatInput: "&c명령어 실행이 감지되어 진행중이던 채팅 입력을 취소했습니다."
@@ -101,10 +111,14 @@ errorMessages:
   shopNotOpened: "&c입력하신 이름의 상점은 현재 비활성화되어 있습니다."
 
   # 구매금액을 음수로 입력한 경우
-  wrongSellPrice: "구매금액이 잘못 되었습니다."
+  wrongSellPrice: "&c구매금액이 잘못 되었습니다."
 
   # 판매금액을 음수로 입력한 경우
-  wrongBuyPrice: "판매금액이 잘못 되었습니다."
+  wrongBuyPrice: "&c판매금액이 잘못 되었습니다."
+
+
+  # 재고를 잘못 입력한 경우
+  wrongStock: "&c재고가 잘못 되었습니다."
 
 
   # 아이템을 구매할 수 없는 경우

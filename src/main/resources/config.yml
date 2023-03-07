@@ -20,17 +20,31 @@ click:
   sell-64: SHIFT_RIGHT
 
 
+# 아이템 로어 반환값 설정
+text:
+  # 품절
+  soldOut: "&c품절"
+
+  # 구매 불가
+  cannotBuy: "&c구매 불가"
+
+  # 판매 불가
+  cannotSell: "&c판매 불가"
+
+
 # 아이템 로어 설정
 lore:
 
   # 상점 아이템
   # {sellPrice} : 상품의 판매가격
   # {buyPrice} : 상품의 구매가격
+  # {stock} : 상품의 재고
   shopItem:
     - "&r&7---------------------------------------"
     - "&r&e› &f상품을 좌클릭하여 구매하실 수 있습니다."
     - "&r&e› &f상품을 우클릭하여 판매하실 수 있습니다."
     - "&r"
-    - "&r&e› &f구매가격: {buyPrice}"
-    - "&r&e› &f판매가격: {sellPrice}"
+    - "&r&e› &f구매가격 : {buyPrice}"
+    - "&r&e› &f판매가격 : {sellPrice}"
+    - "&r&e› &f재고 : {stock}"
     - "&r&7---------------------------------------"

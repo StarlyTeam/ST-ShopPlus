@@ -15,7 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ShopMain extends JavaPlugin {
+public class ShopPlusMain extends JavaPlugin {
     private static JavaPlugin plugin;
     private static Economy economy;
 
@@ -35,7 +35,7 @@ public class ShopMain extends JavaPlugin {
         }
 
         plugin = this;
-        new Metrics(this, 12345); // TODO: 수정
+        new Metrics(this, 17881);
 
         // CONFIG
         ConfigContent.getInstance();

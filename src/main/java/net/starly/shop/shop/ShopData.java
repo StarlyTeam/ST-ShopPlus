@@ -62,6 +62,18 @@ public class ShopData {
         config.setInt("shop.prices." + slot + ".buy", price);
     }
 
+    public boolean hasStock(int slot) {
+        return getStock(slot) == -1 || getStock(slot) > 0;
+    }
+
+    public int getStock(int slot) {
+        return config.getInt("shop.stocks." + slot);
+    }
+
+    public void setStock(int slot, int stock) {
+        config.setInt("shop.stocks." + slot, stock);
+    }
+
     public ItemStack getItem(int slot) {
         try (ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) config.getObject("shop.items." + slot));  BukkitObjectInputStream bois = new BukkitObjectInputStream(bis)) {
             return (ItemStack) bois.readObject();
@@ -77,6 +89,7 @@ public class ShopData {
         if (itemStack == null) {
             config.setObject("shop.items." + slot, null);
             config.setObject("shop.prices." + slot, null);
+            config.setObject("shop.stocks." + slot, null);
             return;
         }
 
@@ -89,12 +102,14 @@ public class ShopData {
 
         setSellPrice(slot, -1);
         setBuyPrice(slot, -1);
+        setStock(slot, 0);
     }
 
     public Inventory getShopInv() {
         config.reloadConfig();
         Inventory inventory = Bukkit.createInventory(null, config.getInt("shop.size"), config.getString("shop.title"));
 
+        Config mainConfig = ConfigContent.getInstance().getConfig();
         ConfigSection itemsSection = config.getSection("shop.items");
         itemsSection.getKeys().forEach(key -> {
             int slot = Integer.parseInt(key);
@@ -103,7 +118,7 @@ public class ShopData {
 
             ItemStack itemStack = getItem(slot);
             ItemMeta itemMeta = itemStack.getItemMeta();
-            List<String> lore = ConfigContent.getInstance().getConfig().getStringList("lore.shopItem").stream().map(line -> ChatColor.translateAlternateColorCodes('&', line).replace("{sellPrice}", (isSellable(slot) ? sellPrice : "§c판매 불가") + "").replace("{buyPrice}", (isBuyable(slot) ? buyPrice : "§c구매 불가") + "")).collect(Collectors.toList());
+            List<String> lore = ConfigContent.getInstance().getConfig().getStringList("lore.shopItem").stream().map(line -> ChatColor.translateAlternateColorCodes('&', line).replace("{sellPrice}", (isSellable(slot) ? sellPrice : mainConfig.getString("text.cannotSell")) + "").replace("{buyPrice}", (isBuyable(slot) ? buyPrice : mainConfig.getString("text.cannotBuy")) + "").replace("{stock}", ChatColor.translateAlternateColorCodes('&', hasStock(slot) ? getStock(slot) + "" : mainConfig.getString("text.soldOut")))).collect(Collectors.toList());
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
@@ -138,6 +153,7 @@ public class ShopData {
         config.reloadConfig();
         Inventory inventory = Bukkit.createInventory(null, config.getInt("shop.size"), config.getString("shop.title") + "§r [아이템 세부설정]");
 
+        Config mainConfig = ConfigContent.getInstance().getConfig();
         ConfigSection itemsSection = config.getSection("shop.items");
         itemsSection.getKeys().forEach(key -> {
             int slot = Integer.parseInt(key);
@@ -146,7 +162,7 @@ public class ShopData {
 
             ItemStack itemStack = getItem(slot);
             ItemMeta itemMeta = itemStack.getItemMeta();
-            List<String> lore = Arrays.asList("§r§7---------------------------------------", "§r§e› §f판매가격: " + (sellPrice == -1 ? "§c판매 불가" : "§6" + sellPrice), "§r§e› §f구매가격: " + (buyPrice == -1 ? "§c구매 불가" : "§6" + buyPrice), "§r§7---------------------------------------", "§r§e› §f판매가격 : 좌클릭", "§r§e› §f구매가격 : 우클릭", "§r§e› §f삭제 : Shift + 클릭", "§r§7---------------------------------------");
+            List<String> lore = Arrays.asList("§r§7---------------------------------------", "§r§e› §f판매가격 : " + (sellPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotSell")) : "§6" + sellPrice), "§r§e› §f구매가격 : " + (buyPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotBuy")) : "§6" + buyPrice), "§r§e› §f재고 : " + (hasStock(slot) ? "§6" + getStock(slot) + "개" : ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.soldOut"))), "§r§7---------------------------------------", "§r§e› §f판매가격 : 우클릭", "§r§e› §f구매가격 : 좌클릭", "§r§e› §f삭제 : Shift + 클릭", "§r§e› §f재고 추가 : Q", "§r§e› §f재고 설정 : Ctrl + Q", "§r§7---------------------------------------");
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
