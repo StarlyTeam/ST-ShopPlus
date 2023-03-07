@@ -40,7 +40,10 @@ public class ShopCmd implements CommandExecutor {
         switch (args[0].toLowerCase()) {
             case "생성":
             case "create": {
-                if (args.length == 1) {
+                if (!player.hasPermission("starly.shop.create")) {
+                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    return true;
+                } else if (args.length == 1) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.noShopName"));
                     return true;
                 } else if (args.length == 2) {
@@ -48,11 +51,6 @@ public class ShopCmd implements CommandExecutor {
                     return true;
                 } else if (args.length == 3) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.noShopTitle"));
-                    return true;
-                }
-
-                if (!player.hasPermission("starly.shop.create")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
                     return true;
                 } else if (ShopUtil.getShopData(args[1]).exists()) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.shopAlreadyExists"));
