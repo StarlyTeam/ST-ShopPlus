@@ -74,7 +74,7 @@ messages:
   stockSet: "&a재고를 {stock}개로 설정하였습니다."
 
   # 채팅 입력중 다른 행동을 취한 경우
-  cancelledChatInput: "&c명령어 실행이 감지되어 진행중이던 채팅 입력을 취소했습니다."
+  cancelledInput: "&c명령어 실행이 감지되어 진행중이던 입력을 취소했습니다."
 
 errorMessages:
 

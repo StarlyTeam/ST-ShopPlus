@@ -3,10 +3,9 @@ package net.starly.shop.command;
 import lombok.AllArgsConstructor;
 import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
-import net.starly.core.util.StringUtil;
 import net.starly.shop.context.ConfigContent;
-import net.starly.shop.data.InventoryOpenMap;
-import net.starly.shop.enums.InventoryOpenType;
+import net.starly.shop.data.InvOpenMap;
+import net.starly.shop.enums.InvOpenType;
 import net.starly.shop.shop.ShopData;
 import net.starly.shop.shop.ShopUtil;
 import org.bukkit.ChatColor;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 
 @AllArgsConstructor
 public class ShopCmd implements CommandExecutor {
-    private final InventoryOpenMap inventoryOpenMap;
+    private final InvOpenMap invOpenMap;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -98,7 +97,7 @@ public class ShopCmd implements CommandExecutor {
 
                 ShopData shopData = ShopUtil.getShopData(args[1]);
                 player.openInventory(shopData.getShopInv());
-                inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData));
+                invOpenMap.set(player, new Pair<>(InvOpenType.SHOP, shopData));
                 break;
             }
 
@@ -122,7 +121,7 @@ public class ShopCmd implements CommandExecutor {
 
                 ShopData shopData = ShopUtil.getShopData(args[1]);
                 player.openInventory(shopData.getShopSettingInv());
-                inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
+                invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
                 break;
             }
 

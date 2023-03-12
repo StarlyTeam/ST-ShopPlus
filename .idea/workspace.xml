@@ -4,20 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="System Update">
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="feat: Stock System">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/NPCMap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/EntityDeathListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerInteractAtEntityListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/util/EntityUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/ShopMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/ShopPlusMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/context/ConfigContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/context/ConfigContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/ChatInputType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/ChatInputType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/ShopPlusMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/ShopPlusMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/ShopCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/ShopCmd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/tabcomplete/ShopTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/tabcomplete/ShopTab.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/ChatInputMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/InputMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/InventoryOpenMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/InvOpenMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/ButtonType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/ButtonType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/ChatInputType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/InputType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/InventoryOpenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/InvOpenType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/AsyncPlayerChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/AsyncPlayerChatListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryClickListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryCloseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryCloseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerCommandPreprocessListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerCommandPreprocessListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/util/ItemUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/util/ItemUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/message.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/message.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/shop/Example-Shop.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shop/Example-Shop.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,31 +68,33 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2MSUi3oNrOVpOLqgYSfAOA59QAq" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/개발/TEAM/Starly/Projects/Plugins/Free/ST-Shop&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/개발/TEAM/Starly/Projects/Commissions/MC",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="ST-Shop [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -123,6 +136,8 @@
       <workItem from="1678188037741" duration="29000" />
       <workItem from="1678188083873" duration="584000" />
       <workItem from="1678189394372" duration="376000" />
+      <workItem from="1678360861981" duration="13393000" />
+      <workItem from="1678522618826" duration="4709000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Git Bugs">
       <created>1678188597809</created>
@@ -138,7 +153,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678190148581</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: Stock System">
+      <created>1678198484811</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1678198484811</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,6 +169,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix: Git Bugs" />
     <MESSAGE value="System Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="System Update" />
+    <MESSAGE value="feat: System Update" />
+    <MESSAGE value="feat: Stock System" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Stock System" />
   </component>
 </project>

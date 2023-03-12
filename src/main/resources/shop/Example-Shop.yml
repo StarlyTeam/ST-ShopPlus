@@ -5,3 +5,4 @@ shop:
   items: {}
   prices: {}
   stocks: {}
+  npc: "<none>"

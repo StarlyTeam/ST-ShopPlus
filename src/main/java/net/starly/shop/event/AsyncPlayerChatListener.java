@@ -5,10 +5,10 @@ import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
 import net.starly.shop.ShopPlusMain;
 import net.starly.shop.context.ConfigContent;
-import net.starly.shop.data.ChatInputMap;
-import net.starly.shop.data.InventoryOpenMap;
-import net.starly.shop.enums.ChatInputType;
-import net.starly.shop.enums.InventoryOpenType;
+import net.starly.shop.data.InputMap;
+import net.starly.shop.data.InvOpenMap;
+import net.starly.shop.enums.InputType;
+import net.starly.shop.enums.InvOpenType;
 import net.starly.shop.shop.ShopData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -19,23 +19,23 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 @AllArgsConstructor
 public class AsyncPlayerChatListener implements Listener {
-    private final InventoryOpenMap inventoryOpenMap;
-    private final ChatInputMap chatInputMap;
+    private final InvOpenMap invOpenMap;
+    private final InputMap inputMap;
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
-        if (!chatInputMap.has(player)) return;
+        if (!inputMap.has(player)) return;
 
         Config msgConfig = ConfigContent.getInstance().getMsgConfig();
-        ChatInputType chatInputType = chatInputMap.get(player).getFirst();
-        ShopData shopData = chatInputMap.get(player).getSecond().getFirst();
-        int slot = chatInputMap.get(player).getSecond().getSecond();
-        chatInputMap.remove(player);
+        InputType inputType = inputMap.get(player).getFirst();
+        ShopData shopData = inputMap.get(player).getSecond().getFirst();
+        int slot = inputMap.get(player).getSecond().getSecond();
+        inputMap.remove(player);
         event.setCancelled(true);
 
-        if (chatInputType == ChatInputType.BUY_PRICE) {
+        if (inputType == InputType.BUY_PRICE) {
             try {
                 int buyPrice = Integer.parseInt(event.getMessage());
 
@@ -52,13 +52,13 @@ public class AsyncPlayerChatListener implements Listener {
                 return;
             }
 
-            chatInputMap.remove(player);
+            inputMap.remove(player);
 
-            Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getPlugin(), () -> {
+            Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                 player.openInventory(shopData.getItemDetailSettingInv());
-                inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
+                invOpenMap.set(player, new Pair<>(InvOpenType.ITEM_DETAIL_SETTING, shopData));
             }, 1);
-        } else if (chatInputType == ChatInputType.SELL_PRICE) {
+        } else if (inputType == InputType.SELL_PRICE) {
             try {
                 int sellPrice = Integer.parseInt(event.getMessage());
 
@@ -75,13 +75,13 @@ public class AsyncPlayerChatListener implements Listener {
                 return;
             }
 
-            chatInputMap.remove(player);
+            inputMap.remove(player);
 
-            Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getPlugin(), () -> {
+            Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                invOpenMap.set(player, new Pair<>(InvOpenType.ITEM_DETAIL_SETTING, shopData));
                 player.openInventory(shopData.getItemDetailSettingInv());
-                inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
             }, 1);
-        } else if (chatInputType == ChatInputType.STOCK) {
+        } else if (inputType == InputType.STOCK) {
             try {
                 int stock = Integer.parseInt(event.getMessage());
 
@@ -98,11 +98,11 @@ public class AsyncPlayerChatListener implements Listener {
                 return;
             }
 
-            chatInputMap.remove(player);
+            inputMap.remove(player);
 
-            Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getPlugin(), () -> {
+            Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                 player.openInventory(shopData.getItemDetailSettingInv());
-                inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
+                invOpenMap.set(player, new Pair<>(InvOpenType.ITEM_DETAIL_SETTING, shopData));
             }, 1);
         }
     }

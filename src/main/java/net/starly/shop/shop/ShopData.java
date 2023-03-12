@@ -4,9 +4,11 @@ import net.starly.core.data.Config;
 import net.starly.core.data.ConfigSection;
 import net.starly.shop.context.ConfigContent;
 import net.starly.shop.enums.ButtonType;
+import net.starly.shop.util.EntityUtil;
 import net.starly.shop.util.ItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,8 +17,10 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ShopData {
@@ -100,9 +104,9 @@ public class ShopData {
             ex.printStackTrace();
         }
 
-        setSellPrice(slot, -1);
-        setBuyPrice(slot, -1);
-        setStock(slot, 0);
+        if (getSellPrice(slot) == 0) setSellPrice(slot, -1);
+        if (getBuyPrice(slot) == 0) setBuyPrice(slot, -1);
+        if (getStock(slot) == 0) setStock(slot, 0);
     }
 
     public Inventory getShopInv() {
@@ -135,6 +139,7 @@ public class ShopData {
         else inventory.setItem(11, ItemUtil.getButton(ButtonType.SHOP_DISABLED));
         inventory.setItem(13, ItemUtil.getButton(ButtonType.ITEM_SETTING));
         inventory.setItem(14, ItemUtil.getButton(ButtonType.ITEM_DETAIL_SETTING));
+        inventory.setItem(15, ItemUtil.getButton(ButtonType.SET_NPC));
 
         return inventory;
     }
@@ -170,5 +175,18 @@ public class ShopData {
         });
 
         return inventory;
+    }
+
+    public void setNPC(Entity entity) {
+        config.setString("shop.npc", entity == null ? "<none>" : entity.getUniqueId() + "");
+    }
+
+    public Entity getNPC() {
+        String uuid = config.getString("shop.npc");
+        return uuid.equals("<none>") ? null : EntityUtil.getEntity(UUID.fromString(uuid));
+    }
+
+    public boolean hasNPC() {
+        return getNPC() != null;
     }
 }

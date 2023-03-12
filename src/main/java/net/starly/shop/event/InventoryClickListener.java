@@ -1,19 +1,20 @@
 package net.starly.shop.event;
 
 import lombok.AllArgsConstructor;
-import net.milkbowl.vault.economy.Economy;
 import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
 import net.starly.core.jb.version.nms.tank.NmsItemStackUtil;
 import net.starly.core.jb.version.nms.wrapper.ItemStackWrapper;
 import net.starly.core.jb.version.nms.wrapper.NBTTagCompoundWrapper;
 import net.starly.core.util.InventoryUtil;
+import net.starly.shop.ShopPlusMain;
 import net.starly.shop.context.ConfigContent;
-import net.starly.shop.data.ChatInputMap;
-import net.starly.shop.data.InventoryOpenMap;
+import net.starly.shop.data.InputMap;
+import net.starly.shop.data.InvOpenMap;
+import net.starly.shop.data.NPCMap;
 import net.starly.shop.enums.ButtonType;
-import net.starly.shop.enums.ChatInputType;
-import net.starly.shop.enums.InventoryOpenType;
+import net.starly.shop.enums.InputType;
+import net.starly.shop.enums.InvOpenType;
 import net.starly.shop.shop.ShopData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,33 +26,35 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
-import static net.starly.shop.ShopPlusMain.getPlugin;
+import static net.starly.shop.ShopPlusMain.getEconomy;
 
 @AllArgsConstructor
 public class InventoryClickListener implements Listener {
-    private final InventoryOpenMap inventoryOpenMap;
-    private final Economy economy;
-    private final ChatInputMap chatInputMap;
+    private final InvOpenMap invOpenMap;
+    private final InputMap inputMap;
+    private final NPCMap npcMap;
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         if (player == null) return;
-        if (!inventoryOpenMap.has(player)) return;
+        if (!invOpenMap.has(player)) return;
 
         Config msgConfig = ConfigContent.getInstance().getMsgConfig();
         ItemStack currentStack = event.getCurrentItem();
         int slot = event.getSlot();
         Config config = ConfigContent.getInstance().getConfig();
         ClickType clickType = event.getClick();
-        InventoryOpenType openType = inventoryOpenMap.get(player).getFirst();
-        ShopData shopData = inventoryOpenMap.get(player).getSecond();
+        InvOpenType openType = invOpenMap.get(player).getFirst();
+        ShopData shopData = invOpenMap.get(player).getSecond();
         event.setCancelled(true);
 
-        if (openType != InventoryOpenType.ITEM_SETTING && currentStack == null) return;
+        if (openType != InvOpenType.ITEM_SETTING && currentStack == null) return;
 
         switch (openType) {
             case SHOP: {
@@ -70,12 +73,12 @@ public class InventoryClickListener implements Listener {
                         return;
                     }
 
-                    if (economy.getBalance(player) < shopData.getBuyPrice(slot)) {
+                    if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot)) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.moneyIsNotEnough"));
                         return;
                     }
 
-                    economy.withdrawPlayer(player, shopData.getBuyPrice(slot));
+                    getEconomy().withdrawPlayer(player, shopData.getBuyPrice(slot));
                     shopData.setStock(slot, shopData.getStock(slot) - 1);
                     player.getInventory().addItem(originStack);
                     player.sendMessage(msgConfig.getMessage("messages.itemBuyed").replace("{price}", shopData.getBuyPrice(slot) + "").replace("{amount}", 1 + ""));
@@ -87,7 +90,7 @@ public class InventoryClickListener implements Listener {
 
                     ItemStack originStack = shopData.getItem(slot);
 
-                    if (economy.getBalance(player) < shopData.getBuyPrice(slot)) {
+                    if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot)) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.moneyIsNotEnough"));
                         return;
                     } else if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) {
@@ -99,14 +102,14 @@ public class InventoryClickListener implements Listener {
                     for (int i = 0; i < 64; i++) {
                         if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) break;
                         if (!shopData.hasStock(slot)) break;
-                        if (economy.getBalance(player) < shopData.getBuyPrice(slot) * (totalPurchased + 1)) break;
+                        if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot) * (totalPurchased + 1)) break;
 
                         player.getInventory().addItem(originStack);
                         shopData.setStock(slot, shopData.getStock(slot) - 1);
                         totalPurchased++;
                     }
 
-                    economy.withdrawPlayer(player, totalPurchased * shopData.getBuyPrice(slot));
+                    getEconomy().withdrawPlayer(player, totalPurchased * shopData.getBuyPrice(slot));
                     player.sendMessage(msgConfig.getMessage("messages.itemBuyed").replace("{price}", (shopData.getBuyPrice(slot) * totalPurchased) + "").replace("{amount}", totalPurchased + ""));
                 } else if (clickType.name().equals(config.getString("click.sell"))) {
                     if (shopData.getSellPrice(slot) == -1) {
@@ -115,16 +118,26 @@ public class InventoryClickListener implements Listener {
                     }
 
                     ItemStack originStack = shopData.getItem(slot);
+                    int originAmount = originStack.getAmount();
 
-                    if (Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(originStack::equals)) {
+                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(stack -> {
+                        stack = stack.clone();
+                        stack.setAmount(1);
+                        originStack.setAmount(1);
+                        return originStack.equals(stack);
+                    }).collect(Collectors.toList());
+                    if (matches.isEmpty()) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.noItemInInventory"));
                         return;
                     }
 
+                    originStack.setAmount(originAmount);
+
                     for (int i = 0; i < 36; i++) {
                         ItemStack itemStack = player.getInventory().getItem(i);
                         if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-                        if (itemStack.getType() != originStack.getType()) continue;
+                        if (!matches.contains(itemStack)) continue;
+                        itemStack = itemStack.clone();
 
                         if (itemStack.getAmount() == 1) {
                             player.getInventory().setItem(i, null);
@@ -135,7 +148,7 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    economy.depositPlayer(player, shopData.getSellPrice(slot));
+                    getEconomy().depositPlayer(player, shopData.getSellPrice(slot));
                     shopData.setStock(slot, shopData.getStock(slot) + 1);
                     player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", shopData.getSellPrice(slot) + "").replace("{amount}", 1 + ""));
                 } else if (clickType.name().equals(config.getString("click.sell-64"))) {
@@ -145,45 +158,46 @@ public class InventoryClickListener implements Listener {
                     }
 
                     ItemStack originStack = shopData.getItem(slot);
+                    int originAmount = originStack.getAmount();
 
-                    if (Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(originStack::equals)) {
+                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(stack -> {
+                        stack = stack.clone();
+                        stack.setAmount(1);
+                        originStack.setAmount(1);
+                        return originStack.equals(stack);
+                    }).collect(Collectors.toList());
+                    if (matches.isEmpty()) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.noItemInInventory"));
                         return;
                     }
 
+                    originStack.setAmount(originAmount);
+
                     AtomicInteger totalSelled = new AtomicInteger();
-                    Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(originStack::equals).forEach(s -> totalSelled.addAndGet(s.getAmount()));
+                    matches.forEach(s -> totalSelled.addAndGet(s.getAmount()));
                     if (totalSelled.get() > 64) totalSelled.set(64);
 
                     int totalRemoved = 0;
                     for (int i = 0; i < 36; i++) {
                         if (totalSelled.get() == totalRemoved) break;
 
-
                         ItemStack itemStack = player.getInventory().getItem(i);
                         if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-                        if (itemStack.getType() != originStack.getType()) continue;
+                        if (!matches.contains(itemStack)) continue;
+                        itemStack = itemStack.clone();
 
-                        shopData.setStock(slot, shopData.getStock(slot) + 1);
-
-                        if (itemStack.getAmount() == 64) {
+                        if (itemStack.getAmount() <= (totalSelled.get() - totalRemoved)) {
                             player.getInventory().setItem(i, null);
-                            totalRemoved += 64;
-                        } else if (itemStack.getAmount() == 1) {
-                            player.getInventory().setItem(i, null);
-                            totalRemoved++;
+                            totalRemoved += itemStack.getAmount();
                         } else {
-                            if (itemStack.getAmount() <= (totalSelled.get() - totalRemoved)) {
-                                totalRemoved += itemStack.getAmount();
-                                itemStack.setAmount(0);
-                            } else {
-                                totalRemoved += (totalSelled.get() - totalRemoved);
-                                itemStack.setAmount(itemStack.getAmount() - (totalSelled.get() - totalRemoved));
-                            }
+                            itemStack.setAmount(itemStack.getAmount() - (totalSelled.get() - totalRemoved));
+                            player.getInventory().setItem(i, itemStack);
+                            totalRemoved += (totalSelled.get() - totalRemoved);
                         }
                     }
 
-                    economy.depositPlayer(player, totalSelled.get() * shopData.getSellPrice(slot));
+                    if (shopData.getStock(slot) != -1) shopData.setStock(slot, shopData.getStock(slot) + totalSelled.get());
+                    getEconomy().depositPlayer(player, totalSelled.get() * shopData.getSellPrice(slot));
                     player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", (totalSelled.get() * shopData.getSellPrice(slot)) + "").replace("{amount}", totalSelled.get() + ""));
                 } else return;
 
@@ -204,9 +218,9 @@ public class InventoryClickListener implements Listener {
                         shopData.setEnabled(false);
                         player.sendMessage(msgConfig.getMessage("messages.shopDisabled"));
 
-                        Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getShopSettingInv());
-                            inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
+                            invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
                         }, 1);
                         break;
                     }
@@ -215,26 +229,57 @@ public class InventoryClickListener implements Listener {
                         shopData.setEnabled(true);
                         player.sendMessage(msgConfig.getMessage("messages.shopEnabled"));
 
-                        Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getShopSettingInv());
-                            inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
+                            invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
                         }, 1);
                         break;
                     }
 
                     case ITEM_SETTING: {
-                        Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getItemSettingInv());
-                            inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_SETTING, shopData));
+                            invOpenMap.set(player, new Pair<>(InvOpenType.ITEM_SETTING, shopData));
                         }, 1);
                         break;
                     }
 
                     case ITEM_DETAIL_SETTING: {
-                        Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getItemDetailSettingInv());
-                            inventoryOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
+                            invOpenMap.set(player, new Pair<>(InvOpenType.ITEM_DETAIL_SETTING, shopData));
                         }, 1);
+                        break;
+                    }
+
+                    case SET_NPC: {
+                        if (clickType == ClickType.SHIFT_LEFT) {
+                            //삭제
+                            if (!shopData.hasNPC()) {
+                                player.sendMessage("NPC 없는 애잖아!!!!"); //TODO: MESSAGE
+                                return;
+                            }
+
+                            npcMap.remove(shopData.getNPC());
+                            shopData.setNPC(null);
+                            player.sendMessage("NPC 설정 해제했음!"); //TODO: MESSAGE
+                        } else if (clickType == ClickType.SHIFT_RIGHT) {
+                            //이동
+                            if (!shopData.hasNPC()) {
+                                player.sendMessage("NPC 없는 애잖아!!!!"); //TODO: MESSAGE
+                                return;
+                            }
+
+                            player.closeInventory();
+                            player.teleport(shopData.getNPC());
+                            player.sendMessage("설정된 NPC로 이동햇삼..!"); //TODO: MESSAGE
+                        } else {
+                            //설정
+                            player.closeInventory();
+                            inputMap.set(player, new Pair<>(InputType.SET_NPC, new Pair<>(shopData, null)));
+                            player.sendMessage("설정할 NPC를 우클릭하셈..!"); //TODO: MESSAGE
+                        }
+
                         break;
                     }
                 }
@@ -251,21 +296,21 @@ public class InventoryClickListener implements Listener {
 
                 if (clickType == ClickType.RIGHT) {
                     //구매가격
-                    inventoryOpenMap.remove(player);
+                    invOpenMap.remove(player);
                     player.closeInventory();
 
-                    Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                    Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                         player.sendMessage(msgConfig.getMessage("messages.enterBuyPrice"));
-                        chatInputMap.set(player, new Pair<>(ChatInputType.BUY_PRICE, new Pair<>(shopData, slot)));
+                        inputMap.set(player, new Pair<>(InputType.BUY_PRICE, new Pair<>(shopData, slot)));
                     }, 1);
                 } else if (clickType == ClickType.LEFT) {
                     //판매가격
-                    inventoryOpenMap.remove(player);
+                    invOpenMap.remove(player);
                     player.closeInventory();
 
-                    Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                    Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                         player.sendMessage(msgConfig.getMessage("messages.enterSellPrice"));
-                        chatInputMap.set(player, new Pair<>(ChatInputType.SELL_PRICE, new Pair<>(shopData, slot)));
+                        inputMap.set(player, new Pair<>(InputType.SELL_PRICE, new Pair<>(shopData, slot)));
                     }, 1);
                 } else if (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT) {
                     //삭제
@@ -279,12 +324,12 @@ public class InventoryClickListener implements Listener {
                     player.sendMessage(msgConfig.getMessage("messages.stockAdded"));
                 } else if (clickType == ClickType.CONTROL_DROP) {
                     // 재고 설정
-                    inventoryOpenMap.remove(player);
+                    invOpenMap.remove(player);
                     player.closeInventory();
 
-                    Bukkit.getServer().getScheduler().runTaskLater(getPlugin(), () -> {
+                    Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                         player.sendMessage(msgConfig.getMessage("messages.enterStock"));
-                        chatInputMap.set(player, new Pair<>(ChatInputType.STOCK, new Pair<>(shopData, slot)));
+                        inputMap.set(player, new Pair<>(InputType.STOCK, new Pair<>(shopData, slot)));
                     }, 1);
                 }
 

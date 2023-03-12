@@ -1,7 +1,7 @@
 package net.starly.shop.command.tabcomplete;
 
 import lombok.AllArgsConstructor;
-import net.starly.shop.data.InventoryOpenMap;
+import net.starly.shop.data.InvOpenMap;
 import net.starly.shop.shop.ShopUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class ShopTab implements TabCompleter {
-    private final InventoryOpenMap inventoryOpenMap;
+    private final InvOpenMap invOpenMap;
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {

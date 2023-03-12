@@ -8,12 +8,12 @@ public class ConfigContent {
     private final Config config, msgConfig;
 
     private ConfigContent() {
-        msgConfig = new Config("message", ShopPlusMain.getPlugin());
+        msgConfig = new Config("message", ShopPlusMain.getInstance());
         msgConfig.loadDefaultConfig();
         msgConfig.setPrefix("prefix");
 
-        config = new Config("config", ShopPlusMain.getPlugin());
-        if (!config.isFileExist()) new Config("shop/Example-Shop", ShopPlusMain.getPlugin()).loadDefaultConfig();
+        config = new Config("config", ShopPlusMain.getInstance());
+        if (!config.isFileExist()) new Config("shop/Example-Shop", ShopPlusMain.getInstance()).loadDefaultConfig();
         config.loadDefaultConfig();
     }
 

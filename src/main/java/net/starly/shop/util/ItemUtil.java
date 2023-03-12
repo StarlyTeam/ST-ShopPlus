@@ -5,8 +5,10 @@ import net.starly.core.jb.version.nms.wrapper.ItemStackWrapper;
 import net.starly.core.jb.version.nms.wrapper.NBTTagCompoundWrapper;
 import net.starly.shop.enums.ButtonType;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +22,7 @@ public class ItemUtil {
                 try {
                     itemStack = new ItemStack(Material.valueOf("GREEN_WOOL"));
                 } catch (Exception ex) {
-                    itemStack = new ItemStack(Material.valueOf("WOOL"), 1, (byte) 13);
+                    itemStack = new ItemStack(Material.valueOf("WOOL"), 1, (short) 13);
                 }
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName("§6상점");
@@ -35,7 +37,7 @@ public class ItemUtil {
                 try {
                     itemStack = new ItemStack(Material.valueOf("RED_WOOL"));
                 } catch (Exception ex) {
-                    itemStack = new ItemStack(Material.valueOf("WOOL"), 1, (byte) 14);
+                    itemStack = new ItemStack(Material.valueOf("WOOL"), 1, (short) 14);
                 }
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName("§6상점");
@@ -63,6 +65,24 @@ public class ItemUtil {
                 itemMeta.setDisplayName("§6아이템 세부 설정");
                 List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
                 lore.addAll(Arrays.asList("§e› §f상점의 아이템 판매가격등을 설정할 수 있습니다.", "§e› §f클릭 후 열리는 인벤토리에 아이템을 선택하실 수 있습니다."));
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+                break;
+            }
+
+            case SET_NPC: {
+                try {
+                    itemStack = new ItemStack(Material.valueOf("VILLAGER_SPAWN_EGG"));
+                } catch (Exception ex) {
+                    itemStack = new ItemStack(Material.valueOf("MONSTER_EGG"), 1, (short) 100);
+                    SpawnEggMeta itemMeta = (SpawnEggMeta) itemStack.getItemMeta();
+                    itemMeta.setSpawnedType(EntityType.VILLAGER);
+                    itemStack.setItemMeta(itemMeta);
+                }
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§6NPC 설정");
+                List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
+                lore.addAll(Arrays.asList("§e› §f이 곳을 클릭하여 상점 NPC를 설정할 수 있습니다.", "§e› §fShift + 좌클릭시 NPC 설정을 초기화합니다.", "§e› §fShift + 우클릭시 설정된 NPC로 이동합니다."));
                 itemMeta.setLore(lore);
                 itemStack.setItemMeta(itemMeta);
                 break;
