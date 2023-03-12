@@ -122,7 +122,9 @@ public class ShopData {
 
             ItemStack itemStack = getItem(slot);
             ItemMeta itemMeta = itemStack.getItemMeta();
-            List<String> lore = ConfigContent.getInstance().getConfig().getStringList("lore.shopItem").stream().map(line -> ChatColor.translateAlternateColorCodes('&', line).replace("{sellPrice}", (isSellable(slot) ? sellPrice : mainConfig.getString("text.cannotSell")) + "").replace("{buyPrice}", (isBuyable(slot) ? buyPrice : mainConfig.getString("text.cannotBuy")) + "").replace("{stock}", ChatColor.translateAlternateColorCodes('&', hasStock(slot) ? getStock(slot) + "" : mainConfig.getString("text.soldOut")))).collect(Collectors.toList());
+            List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
+            if (!lore.isEmpty()) lore.add("§r");
+            lore.addAll(ConfigContent.getInstance().getConfig().getStringList("lore.shopItem").stream().map(line -> ChatColor.translateAlternateColorCodes('&', line).replace("{sellPrice}", (isSellable(slot) ? sellPrice : mainConfig.getString("text.cannotSell")) + "").replace("{buyPrice}", (isBuyable(slot) ? buyPrice : mainConfig.getString("text.cannotBuy")) + "").replace("{stock}", ChatColor.translateAlternateColorCodes('&', hasStock(slot) ? (getStock(slot) == -1 ? mainConfig.getString("text.unlimited") : getStock(slot) + "") : mainConfig.getString("text.soldOut")))).collect(Collectors.toList()));
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
@@ -167,7 +169,7 @@ public class ShopData {
 
             ItemStack itemStack = getItem(slot);
             ItemMeta itemMeta = itemStack.getItemMeta();
-            List<String> lore = Arrays.asList("§r§7---------------------------------------", "§r§e› §f판매가격 : " + (sellPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotSell")) : "§6" + sellPrice), "§r§e› §f구매가격 : " + (buyPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotBuy")) : "§6" + buyPrice), "§r§e› §f재고 : " + (hasStock(slot) ? "§6" + getStock(slot) + "개" : ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.soldOut"))), "§r§7---------------------------------------", "§r§e› §f판매가격 : 우클릭", "§r§e› §f구매가격 : 좌클릭", "§r§e› §f삭제 : Shift + 클릭", "§r§e› §f재고 추가 : Q", "§r§e› §f재고 설정 : Ctrl + Q", "§r§7---------------------------------------");
+            List<String> lore = Arrays.asList("§r§7---------------------------------------", "§r§e› §f판매가격 : " + (sellPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotSell")) : "§6" + sellPrice), "§r§e› §f구매가격 : " + (buyPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotBuy")) : "§6" + buyPrice), "§r§e› §f재고 : " + (hasStock(slot) ? (getStock(slot) == -1 ? mainConfig.getString("text.unlimited") : "§6" + getStock(slot) + "개") : ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.soldOut"))), "§r§7---------------------------------------", "§r§e› §f판매가격 : 우클릭", "§r§e› §f구매가격 : 좌클릭", "§r§e› §f삭제 : Shift + 클릭", "§r§e› §f재고 추가 : Q", "§r§e› §f재고 설정 : Ctrl + Q", "§r§7---------------------------------------");
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
