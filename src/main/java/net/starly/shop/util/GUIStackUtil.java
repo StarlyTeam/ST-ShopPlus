@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ItemUtil {
+public class GUIStackUtil {
     public static ItemStack getButton(ButtonType type) {
         ItemStack itemStack;
         switch (type) {

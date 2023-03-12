@@ -17,9 +17,7 @@ public class EntityDeathListener implements Listener {
         Entity entity = event.getEntity();
         if (entity == null) return;
         if (!npcMap.has(entity)) return;
-
         ShopData shopData = npcMap.get(entity);
-
         npcMap.remove(entity);
         shopData.setNPC(null);
     }

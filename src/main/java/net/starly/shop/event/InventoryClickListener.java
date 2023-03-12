@@ -16,6 +16,7 @@ import net.starly.shop.enums.ButtonType;
 import net.starly.shop.enums.InputType;
 import net.starly.shop.enums.InvOpenType;
 import net.starly.shop.shop.ShopData;
+import net.starly.shop.util.ItemStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -72,14 +73,13 @@ public class InventoryClickListener implements Listener {
                         player.sendMessage(msgConfig.getMessage("errorMessages.inventorySpaceIsNotEnough"));
                         return;
                     }
-
                     if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot)) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.moneyIsNotEnough"));
                         return;
                     }
 
                     getEconomy().withdrawPlayer(player, shopData.getBuyPrice(slot));
-                    shopData.setStock(slot, shopData.getStock(slot) - 1);
+                    if (shopData.getStock(slot) != -1) shopData.setStock(slot, shopData.getStock(slot) - 1);
                     player.getInventory().addItem(originStack);
                     player.sendMessage(msgConfig.getMessage("messages.itemBuyed").replace("{price}", shopData.getBuyPrice(slot) + "").replace("{amount}", 1 + ""));
                 } else if (clickType.name().equals(config.getString("click.buy-64"))) {
@@ -93,7 +93,8 @@ public class InventoryClickListener implements Listener {
                     if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot)) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.moneyIsNotEnough"));
                         return;
-                    } else if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) {
+                    }
+                    if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.inventorySpaceIsNotEnough"));
                         return;
                     }
@@ -105,7 +106,7 @@ public class InventoryClickListener implements Listener {
                         if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot) * (totalPurchased + 1)) break;
 
                         player.getInventory().addItem(originStack);
-                        shopData.setStock(slot, shopData.getStock(slot) - 1);
+                        if (shopData.getStock(slot) != -1) shopData.setStock(slot, shopData.getStock(slot) - 1);
                         totalPurchased++;
                     }
 
@@ -118,20 +119,12 @@ public class InventoryClickListener implements Listener {
                     }
 
                     ItemStack originStack = shopData.getItem(slot);
-                    int originAmount = originStack.getAmount();
 
-                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(stack -> {
-                        stack = stack.clone();
-                        stack.setAmount(1);
-                        originStack.setAmount(1);
-                        return originStack.equals(stack);
-                    }).collect(Collectors.toList());
+                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(stack -> ItemStackUtil.equals(originStack, stack)).collect(Collectors.toList());
                     if (matches.isEmpty()) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.noItemInInventory"));
                         return;
                     }
-
-                    originStack.setAmount(originAmount);
 
                     for (int i = 0; i < 36; i++) {
                         ItemStack itemStack = player.getInventory().getItem(i);
@@ -149,7 +142,7 @@ public class InventoryClickListener implements Listener {
                     }
 
                     getEconomy().depositPlayer(player, shopData.getSellPrice(slot));
-                    shopData.setStock(slot, shopData.getStock(slot) + 1);
+                    if (shopData.getStock(slot) != -1) shopData.setStock(slot, shopData.getStock(slot) + 1);
                     player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", shopData.getSellPrice(slot) + "").replace("{amount}", 1 + ""));
                 } else if (clickType.name().equals(config.getString("click.sell-64"))) {
                     if (shopData.getSellPrice(slot) == -1) {
@@ -158,20 +151,12 @@ public class InventoryClickListener implements Listener {
                     }
 
                     ItemStack originStack = shopData.getItem(slot);
-                    int originAmount = originStack.getAmount();
 
-                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(stack -> {
-                        stack = stack.clone();
-                        stack.setAmount(1);
-                        originStack.setAmount(1);
-                        return originStack.equals(stack);
-                    }).collect(Collectors.toList());
+                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(stack -> ItemStackUtil.equals(originStack, stack)).collect(Collectors.toList());
                     if (matches.isEmpty()) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.noItemInInventory"));
                         return;
                     }
-
-                    originStack.setAmount(originAmount);
 
                     AtomicInteger totalSelled = new AtomicInteger();
                     matches.forEach(s -> totalSelled.addAndGet(s.getAmount()));

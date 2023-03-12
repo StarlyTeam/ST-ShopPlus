@@ -25,8 +25,8 @@ text:
   # 품절
   soldOut: "&c품절"
 
-  # 재고 무제한
-  unlimited: "&c무제한"
+  # 무제한 (재고 등)
+  unlimited: "&6무제한"
 
   # 구매 불가
   cannotBuy: "&c구매 불가"

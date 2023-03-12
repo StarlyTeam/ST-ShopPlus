@@ -4,8 +4,7 @@ import net.starly.core.data.Config;
 import net.starly.core.data.ConfigSection;
 import net.starly.shop.context.ConfigContent;
 import net.starly.shop.enums.ButtonType;
-import net.starly.shop.util.EntityUtil;
-import net.starly.shop.util.ItemUtil;
+import net.starly.shop.util.GUIStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -22,6 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static org.bukkit.Bukkit.getServer;
 
 public class ShopData {
     private final Config config;
@@ -137,11 +138,11 @@ public class ShopData {
     public Inventory getShopSettingInv() {
         config.reloadConfig();
         Inventory inventory = Bukkit.createInventory(null, 27, config.getString("shop.title") + "§r [상점 편집]");
-        if (isEnabled()) inventory.setItem(11, ItemUtil.getButton(ButtonType.SHOP_ENABLED));
-        else inventory.setItem(11, ItemUtil.getButton(ButtonType.SHOP_DISABLED));
-        inventory.setItem(13, ItemUtil.getButton(ButtonType.ITEM_SETTING));
-        inventory.setItem(14, ItemUtil.getButton(ButtonType.ITEM_DETAIL_SETTING));
-        inventory.setItem(15, ItemUtil.getButton(ButtonType.SET_NPC));
+        if (isEnabled()) inventory.setItem(11, GUIStackUtil.getButton(ButtonType.SHOP_ENABLED));
+        else inventory.setItem(11, GUIStackUtil.getButton(ButtonType.SHOP_DISABLED));
+        inventory.setItem(13, GUIStackUtil.getButton(ButtonType.ITEM_SETTING));
+        inventory.setItem(14, GUIStackUtil.getButton(ButtonType.ITEM_DETAIL_SETTING));
+        inventory.setItem(15, GUIStackUtil.getButton(ButtonType.SET_NPC));
 
         return inventory;
     }
@@ -169,7 +170,7 @@ public class ShopData {
 
             ItemStack itemStack = getItem(slot);
             ItemMeta itemMeta = itemStack.getItemMeta();
-            List<String> lore = Arrays.asList("§r§7---------------------------------------", "§r§e› §f판매가격 : " + (sellPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotSell")) : "§6" + sellPrice), "§r§e› §f구매가격 : " + (buyPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotBuy")) : "§6" + buyPrice), "§r§e› §f재고 : " + (hasStock(slot) ? (getStock(slot) == -1 ? mainConfig.getString("text.unlimited") : "§6" + getStock(slot) + "개") : ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.soldOut"))), "§r§7---------------------------------------", "§r§e› §f판매가격 : 우클릭", "§r§e› §f구매가격 : 좌클릭", "§r§e› §f삭제 : Shift + 클릭", "§r§e› §f재고 추가 : Q", "§r§e› §f재고 설정 : Ctrl + Q", "§r§7---------------------------------------");
+            List<String> lore = Arrays.asList("§r§7---------------------------------------", "§r§e› §f판매가격 : " + (sellPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotSell")) : "§6" + sellPrice), "§r§e› §f구매가격 : " + (buyPrice == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotBuy")) : "§6" + buyPrice), "§r§e› §f재고 : " + (hasStock(slot) ? (getStock(slot) == -1 ? ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.unlimited")) : "§6" + getStock(slot) + "개") : ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.soldOut"))), "§r§7---------------------------------------", "§r§e› §f판매가격 : 우클릭", "§r§e› §f구매가격 : 좌클릭", "§r§e› §f삭제 : Shift + 클릭", "§r§e› §f재고 추가 : Q", "§r§e› §f재고 설정 : Ctrl + Q", "§r§7---------------------------------------");
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
@@ -185,7 +186,7 @@ public class ShopData {
 
     public Entity getNPC() {
         String uuid = config.getString("shop.npc");
-        return uuid.equals("<none>") ? null : EntityUtil.getEntity(UUID.fromString(uuid));
+        return uuid.equals("<none>") ? null : getServer().getEntity(UUID.fromString(uuid));
     }
 
     public boolean hasNPC() {
