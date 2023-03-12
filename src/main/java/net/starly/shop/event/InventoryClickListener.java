@@ -70,8 +70,10 @@ public class InventoryClickListener implements Listener {
                     ItemStack originStack = shopData.getItem(slot);
 
                     if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) {
-                        player.sendMessage(msgConfig.getMessage("errorMessages.inventorySpaceIsNotEnough"));
-                        return;
+                        if (Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(s -> ItemStackUtil.equals(originStack, s) && s.getAmount() < s.getType().getMaxStackSize())) {
+                            player.sendMessage(msgConfig.getMessage("errorMessages.inventorySpaceIsNotEnough"));
+                            return;
+                        }
                     }
                     if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot)) {
                         player.sendMessage(msgConfig.getMessage("errorMessages.moneyIsNotEnough"));
@@ -95,17 +97,22 @@ public class InventoryClickListener implements Listener {
                         return;
                     }
                     if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) {
-                        player.sendMessage(msgConfig.getMessage("errorMessages.inventorySpaceIsNotEnough"));
-                        return;
+                        if (Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(s -> ItemStackUtil.equals(originStack, s) && s.getAmount() < s.getType().getMaxStackSize())) {
+                            player.sendMessage(msgConfig.getMessage("errorMessages.inventorySpaceIsNotEnough"));
+                            return;
+                        }
                     }
 
                     int totalPurchased = 0;
                     for (int i = 0; i < 64; i++) {
-                        if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1) break;
+                        if (totalPurchased > 64) return;
+                        if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1
+                        && Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(s -> ItemStackUtil.equals(originStack, s) && s.getAmount() < s.getType().getMaxStackSize())) break;
                         if (!shopData.hasStock(slot)) break;
                         if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot) * (totalPurchased + 1)) break;
 
                         player.getInventory().addItem(originStack);
+
                         if (shopData.getStock(slot) != -1) shopData.setStock(slot, shopData.getStock(slot) - 1);
                         totalPurchased++;
                     }
