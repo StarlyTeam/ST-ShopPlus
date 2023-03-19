@@ -6,8 +6,10 @@ import net.starly.shop.shop.ShopData;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class InvOpenMap {
     private final Map<UUID, Pair<InvOpenType, ShopData>> map = new HashMap<>();
@@ -42,5 +44,9 @@ public class InvOpenMap {
 
     public void remove(UUID uuid) {
         map.remove(uuid);
+    }
+
+    public List<UUID> getKeys() {
+        return map.keySet().stream().collect(Collectors.toList());
     }
 }

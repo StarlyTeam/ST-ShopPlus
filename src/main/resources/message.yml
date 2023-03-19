@@ -1,5 +1,12 @@
+# +──────────────────────────────────+ #
+# │          PREFIX SETTINGS         │ #
+# +──────────────────────────────────+ #
 prefix: "&9[상점] &r"
 
+
+# +──────────────────────────────────+ #
+# │         MESSAGE SETTINGS         │ #
+# +──────────────────────────────────+ #
 messages:
 
   # 도움말
@@ -26,13 +33,19 @@ messages:
     message:
       - "&8--------- < &6상점 목록 &8> ---------"
       - "{list}"
-  
+
+
+  # 상점을 활성화 한 경우
+  shopEnabled: "&a상점을 &6&l활성화 &a했습니다."
   
   # 상점을 비활성화 한 경우
   shopDisabled: "&a상점을 &6&l비활성화 &a했습니다."
 
-  # 상점을 활성화 한 경우
-  shopEnabled: "&a상점을 &6&l활성화 &a했습니다."
+  # 시세를 활성화 한 경우
+  marketPriceEnabled: "&a시세를 &6&l활성화 &a했습니다."
+
+  # 시세를 비활성화 한 경우
+  marketPriceDisabled: "&a시세를 &6&l비활성화 &a했습니다."
 
   # 상점을 삭제한 경우
   shopDeleted: "&c상점을 삭제했습니다."
@@ -73,9 +86,68 @@ messages:
   # {stock} : 재고
   stockSet: "&a재고를 {stock}개로 설정하였습니다."
 
+  # 최소 판매 시세를 설정하려는 경우
+  enterMarketPrice_MinSell: "&a최소 판매 시세를 입력해주세요. &7(1 이상)"
+
+  # 최소 판매 시세를 설정한 경우
+  # {price} : 최소 판매 시세
+  MarketPriceSet_MinSell: "&a최소 판매 시세를 {price}원으로 설정하였습니다."
+
+  # 최대 판매 시세를 설정하려는 경우
+  enterMarketPrice_MaxSell: "&a최대 판매 시세를 입력해주세요. &7(1 이상)"
+
+  # 최대 판매 시세를 설정한 경우
+  # {price} : 최대 판매 시세
+  MarketPriceSet_MaxSell: "&a최대 판매 시세를 {price}원으로 설정하였습니다."
+
+  # 최소 구매 시세를 설정하려는 경우
+  enterMarketPrice_MinBuy: "&a최소 구매 시세를 입력해주세요. &7(1 이상)"
+
+  # 최소 구매 시세를 설정한 경우
+  # {price} : 최소 구매 시세
+  MarketPriceSet_MinBuy: "&a최소 구매 시세를 {price}원으로 설정하였습니다."
+
+  # 최대 구매 시세를 설정하려는 경우
+  enterMarketPrice_MaxBuy: "&a최대 구매 시세를 입력해주세요. &7(1 이상)"
+
+  # 최대 구매 시세를 설정한 경우
+  # {price} : 최대 구매 시세
+  MarketPriceSet_MaxBuy: "&a최대 구매 시세를 {price}원으로 설정하였습니다."
+
+  # 판매 시세를 설정하려는 경우
+  enterMarketPrice_Sell: "&a판매 시세를 입력해주세요. &7(1 이상)"
+
+  # 판매 시세를 설정한 경우
+  # {price} : 판매 시세
+  MarketPriceSet_Sell: "&a판매 시세를 {price}원으로 설정하였습니다."
+
+  # 구매 시세를 설정하려는 경우
+  enterMarketPrice_Buy: "&a구매 시세를 입력해주세요. &7(1 이상)"
+
+  # 구매 시세를 설정한 경우
+  # {price} : 구매 시세
+  MarketPriceSet_Buy: "&a구매 시세를 {price}원으로 설정하였습니다."
+
   # 채팅 입력중 다른 행동을 취한 경우
   cancelledInput: "&c명령어 실행이 감지되어 진행중이던 입력을 취소했습니다."
 
+
+  # NPC를 설정하려는 경우
+  enterNPC: "&aNPC를 우클릭해주세요."
+
+  # NPC를 설정한 경우
+  NPCSet: "&aNPC를 설정하였습니다."
+
+  # NPC를 삭제한 경우
+  NPCDeleted: "&aNPC를 삭제하였습니다."
+
+  # NPC로 이동한 경우
+  teleportedToNPC: "&aNPC로 이동했습니다."
+
+
+# +──────────────────────────────────+ #
+# │      ERROR MESSAGE SETTINGS      │ #
+# +──────────────────────────────────+ #
 errorMessages:
 
   # 권한이 없는 경우
@@ -121,6 +193,10 @@ errorMessages:
   wrongStock: "&c재고가 잘못 되었습니다."
 
 
+  # 시세 범위값을 잘못 입력한 경우
+  wrongMarketPrice: "&c시세 범위 값이 잘못 되었습니다. &7(범위 : 1 이상)"
+
+
   # 아이템을 구매할 수 없는 경우
   cannotBuyThisItem: "&c해당 아이템을 구매할 수 없습니다."
 
@@ -135,3 +211,10 @@ errorMessages:
 
   # 인벤토리에 해당 아이템이 없는 경우
   noItemInInventory: "&c인벤토리에 해당 아이템이 없습니다."
+
+
+  # 이미 NPC가 존재하지 않는 경우
+  noNPC: "&cNPC가 존재하지 않습니다."
+
+  # 이미 해당 NPC가 다른 상점에 설정되어 있는 경우
+  alreadySetNPC: "&c해당 NPC는 다른 상점에 설정되어 있습니다."

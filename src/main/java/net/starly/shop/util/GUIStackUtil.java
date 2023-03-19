@@ -48,6 +48,36 @@ public class GUIStackUtil {
                 break;
             }
 
+            case MARKET_PRICE_ENABLED: {
+                try {
+                    itemStack = new ItemStack(Material.valueOf("GREEN_WOOL"));
+                } catch (Exception ex) {
+                    itemStack = new ItemStack(Material.valueOf("WOOL"), 1, (short) 13);
+                }
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§6시세");
+                List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
+                lore.addAll(Arrays.asList("§e› §f상점의 아이템 판매가격을 §a§l시세§f/§c§l고정가§f로 설정할 수 있습니다.", "§e› §f현재 상태 : §a§l§n[시세]"));
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+                break;
+            }
+
+            case MARKET_PRICE_DISABLED: {
+                try {
+                    itemStack = new ItemStack(Material.valueOf("RED_WOOL"));
+                } catch (Exception ex) {
+                    itemStack = new ItemStack(Material.valueOf("WOOL"), 1, (short) 14);
+                }
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName("§6시세");
+                List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
+                lore.addAll(Arrays.asList("§e› §f상점의 아이템 판매가격을 §a§l시세§f/§c§l고정가§f로 설정할 수 있습니다.", "§e› §f현재 상태 : §c§l§n[고정가]"));
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+                break;
+            }
+
             case ITEM_SETTING: {
                 itemStack = new ItemStack(Material.CHEST);
                 ItemMeta itemMeta = itemStack.getItemMeta();

@@ -150,7 +150,7 @@ public class ShopCmd implements CommandExecutor {
                     return true;
                 }
 
-                msgConfig.getMessages("messages.shopList.message").forEach(line -> player.sendMessage(line.replace("{list}", String.join(msgConfig.getString("messages.shopList.delimiter"), ShopUtil.getShops()))));
+                msgConfig.getMessages("messages.shopList.message").forEach(line -> player.sendMessage(line.replace("{list}", String.join(msgConfig.getString("messages.shopList.delimiter"), ShopUtil.getShopNames()))));
                 return true;
             }
 

@@ -51,3 +51,10 @@ lore:
     - "&r&e› &f판매가격 : {sellPrice}"
     - "&r&e› &f재고 : {stock}"
     - "&r&7---------------------------------------"
+
+
+# 시세 설정
+marketPrice:
+
+  # 시세 갱신 주기 (초)
+  updateInterval: 60

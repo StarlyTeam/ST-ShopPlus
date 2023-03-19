@@ -1,6 +1,7 @@
 package net.starly.shop.event;
 
 import lombok.AllArgsConstructor;
+import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
 import net.starly.shop.context.ConfigContent;
 import net.starly.shop.data.InputMap;
@@ -30,11 +31,12 @@ public class PlayerInteractAtEntityListener implements Listener {
         Entity entity = event.getRightClicked();
         if (entity == null) return;
 
+        Config msgConfig = ConfigContent.getInstance().getMsgConfig();
         event.setCancelled(true);
 
         if (inputMap.has(player)) {
             if (npcMap.has(entity)) {
-                player.sendMessage("이미 다른 상점에 연결된 NPC잖아!"); //TODO: MESSAGE
+                player.sendMessage(msgConfig.getMessage("errorMessages.alreadySetNPC"));
                 return;
             }
 
@@ -44,11 +46,11 @@ public class PlayerInteractAtEntityListener implements Listener {
             if (shopData.hasNPC()) npcMap.remove(shopData.getNPC());
             npcMap.set(entity, shopData);
             shopData.setNPC(entity);
-            player.sendMessage("NPC 연결했음~"); //TODO: MESSAGE
+            player.sendMessage(msgConfig.getMessage("messages.NPCSet"));
         } else if (npcMap.has(entity)) {
             ShopData shopData = npcMap.get(entity);
             if (!(player.isOp() || shopData.isEnabled())) {
-                player.sendMessage(ConfigContent.getInstance().getMsgConfig().getMessage("errorMessages.shopNotOpened"));
+                player.sendMessage(msgConfig.getMessage("errorMessages.shopNotOpened"));
                 return;
             }
 

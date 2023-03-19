@@ -9,6 +9,7 @@ import net.starly.shop.data.InputMap;
 import net.starly.shop.data.InvOpenMap;
 import net.starly.shop.data.NPCMap;
 import net.starly.shop.event.*;
+import net.starly.shop.scheduler.MarketPriceTask;
 import net.starly.shop.shop.ShopUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -57,6 +58,11 @@ public class ShopPlusMain extends JavaPlugin {
         InputMap inputMap = new InputMap();
         NPCMap npcMap = new NPCMap();
 
+        /* TASK
+         ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+        MarketPriceTask.setInvOpenMap(invOpenMap);
+        MarketPriceTask.start();
+
         /* COMMAND
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
         getServer().getPluginCommand("shop").setExecutor(new ShopCmd(invOpenMap));
@@ -73,7 +79,14 @@ public class ShopPlusMain extends JavaPlugin {
 
         /* INITIALIZE
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        ShopUtil.getShops().stream().map(ShopUtil::getShopData).forEach(shop -> { if (shop.hasNPC()) npcMap.set(shop.getNPC(), shop); });
+        ShopUtil.getShopNames().stream().map(ShopUtil::getShopData).forEach(shop -> { if (shop.hasNPC()) npcMap.set(shop.getNPC(), shop); });
+    }
+
+    @Override
+    public void onDisable() {
+        /* TASK
+         ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+        MarketPriceTask.stop();
     }
 
     public static ShopPlusMain getInstance() {

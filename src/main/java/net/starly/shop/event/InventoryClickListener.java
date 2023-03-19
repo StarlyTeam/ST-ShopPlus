@@ -206,29 +206,23 @@ public class InventoryClickListener implements Listener {
                 ButtonType buttonType = ButtonType.valueOf(nbtTagCompound.getString("buttonId"));
 
                 switch (buttonType) {
-                    case SHOP_ENABLED: {
+                    case SHOP_ENABLED -> {
                         shopData.setEnabled(false);
                         player.sendMessage(msgConfig.getMessage("messages.shopDisabled"));
 
-                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
-                            player.openInventory(shopData.getShopSettingInv());
-                            invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
-                        }, 1);
+                        event.getClickedInventory().setContents(shopData.getShopSettingInv().getContents());
                         break;
                     }
 
-                    case SHOP_DISABLED: {
+                    case SHOP_DISABLED -> {
                         shopData.setEnabled(true);
                         player.sendMessage(msgConfig.getMessage("messages.shopEnabled"));
 
-                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
-                            player.openInventory(shopData.getShopSettingInv());
-                            invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
-                        }, 1);
+                        event.getClickedInventory().setContents(shopData.getShopSettingInv().getContents());
                         break;
                     }
 
-                    case ITEM_SETTING: {
+                    case ITEM_SETTING -> {
                         Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getItemSettingInv());
                             invOpenMap.set(player, new Pair<>(InvOpenType.ITEM_SETTING, shopData));
@@ -236,7 +230,7 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    case ITEM_DETAIL_SETTING: {
+                    case ITEM_DETAIL_SETTING -> {
                         Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getItemDetailSettingInv());
                             invOpenMap.set(player, new Pair<>(InvOpenType.ITEM_DETAIL_SETTING, shopData));
@@ -244,34 +238,49 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    case SET_NPC: {
+                    case SET_NPC -> {
                         if (clickType == ClickType.SHIFT_LEFT) {
                             //삭제
                             if (!shopData.hasNPC()) {
-                                player.sendMessage("NPC 없는 애잖아!!!!"); //TODO: MESSAGE
+                                player.sendMessage(msgConfig.getMessage("errorMessages.noNPC"));
                                 return;
                             }
 
                             npcMap.remove(shopData.getNPC());
                             shopData.setNPC(null);
-                            player.sendMessage("NPC 설정 해제했음!"); //TODO: MESSAGE
+                            player.sendMessage(msgConfig.getMessage("messages.npcDeleted"));
                         } else if (clickType == ClickType.SHIFT_RIGHT) {
                             //이동
                             if (!shopData.hasNPC()) {
-                                player.sendMessage("NPC 없는 애잖아!!!!"); //TODO: MESSAGE
+                                player.sendMessage(msgConfig.getMessage("errorMessages.noNPC"));
                                 return;
                             }
 
                             player.closeInventory();
                             player.teleport(shopData.getNPC());
-                            player.sendMessage("설정된 NPC로 이동햇삼..!"); //TODO: MESSAGE
+                            player.sendMessage(msgConfig.getMessage("messages.teleportedToNPC"));
                         } else {
                             //설정
                             player.closeInventory();
                             inputMap.set(player, new Pair<>(InputType.SET_NPC, new Pair<>(shopData, null)));
-                            player.sendMessage("설정할 NPC를 우클릭하셈..!"); //TODO: MESSAGE
+                            player.sendMessage(msgConfig.getMessage("messages.enterNPC"));
                         }
+                        break;
+                    }
 
+                    case MARKET_PRICE_ENABLED -> {
+                        shopData.setMarketPriceEnabled(false);
+                        player.sendMessage(msgConfig.getMessage("messages.marketPriceDisabled"));
+
+                        event.getClickedInventory().setContents(shopData.getShopSettingInv().getContents());
+                        break;
+                    }
+
+                    case MARKET_PRICE_DISABLED -> {
+                        shopData.setMarketPriceEnabled(true);
+                        player.sendMessage(msgConfig.getMessage("messages.marketPriceEnabled"));
+
+                        event.getClickedInventory().setContents(shopData.getShopSettingInv().getContents());
                         break;
                     }
                 }
@@ -293,7 +302,7 @@ public class InventoryClickListener implements Listener {
 
                     Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                         player.sendMessage(msgConfig.getMessage("messages.enterBuyPrice"));
-                        inputMap.set(player, new Pair<>(InputType.BUY_PRICE, new Pair<>(shopData, slot)));
+                        inputMap.set(player, new Pair<>(InputType.ORIGIN_PRICE_BUY, new Pair<>(shopData, slot)));
                     }, 1);
                 } else if (clickType == ClickType.LEFT) {
                     //판매가격
@@ -302,19 +311,19 @@ public class InventoryClickListener implements Listener {
 
                     Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                         player.sendMessage(msgConfig.getMessage("messages.enterSellPrice"));
-                        inputMap.set(player, new Pair<>(InputType.SELL_PRICE, new Pair<>(shopData, slot)));
+                        inputMap.set(player, new Pair<>(InputType.ORIGIN_PRICE_SELL, new Pair<>(shopData, slot)));
                     }, 1);
-                } else if (clickType == ClickType.SHIFT_LEFT || clickType == ClickType.SHIFT_RIGHT) {
+                } else if (clickType == ClickType.SHIFT_LEFT) {
                     //삭제
                     shopData.setItem(slot, null);
                     event.getClickedInventory().setItem(slot, null);
                 } else if (clickType == ClickType.DROP) {
                     //재고 추가
                     shopData.setStock(slot, shopData.getStock(slot) + 1);
-                    event.getClickedInventory().setItem(slot, shopData.getItemDetailSettingInv().getItem(slot));
+                    event.getClickedInventory().setContents(shopData.getItemDetailSettingInv().getContents());
 
                     player.sendMessage(msgConfig.getMessage("messages.stockAdded"));
-                } else if (clickType == ClickType.CONTROL_DROP) {
+                } else if (clickType == ClickType.SHIFT_RIGHT) {
                     // 재고 설정
                     invOpenMap.remove(player);
                     player.closeInventory();
@@ -323,6 +332,66 @@ public class InventoryClickListener implements Listener {
                         player.sendMessage(msgConfig.getMessage("messages.enterStock"));
                         inputMap.set(player, new Pair<>(InputType.STOCK, new Pair<>(shopData, slot)));
                     }, 1);
+                } else if (clickType == ClickType.NUMBER_KEY) {
+                    int key = event.getHotbarButton();
+                    if (key < 0 || 6 < key) return;
+
+                    if (key == 4) {
+                        // 시세 초기화
+                        int originSell = shopData.getOriginSellPrice(slot);
+                        shopData.setSellPrice(slot, originSell);
+                        shopData.setMinSellPrice(slot, originSell);
+                        shopData.setMaxSellPrice(slot, originSell);
+
+                        int originBuy = shopData.getOriginBuyPrice(slot);
+                        shopData.setBuyPrice(slot, originBuy);
+                        shopData.setMinBuyPrice(slot, originBuy);
+                        shopData.setMaxBuyPrice(slot, originBuy);
+
+                        event.getClickedInventory().setContents(shopData.getItemDetailSettingInv().getContents());
+
+                        break;
+                    }
+
+                    invOpenMap.remove(player);
+                    player.closeInventory();
+                    if (key == 0) {
+                        //최소 판매 시세 설정
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                            player.sendMessage(msgConfig.getMessage("messages.enterMarketPrice_MinSell"));
+                            inputMap.set(player, new Pair<>(InputType.MARKET_PRICE_MIN_SELL, new Pair<>(shopData, slot)));
+                        }, 1);
+                    } else if (key == 1) {
+                        //최대 판매 시세 설정
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                            player.sendMessage(msgConfig.getMessage("messages.enterMarketPrice_MaxSell"));
+                            inputMap.set(player, new Pair<>(InputType.MARKET_PRICE_MAX_SELL, new Pair<>(shopData, slot)));
+                        }, 1);
+                    } else if (key == 2) {
+                        //최소 구매 시세 설정
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                            player.sendMessage(msgConfig.getMessage("messages.enterMarketPrice_MinBuy"));
+                            inputMap.set(player, new Pair<>(InputType.MARKET_PRICE_MIN_BUY, new Pair<>(shopData, slot)));
+                        }, 1);
+                    } else if (key == 3) {
+                        //최대 구매 시세 설정
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                            player.sendMessage(msgConfig.getMessage("messages.enterMarketPrice_MaxBuy"));
+                            inputMap.set(player, new Pair<>(InputType.MARKET_PRICE_MAX_BUY, new Pair<>(shopData, slot)));
+                        }, 1);
+                    } else if (key == 5) {
+                        //판매 시세 설정
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                            player.sendMessage(msgConfig.getMessage("messages.enterMarketPrice_Sell"));
+                            inputMap.set(player, new Pair<>(InputType.MARKET_PRICE_SELL, new Pair<>(shopData, slot)));
+                        }, 1);
+                    } else if (key == 6) {
+                        //구매 시세 설정
+                        Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                            player.sendMessage(msgConfig.getMessage("messages.enterMarketPrice_Buy"));
+                            inputMap.set(player, new Pair<>(InputType.MARKET_PRICE_BUY, new Pair<>(shopData, slot)));
+                        }, 1);
+                    }
                 }
 
                 break;
