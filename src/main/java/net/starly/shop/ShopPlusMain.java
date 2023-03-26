@@ -76,6 +76,7 @@ public class ShopPlusMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(invOpenMap, inputMap), instance);
         getServer().getPluginManager().registerEvents(new PlayerCommandPreprocessListener(inputMap), instance);
         getServer().getPluginManager().registerEvents(new PlayerInteractAtEntityListener(invOpenMap, inputMap, npcMap), instance);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(inputMap), instance);
 
         /* INITIALIZE
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */

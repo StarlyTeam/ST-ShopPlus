@@ -2,7 +2,8 @@ shop:
   enabled: true
   title: "§6테스트 상점"
   size: 54
-  items: {}
+  items: !!binary |-
+    rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAB3CAAAABAAAAAAeA==
   prices: {}
   stocks: {}
   npc: "<none>"

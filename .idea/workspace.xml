@@ -4,25 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/scheduler/MarketPriceTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-03-07__8_54__Changes_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-03-07_오후_8_54_[Changes]1/shelved.patch" beforeDir="false" />
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="feat: Market Price System">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerQuitListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/ShopPlusMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/ShopPlusMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/ShopCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/ShopCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/tabcomplete/ShopTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/tabcomplete/ShopTab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/InvOpenMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/InvOpenMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/ButtonType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/ButtonType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/InputType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/InputType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/AsyncPlayerChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/AsyncPlayerChatListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerInteractAtEntityListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerInteractAtEntityListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryCloseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryCloseListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/util/GUIStackUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shop/util/GUIStackUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/message.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/message.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/shop/Example-Shop.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shop/Example-Shop.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,18 +68,19 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/개발/TEAM/Starly/Projects/Commissions/MC",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/개발/TEAM/Starly/Projects/Commissions/MC&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.notifications&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="ST-Shop [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -132,7 +124,9 @@
       <workItem from="1678189394372" duration="376000" />
       <workItem from="1678360861981" duration="13393000" />
       <workItem from="1678522618826" duration="15882000" />
-      <workItem from="1679136336014" duration="20003000" />
+      <workItem from="1679136336014" duration="20957000" />
+      <workItem from="1679410703501" duration="3018000" />
+      <workItem from="1679811563602" duration="5605000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Git Bugs">
       <created>1678188597809</created>
@@ -183,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678616964690</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat: Market Price System">
+      <created>1679234450645</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1679234450645</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -198,6 +199,7 @@
     <MESSAGE value="feat: `Lore Keeping`" />
     <MESSAGE value="fix: sell bugs" />
     <MESSAGE value="fix: Bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs" />
+    <MESSAGE value="feat: Market Price System" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Market Price System" />
   </component>
 </project>

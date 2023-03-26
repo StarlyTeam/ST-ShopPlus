@@ -3,6 +3,8 @@ package net.starly.shop.shop;
 import net.starly.core.data.Config;
 import net.starly.shop.ShopPlusMain;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,8 +19,8 @@ public class ShopUtil {
     }
 
     public static List<String> getShopNames() {
-        Config shopFolder = new Config("shop/", ShopPlusMain.getInstance());
-        return shopFolder.getFileNames();
+        File shopFolder = new File(ShopPlusMain.getInstance().getDataFolder(), "shop/");
+        return Arrays.stream(shopFolder.list()).map(s -> s.replace(".yml", "")).collect(Collectors.toList());
     }
 
     public static void createShop(String name, int line, String title) {

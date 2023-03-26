@@ -1,12 +1,13 @@
 package net.starly.shop.shop;
 
 import net.starly.core.data.Config;
-import net.starly.core.data.ConfigSection;
+import net.starly.shop.ShopPlusMain;
 import net.starly.shop.context.ConfigContent;
 import net.starly.shop.enums.ButtonType;
 import net.starly.shop.util.GUIStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,10 +17,8 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.io.File;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.bukkit.Bukkit.getServer;
@@ -157,43 +156,60 @@ public class ShopData {
 
     /* Item
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-    public ItemStack getItem(int slot) {
-        try (ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) getConfig().getObject("shop.items." + slot)); BukkitObjectInputStream bois = new BukkitObjectInputStream(bis)) {
-            return (ItemStack) bois.readObject();
-        } catch (NullPointerException ex) {
-            return null;
+    public Map<Integer, ItemStack> getItems() {
+        try (ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) getConfig().getObject("shop.items")); BukkitObjectInputStream bois = new BukkitObjectInputStream(bis)) {
+            return (Map<Integer, ItemStack>) bois.readObject();
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
     }
 
-    public void setItem(int slot, ItemStack itemStack) {
-        if (itemStack == null) {
-            getConfig().setObject("shop.items." + slot, null);
-            getConfig().setObject("shop.prices." + slot, null);
-            getConfig().setObject("shop.stocks." + slot, null);
-            return;
-        }
+    public ItemStack getItem(int slot) {
+        return getItems().get(slot);
+    }
 
+    public void setItems(Map<Integer, ItemStack> items) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); BukkitObjectOutputStream boos = new BukkitObjectOutputStream(bos)) {
-            boos.writeObject(itemStack);
-            getConfig().setObject("shop.items." + slot, bos.toByteArray());
+            boos.writeObject(items);
+            config.setObject("shop.items", bos.toByteArray());
+
+            Bukkit.getServer().getScheduler().runTaskAsynchronously(ShopPlusMain.getInstance(), () ->
+                    items.forEach((slot, itemStack) -> {
+                        if (itemStack == null) {
+                            getConfig().setObject("shop.items." + slot, null);
+                            getConfig().setObject("shop.prices." + slot, null);
+                            getConfig().setObject("shop.stocks." + slot, null);
+                            return;
+                        }
+
+
+                        if (getSellPrice(slot) == 0) {
+                            FileConfiguration config_ = getConfig().getConfig();
+                            config_.set("shop.prices." + slot + ".sell.origin", -1);
+                            config_.set("shop.prices." + slot + ".sell.now", -1);
+                            config_.set("shop.prices." + slot + ".sell.min", -1);
+                            config_.set("shop.prices." + slot + ".sell.max", -1);
+                            config_.set("shop.prices." + slot + ".buy.origin", -1);
+                            config_.set("shop.prices." + slot + ".buy.now", -1);
+                            config_.set("shop.prices." + slot + ".buy.min", -1);
+                            config_.set("shop.prices." + slot + ".buy.max", -1);
+                            config_.set("shop.stocks." + slot, 0);
+
+                            config.saveConfig();
+                        }
+                    }));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
 
-        if (getSellPrice(slot) == 0) setSellPrice(slot, -1);
-        if (getOriginSellPrice(slot) == 0) setOriginBuyPrice(slot, -1);
-        if (getMinSellPrice(slot) == 0) setMinSellPrice(slot, -1);
-        if (getMaxSellPrice(slot) == 0) setMaxSellPrice(slot, -1);
+    public void setItem(int slot, ItemStack itemStack) {
+        Map<Integer, ItemStack> items = getItems();
+        items.remove(slot);
+        items.put(slot, itemStack);
 
-        if (getBuyPrice(slot) == 0) setBuyPrice(slot, -1);
-        if (getOriginBuyPrice(slot) == 0) setOriginSellPrice(slot, -1);
-        if (getMinBuyPrice(slot) == 0) setMinBuyPrice(slot, -1);
-        if (getMaxBuyPrice(slot) == 0) setMaxBuyPrice(slot, -1);
-
-        if (getStock(slot) == 0) setStock(slot, 0);
+        setItems(items);
     }
 
 
@@ -208,17 +224,16 @@ public class ShopData {
     }
 
     public Inventory getShopInv() {
-        getConfig().reloadConfig();
         Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle());
+        Map<Integer, ItemStack> items = getItems();
 
         Config mainConfig = ConfigContent.getInstance().getConfig();
-        ConfigSection itemsSection = getConfig().getSection("shop.items");
-        itemsSection.getKeys().forEach(key -> {
-            int slot = Integer.parseInt(key);
+        items.forEach((slot, itemStack) -> {
+            if (itemStack == null) return;
+
             int sellPrice = getSellPrice(slot);
             int buyPrice = getBuyPrice(slot);
 
-            ItemStack itemStack = getItem(slot);
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
             if (!lore.isEmpty()) lore.add("§r");
@@ -254,8 +269,8 @@ public class ShopData {
     }
 
     public Inventory getShopSettingInv() {
-        getConfig().reloadConfig();
         Inventory inventory = Bukkit.createInventory(null, 27, getTitle() + "§r [상점 편집]");
+
         inventory.setItem(11, isEnabled() ? GUIStackUtil.getButton(ButtonType.SHOP_ENABLED) : GUIStackUtil.getButton(ButtonType.SHOP_DISABLED));
         inventory.setItem(12, isMarketPriceEnabled() ? GUIStackUtil.getButton(ButtonType.MARKET_PRICE_ENABLED) : GUIStackUtil.getButton(ButtonType.MARKET_PRICE_DISABLED));
         inventory.setItem(13, GUIStackUtil.getButton(ButtonType.ITEM_SETTING));
@@ -266,29 +281,26 @@ public class ShopData {
     }
 
     public Inventory getItemSettingInv() {
-        getConfig().reloadConfig();
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle() + "§r [아이템 설정]");
 
-        ConfigSection itemsSection = getConfig().getSection("shop.items");
-        itemsSection.getKeys().forEach(key -> inventory.setItem(Integer.parseInt(key), getItem(Integer.parseInt(key))));
+        Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle() + "§r [아이템 설정]");
+        getItems().forEach(inventory::setItem);
 
         return inventory;
     }
 
     public Inventory getItemDetailSettingInv() {
-        getConfig().reloadConfig();
         Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle() + "§r [아이템 세부설정]");
+        Map<Integer, ItemStack> items = getItems();
 
         Config mainConfig = ConfigContent.getInstance().getConfig();
-        ConfigSection itemsSection = getConfig().getSection("shop.items");
-        itemsSection.getKeys().forEach(key -> {
-            int slot = Integer.parseInt(key);
+        items.forEach((slot, itemStack) -> {
+            if (itemStack == null) return;
+
             int originSellPrice = getOriginSellPrice(slot);
             int originBuyPrice = getOriginBuyPrice(slot);
             int sellPrice = getSellPrice(slot);
             int buyPrice = getBuyPrice(slot);
 
-            ItemStack itemStack = getItem(slot);
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = Arrays.asList("§r§7---------------------------------------",
                     "§r§e› §f구매가격 : " + (originBuyPrice == -1 ?
@@ -331,6 +343,7 @@ public class ShopData {
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     public Entity getNPC() {
         String uuid = getConfig().getString("shop.npc");
+        if (uuid == null) return null;
         return uuid.equals("<none>") ? null : getServer().getEntity(UUID.fromString(uuid));
     }
 

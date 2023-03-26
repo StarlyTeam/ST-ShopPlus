@@ -12,6 +12,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @AllArgsConstructor
 public class InventoryCloseListener implements Listener {
@@ -32,7 +37,10 @@ public class InventoryCloseListener implements Listener {
             case ITEM_DETAIL_SETTING: {
                 if (openType == InvOpenType.ITEM_SETTING) {
                     Inventory inv = event.getInventory();
-                    for (int i = 0; i < inv.getSize(); i++) shopData.setItem(i, inv.getItem(i));
+                    Map<Integer, ItemStack> items = new HashMap<>();
+                    for (int i = 0; i < inv.getSize(); i++) items.put(i, inv.getItem(i));
+
+                    shopData.setItems(items);
                 }
 
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
