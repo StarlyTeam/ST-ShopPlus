@@ -6,6 +6,7 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ public class ShopUtil {
 
     public static List<String> getShopNames() {
         File shopFolder = new File(ShopPlusMain.getInstance().getDataFolder(), "shop/");
+        if (shopFolder.list() == null) return new ArrayList<>();
         return Arrays.stream(shopFolder.list()).map(s -> s.replace(".yml", "")).collect(Collectors.toList());
     }
 
