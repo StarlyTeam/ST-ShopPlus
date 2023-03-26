@@ -100,7 +100,7 @@ public class ShopCmd implements CommandExecutor {
                 ShopData shopData = ShopUtil.getShopData(args[1]);
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopInv());
-                    invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
+                    invOpenMap.set(player, new Pair<>(InvOpenType.SHOP, shopData));
                 }, 1);
                 break;
             }
