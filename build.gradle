@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'net.starly.shop'
-version '1.0.1'
+version '1.0.2'
 
 repositories {
     mavenCentral()
@@ -23,7 +23,7 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
 
     // OTHER DEPENDENCIES
-    compileOnly "net.starly.core:ST-Core:1.6.6"
+    compileOnly "net.starly.core:ST-Core:1.6.11"
     compileOnly "net.milkbowl:VaultAPI:1.7"
 }
 

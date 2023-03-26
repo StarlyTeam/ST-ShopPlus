@@ -2,7 +2,9 @@ package net.starly.shop.shop;
 
 import net.starly.core.data.Config;
 import net.starly.shop.ShopPlusMain;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,8 +16,8 @@ public class ShopUtil {
         return new ShopData(new Config("shop/" + name, ShopPlusMain.getInstance()));
     }
 
-    public static List<ShopData> getShops() {
-        return getShopNames().stream().map(ShopUtil::getShopData).collect(Collectors.toList());
+    public static List<String> getShops() {
+        return new Config("shop/", ShopPlusMain.getInstance()).getFileNames();
     }
 
     public static List<String> getShopNames() {
@@ -31,7 +33,6 @@ public class ShopUtil {
         config.setBoolean("shop.marketPrice", false);
         config.setString("shop.title", title);
         config.setInt("shop.size", line * 9);
-        config.setObject("shop.items", new HashMap<>());
         config.setObject("shop.prices", new HashMap<>());
         config.setString("shop.npc", "<none>");
     }

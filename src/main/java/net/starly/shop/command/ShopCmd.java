@@ -3,11 +3,13 @@ package net.starly.shop.command;
 import lombok.AllArgsConstructor;
 import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
+import net.starly.shop.ShopPlusMain;
 import net.starly.shop.context.ConfigContent;
 import net.starly.shop.data.InvOpenMap;
 import net.starly.shop.enums.InvOpenType;
 import net.starly.shop.shop.ShopData;
 import net.starly.shop.shop.ShopUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -51,7 +53,7 @@ public class ShopCmd implements CommandExecutor {
                 } else if (args.length == 3) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.noShopTitle"));
                     return true;
-                } else if (ShopUtil.getShopData(args[1]).exists()) {
+                } else if (ShopUtil.getShopNames().contains(args[1])) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.shopAlreadyExists"));
                     return true;
                 }
@@ -87,7 +89,7 @@ public class ShopCmd implements CommandExecutor {
                 if (!player.hasPermission("starly.shop.open." + args[1])) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
                     return true;
-                } else if (!ShopUtil.getShopData(args[1]).exists()) {
+                } else if (!ShopUtil.getShopNames().contains(args[1])) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.shopNotExists"));
                     return true;
                 } else if (!(player.isOp() || ShopUtil.getShopData(args[1]).isEnabled())) {
@@ -96,8 +98,10 @@ public class ShopCmd implements CommandExecutor {
                 }
 
                 ShopData shopData = ShopUtil.getShopData(args[1]);
-                player.openInventory(shopData.getShopInv());
-                invOpenMap.set(player, new Pair<>(InvOpenType.SHOP, shopData));
+                Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                    player.openInventory(shopData.getShopInv());
+                    invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
+                }, 1);
                 break;
             }
 
@@ -114,14 +118,16 @@ public class ShopCmd implements CommandExecutor {
                 if (!player.hasPermission("starly.shop.edit." + args[1])) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
                     return true;
-                } else if (!ShopUtil.getShopData(args[1]).exists()) {
+                } else if (!ShopUtil.getShopNames().contains(args[1])) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.shopNotExists"));
                     return true;
                 }
 
                 ShopData shopData = ShopUtil.getShopData(args[1]);
-                player.openInventory(shopData.getShopSettingInv());
-                invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
+                Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                    player.openInventory(shopData.getShopSettingInv());
+                    invOpenMap.set(player, new Pair<>(InvOpenType.SHOP_SETTING, shopData));
+                }, 1);
                 break;
             }
 
@@ -133,7 +139,7 @@ public class ShopCmd implements CommandExecutor {
                 } else if (args.length == 1) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.noShopName"));
                     return true;
-                } else if (!ShopUtil.getShopData(args[1]).exists()) {
+                } else if (!ShopUtil.getShopNames().contains(args[1])) {
                     player.sendMessage(msgConfig.getMessage("errorMessages.shopNotExists"));
                     return true;
                 }

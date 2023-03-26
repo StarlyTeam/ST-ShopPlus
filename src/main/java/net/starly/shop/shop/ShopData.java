@@ -157,7 +157,19 @@ public class ShopData {
     /* Item
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     public Map<Integer, ItemStack> getItems() {
-        try (ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) getConfig().getObject("shop.items")); BukkitObjectInputStream bois = new BukkitObjectInputStream(bis)) {
+        Object obj = getConfig().getObject("shop.items");
+        if (obj == null) {
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); BukkitObjectOutputStream boos = new BukkitObjectOutputStream(bos)) {
+                boos.writeObject(new HashMap<>());
+                getConfig().setObject("shop.items", bos.toByteArray());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            return new HashMap<>();
+        }
+
+        try (ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) obj); BukkitObjectInputStream bois = new BukkitObjectInputStream(bis)) {
             return (Map<Integer, ItemStack>) bois.readObject();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -174,31 +186,35 @@ public class ShopData {
             boos.writeObject(items);
             config.setObject("shop.items", bos.toByteArray());
 
-            Bukkit.getServer().getScheduler().runTaskAsynchronously(ShopPlusMain.getInstance(), () ->
-                    items.forEach((slot, itemStack) -> {
-                        if (itemStack == null) {
-                            getConfig().setObject("shop.items." + slot, null);
-                            getConfig().setObject("shop.prices." + slot, null);
-                            getConfig().setObject("shop.stocks." + slot, null);
-                            return;
-                        }
+
+            FileConfiguration config_ = getConfig().getConfig();
+            items.forEach((slot, itemStack) -> {
+                if (itemStack == null) {
+                    config_.set("shop.items." + slot, null);
+                    config_.set("shop.prices." + slot, null);
+                    config_.set("shop.stocks." + slot, null);
+                    return;
+                }
 
 
-                        if (getSellPrice(slot) == 0) {
-                            FileConfiguration config_ = getConfig().getConfig();
-                            config_.set("shop.prices." + slot + ".sell.origin", -1);
-                            config_.set("shop.prices." + slot + ".sell.now", -1);
-                            config_.set("shop.prices." + slot + ".sell.min", -1);
-                            config_.set("shop.prices." + slot + ".sell.max", -1);
-                            config_.set("shop.prices." + slot + ".buy.origin", -1);
-                            config_.set("shop.prices." + slot + ".buy.now", -1);
-                            config_.set("shop.prices." + slot + ".buy.min", -1);
-                            config_.set("shop.prices." + slot + ".buy.max", -1);
-                            config_.set("shop.stocks." + slot, 0);
+                if (getSellPrice(slot) == 0) {
+                    config_.set("shop.prices." + slot + ".sell.origin", -1);
+                    config_.set("shop.prices." + slot + ".sell.now", -1);
+                    config_.set("shop.prices." + slot + ".sell.min", -1);
+                    config_.set("shop.prices." + slot + ".sell.max", -1);
+                    config_.set("shop.prices." + slot + ".buy.origin", -1);
+                    config_.set("shop.prices." + slot + ".buy.now", -1);
+                    config_.set("shop.prices." + slot + ".buy.min", -1);
+                    config_.set("shop.prices." + slot + ".buy.max", -1);
+                    config_.set("shop.stocks." + slot, 0);
+                }
+            });
 
-                            config.saveConfig();
-                        }
-                    }));
+            try {
+                config.saveConfig();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -228,11 +244,18 @@ public class ShopData {
         Map<Integer, ItemStack> items = getItems();
 
         Config mainConfig = ConfigContent.getInstance().getConfig();
+        String cannotBuy = mainConfig.getString("text.cannotBuy");
+        String cannotSell = mainConfig.getString("text.cannotSell");
+        String unlimited = mainConfig.getString("text.unlimited");
+        String soldOut = mainConfig.getString("text.soldOut");
+
+        Config shopConfig = getConfig();
+
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            int sellPrice = getSellPrice(slot);
-            int buyPrice = getBuyPrice(slot);
+            int sellPrice = shopConfig.getInt("shop.prices." + slot + ".sell.now");
+            int buyPrice = shopConfig.getInt("shop.prices." + slot + ".buy.now");
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
@@ -248,16 +271,16 @@ public class ShopData {
                                     .replace("{sellPrice}", ChatColor
                                             .translateAlternateColorCodes('&',
                                                     (isSellable(slot) ?
-                                                            sellPrice : mainConfig.getString("text.cannotSell")) + ""))
+                                                            sellPrice : cannotSell) + ""))
                                     .replace("{buyPrice}", ChatColor
                                             .translateAlternateColorCodes('&',
                                                     (isBuyable(slot) ?
-                                                            buyPrice : mainConfig.getString("text.cannotBuy")) + ""))
+                                                            buyPrice : cannotBuy) + ""))
                                     .replace("{stock}", ChatColor
                                             .translateAlternateColorCodes('&',
                                                     hasStock(slot) ?
-                                                            (getStock(slot) == -1 ? mainConfig.getString("text.unlimited") : getStock(slot) + "")
-                                                            : mainConfig.getString("text.soldOut"))))
+                                                            (getStock(slot) == -1 ? unlimited : getStock(slot) + "")
+                                                            : soldOut)))
                     .collect(Collectors.toList()));
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
@@ -293,25 +316,30 @@ public class ShopData {
         Map<Integer, ItemStack> items = getItems();
 
         Config mainConfig = ConfigContent.getInstance().getConfig();
+        String cannotBuy = mainConfig.getString("text.cannotBuy");
+        String cannotSell = mainConfig.getString("text.cannotSell");
+        String unlimited = mainConfig.getString("text.unlimited");
+
+        Config shopConfig = getConfig();
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            int originSellPrice = getOriginSellPrice(slot);
-            int originBuyPrice = getOriginBuyPrice(slot);
-            int sellPrice = getSellPrice(slot);
-            int buyPrice = getBuyPrice(slot);
+            int originSellPrice = shopConfig.getInt("shop.prices." + slot + ".sell.origin");
+            int originBuyPrice = shopConfig.getInt("shop.prices." + slot + ".buy.origin");
+            int sellPrice = shopConfig.getInt("shop.prices." + slot + ".sell.now");
+            int buyPrice = shopConfig.getInt("shop.prices." + slot + ".buy.now");
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = Arrays.asList("§r§7---------------------------------------",
                     "§r§e› §f구매가격 : " + (originBuyPrice == -1 ?
-                            ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotBuy"))
+                            ChatColor.translateAlternateColorCodes('&', cannotBuy)
                             : "§6" + originBuyPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + buyPrice + "§7)" : "")),
                     "§r§e› §f판매가격 : " + (originSellPrice == -1 ?
-                            ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.cannotSell"))
+                            ChatColor.translateAlternateColorCodes('&', cannotSell)
                             : "§6" + originSellPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + sellPrice + "§7)" : "")),
                     "§r§e› §f재고 : " + (hasStock(slot) ?
                             (getStock(slot) == -1 ?
-                                    ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.unlimited"))
+                                    ChatColor.translateAlternateColorCodes('&', unlimited)
                                     : "§6" + getStock(slot) + "개")
                             : ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.soldOut"))),
                     "§r§7---------------------------------------",
