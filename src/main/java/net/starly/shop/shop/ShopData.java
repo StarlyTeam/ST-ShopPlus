@@ -28,10 +28,6 @@ public class ShopData {
         this.config = config;
     }
 
-    public boolean exists() {
-        return getConfig().isFileExist();
-    }
-
     public Config getConfig() {
         config.reloadConfig();
         return config;
