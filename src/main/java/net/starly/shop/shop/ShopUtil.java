@@ -2,12 +2,10 @@ package net.starly.shop.shop;
 
 import net.starly.core.data.Config;
 import net.starly.shop.ShopPlusMain;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,8 +21,8 @@ public class ShopUtil {
 
     public static List<String> getShopNames() {
         File shopFolder = new File(ShopPlusMain.getInstance().getDataFolder(), "shop/");
-        if (shopFolder.list() == null) return new ArrayList<>();
-        return Arrays.stream(shopFolder.list()).map(s -> s.replace(".yml", "")).collect(Collectors.toList());
+        if (shopFolder.list() == null) return Collections.emptyList();
+        else return Arrays.stream(shopFolder.list()).map(s -> s.replace(".yml", "")).collect(Collectors.toList());
     }
 
     public static void createShop(String name, int line, String title) {

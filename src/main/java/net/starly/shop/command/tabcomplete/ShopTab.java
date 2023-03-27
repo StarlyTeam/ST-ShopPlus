@@ -24,7 +24,8 @@ public class ShopTab implements TabCompleter {
             if (label.equals("shop")) tab.addAll(Arrays.asList("create", "open", "edit", "list", "delete"));
             else tab.addAll(Arrays.asList("생성", "열기", "편집", "목록", "삭제"));
         } else if (args.length == 2) {
-            if (Arrays.asList("open", "열기", "edit", "편집", "delete", "삭제").contains(args[0].toLowerCase())) tab.addAll(ShopUtil.getShopNames());
+            if (Arrays.asList("open", "열기", "edit", "편집", "delete", "삭제").contains(args[0].toLowerCase()))
+                tab.addAll(ShopUtil.getShopNames());
             else if (args[0].equalsIgnoreCase("create")) tab.add("<Name>");
             else if (args[0].equalsIgnoreCase("생성")) tab.add("<이름>");
         } else if (args.length == 3) {

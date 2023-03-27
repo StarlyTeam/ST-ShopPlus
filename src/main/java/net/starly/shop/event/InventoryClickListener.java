@@ -107,7 +107,8 @@ public class InventoryClickListener implements Listener {
                     for (int i = 0; i < 64; i++) {
                         if (totalPurchased > 64) return;
                         if (InventoryUtil.getSpace(player.getInventory()) - 5 < 1
-                        && Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(s -> ItemStackUtil.equals(originStack, s) && s.getAmount() < s.getType().getMaxStackSize())) break;
+                                && Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).noneMatch(s -> ItemStackUtil.equals(originStack, s) && s.getAmount() < s.getType().getMaxStackSize()))
+                            break;
                         if (!shopData.hasStock(slot)) break;
                         if (getEconomy().getBalance(player) < shopData.getBuyPrice(slot) * (totalPurchased + 1)) break;
 
@@ -188,7 +189,8 @@ public class InventoryClickListener implements Listener {
                         }
                     }
 
-                    if (shopData.getStock(slot) != -1) shopData.setStock(slot, shopData.getStock(slot) + totalSelled.get());
+                    if (shopData.getStock(slot) != -1)
+                        shopData.setStock(slot, shopData.getStock(slot) + totalSelled.get());
                     getEconomy().depositPlayer(player, totalSelled.get() * shopData.getSellPrice(slot));
                     player.sendMessage(msgConfig.getMessage("messages.itemSelled").replace("{price}", (totalSelled.get() * shopData.getSellPrice(slot)) + "").replace("{amount}", totalSelled.get() + ""));
                 } else return;

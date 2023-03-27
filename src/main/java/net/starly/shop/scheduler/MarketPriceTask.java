@@ -11,7 +11,6 @@ import net.starly.shop.shop.ShopData;
 import net.starly.shop.shop.ShopUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -20,7 +19,8 @@ import java.util.Random;
 import java.util.UUID;
 
 public class MarketPriceTask extends BukkitRunnable {
-    @Setter private static InvOpenMap invOpenMap = new InvOpenMap();
+    @Setter
+    private static InvOpenMap invOpenMap = new InvOpenMap();
     private static MarketPriceTask instance;
 
     public static void start() {
@@ -68,8 +68,10 @@ public class MarketPriceTask extends BukkitRunnable {
                 if (data.getSecond().equals(shopData)) return;
 
                 Player player = Bukkit.getPlayer(key);
-                if (data.getFirst() == InvOpenType.SHOP) player.getOpenInventory().getTopInventory().setContents(shopData.getShopInv().getContents());
-                else if (data.getFirst() == InvOpenType.ITEM_DETAIL_SETTING) player.getOpenInventory().getTopInventory().setContents(shopData.getItemDetailSettingInv().getContents());
+                if (data.getFirst() == InvOpenType.SHOP)
+                    player.getOpenInventory().getTopInventory().setContents(shopData.getShopInv().getContents());
+                else if (data.getFirst() == InvOpenType.ITEM_DETAIL_SETTING)
+                    player.getOpenInventory().getTopInventory().setContents(shopData.getItemDetailSettingInv().getContents());
             }
         }
     }

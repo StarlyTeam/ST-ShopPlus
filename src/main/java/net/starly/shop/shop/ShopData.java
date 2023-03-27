@@ -1,7 +1,6 @@
 package net.starly.shop.shop;
 
 import net.starly.core.data.Config;
-import net.starly.shop.ShopPlusMain;
 import net.starly.shop.context.ConfigContent;
 import net.starly.shop.enums.ButtonType;
 import net.starly.shop.util.GUIStackUtil;
@@ -17,7 +16,6 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 

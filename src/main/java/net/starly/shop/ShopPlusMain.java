@@ -80,7 +80,9 @@ public class ShopPlusMain extends JavaPlugin {
 
         /* INITIALIZE
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        ShopUtil.getShopNames().stream().map(ShopUtil::getShopData).forEach(shop -> { if (shop.hasNPC()) npcMap.set(shop.getNPC(), shop); });
+        ShopUtil.getShopNames().stream().map(ShopUtil::getShopData).forEach(shop -> {
+            if (shop.hasNPC()) npcMap.set(shop.getNPC(), shop);
+        });
     }
 
     @Override
