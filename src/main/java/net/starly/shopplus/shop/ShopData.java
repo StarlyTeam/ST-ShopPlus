@@ -265,7 +265,7 @@ public class ShopData {
                                                             buyPrice : cannotBuy) + ""))
                                     .replace("{stock}", ChatColor
                                             .translateAlternateColorCodes('&',
-                                                    stock != -1 ?
+                                                    stock != 0 ?
                                                             (stock == -1 ? unlimited : stock + "")
                                                             : soldOut)))
                     .collect(Collectors.toList()));
