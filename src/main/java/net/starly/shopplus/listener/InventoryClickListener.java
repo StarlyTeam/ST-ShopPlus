@@ -210,7 +210,7 @@ public class InventoryClickListener implements Listener {
                 ButtonType buttonType = ButtonType.valueOf(nbtTagCompound.getString("buttonId"));
 
                 switch (buttonType) {
-                    case SHOP_ENABLED -> {
+                    case SHOP_ENABLED : {
                         shopData.setEnabled(false);
                         player.sendMessage(msgConfig.getMessage("messages.shopDisabled"));
 
@@ -218,7 +218,7 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    case SHOP_DISABLED -> {
+                    case SHOP_DISABLED : {
                         shopData.setEnabled(true);
                         player.sendMessage(msgConfig.getMessage("messages.shopEnabled"));
 
@@ -226,7 +226,7 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    case ITEM_SETTING -> {
+                    case ITEM_SETTING : {
                         Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getItemSettingInv());
                             invOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_SETTING, shopData));
@@ -234,7 +234,7 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    case ITEM_DETAIL_SETTING -> {
+                    case ITEM_DETAIL_SETTING : {
                         Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getItemDetailSettingInv());
                             invOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
@@ -242,7 +242,7 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    case SET_NPC -> {
+                    case SET_NPC : {
                         if (clickType == ClickType.SHIFT_LEFT) {
                             //삭제
                             if (!shopData.hasNPC()) {
@@ -272,7 +272,7 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    case MARKET_PRICE_ENABLED -> {
+                    case MARKET_PRICE_ENABLED : {
                         shopData.setMarketPriceEnabled(false);
                         player.sendMessage(msgConfig.getMessage("messages.marketPriceDisabled"));
 
@@ -280,7 +280,7 @@ public class InventoryClickListener implements Listener {
                         break;
                     }
 
-                    case MARKET_PRICE_DISABLED -> {
+                    case MARKET_PRICE_DISABLED : {
                         shopData.setMarketPriceEnabled(true);
                         player.sendMessage(msgConfig.getMessage("messages.marketPriceEnabled"));
 
