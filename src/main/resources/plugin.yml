@@ -1,5 +1,5 @@
 name: ST-ShopPlus
-main: net.starly.shop.ShopPlusMain
+main: net.starly.shopplus.ShopPlusMain
 author: Starly Team
 website: http://starly.kr/discord
 
@@ -9,7 +9,7 @@ softdepend:
   - ST-Core
   - Vault
 
-version: 1.0.2
+version: 1.0.3
 api-version: 1.13
 
 commands:
