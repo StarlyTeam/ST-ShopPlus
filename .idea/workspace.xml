@@ -4,33 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="refactor: clean code">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: message bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/ShopPlusMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/ShopPlusMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/ShopCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/ShopCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/command/tabcomplete/ShopTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/tabcomplete/ShopTab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/context/ConfigContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/context/ConfigContent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/InputMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/data/InputMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/InvOpenMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/data/InvOpenMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/data/NPCMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/data/NPCMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/ButtonType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/enums/ButtonType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/InputType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/enums/InputType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/enums/InvOpenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/enums/InventoryOpenType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/AsyncPlayerChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/AsyncPlayerChatListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/EntityDeathListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/EntityDeathListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/InventoryCloseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryCloseListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerCommandPreprocessListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/PlayerCommandPreprocessListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerInteractAtEntityListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/PlayerInteractAtEntityListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/event/PlayerQuitListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/PlayerQuitListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/scheduler/MarketPriceTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/scheduler/MarketPriceTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/shop/ShopUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/util/GUIStackUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/util/GUIStackUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shop/util/ItemStackUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/util/ItemStackUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +124,7 @@
       <workItem from="1679819563975" duration="98000" />
       <workItem from="1679820411081" duration="2000" />
       <workItem from="1679822872278" duration="10104000" />
-      <workItem from="1679901911755" duration="6935000" />
+      <workItem from="1679901911755" duration="7700000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Git Bugs">
       <created>1678188597809</created>
@@ -240,7 +217,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679921423863</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="refactor: package name&#10;fix: Bugs">
+      <created>1680004935091</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1680004935091</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -258,6 +242,8 @@
     <MESSAGE value="fix: Bugs" />
     <MESSAGE value="refactor: style code" />
     <MESSAGE value="refactor: clean code" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: clean code" />
+    <MESSAGE value="refactor: package name&#10;fix: Bugs" />
+    <MESSAGE value="fix: message bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: message bug" />
   </component>
 </project>

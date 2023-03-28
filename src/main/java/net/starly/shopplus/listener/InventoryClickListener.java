@@ -252,7 +252,7 @@ public class InventoryClickListener implements Listener {
 
                             npcMap.remove(shopData.getNPC());
                             shopData.setNPC(null);
-                            player.sendMessage(msgConfig.getMessage("messages.npcDeleted"));
+                            player.sendMessage(msgConfig.getMessage("messages.NPCDeleted"));
                         } else if (clickType == ClickType.SHIFT_RIGHT) {
                             //이동
                             if (!shopData.hasNPC()) {

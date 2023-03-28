@@ -235,13 +235,14 @@ public class ShopData {
         String unlimited = mainConfig.getString("text.unlimited");
         String soldOut = mainConfig.getString("text.soldOut");
 
-        Config shopConfig = getConfig();
+        FileConfiguration config_ = getConfig().getConfig();
 
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            int sellPrice = shopConfig.getInt("shop.prices." + slot + ".sell.now");
-            int buyPrice = shopConfig.getInt("shop.prices." + slot + ".buy.now");
+            int sellPrice = config_.getInt("shop.prices." + slot + ".sell.now");
+            int buyPrice = config_.getInt("shop.prices." + slot + ".buy.now");
+            int stock = config_.getInt("shop.stocks." + slot);
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
@@ -256,16 +257,16 @@ public class ShopData {
                                     .translateAlternateColorCodes('&', line)
                                     .replace("{sellPrice}", ChatColor
                                             .translateAlternateColorCodes('&',
-                                                    (isSellable(slot) ?
+                                                    (sellPrice != -1 ?
                                                             sellPrice : cannotSell) + ""))
                                     .replace("{buyPrice}", ChatColor
                                             .translateAlternateColorCodes('&',
-                                                    (isBuyable(slot) ?
+                                                    (buyPrice != -1 ?
                                                             buyPrice : cannotBuy) + ""))
                                     .replace("{stock}", ChatColor
                                             .translateAlternateColorCodes('&',
-                                                    hasStock(slot) ?
-                                                            (getStock(slot) == -1 ? unlimited : getStock(slot) + "")
+                                                    stock != -1 ?
+                                                            (stock == -1 ? unlimited : stock + "")
                                                             : soldOut)))
                     .collect(Collectors.toList()));
             itemMeta.setLore(lore);
