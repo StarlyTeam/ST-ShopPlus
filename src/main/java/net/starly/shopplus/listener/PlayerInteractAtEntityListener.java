@@ -49,6 +49,13 @@ public class PlayerInteractAtEntityListener implements Listener {
             player.sendMessage(msgConfig.getMessage("messages.NPCSet"));
         } else if (npcMap.has(entity)) {
             ShopData shopData = npcMap.get(entity);
+            if (player.isSneaking()
+                    && player.hasPermission("starly.shop.edit." + shopData.getName())) {
+                player.openInventory(shopData.getShopSettingInv());
+                invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
+                return;
+            }
+
             if (!(player.isOp() || shopData.isEnabled())) {
                 player.sendMessage(msgConfig.getMessage("errorMessages.shopNotOpened"));
                 return;
