@@ -267,6 +267,8 @@ public class InventoryClickListener implements Listener {
                             //설정
                             player.closeInventory();
                             inputMap.set(player, new Pair<>(InputType.SET_NPC, new Pair<>(shopData, null)));
+
+                            if (shopData.hasNPC()) npcMap.remove(shopData.getNPC());
                             player.sendMessage(msgConfig.getMessage("messages.enterNPC"));
                         }
                         break;

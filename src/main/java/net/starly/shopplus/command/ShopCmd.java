@@ -147,7 +147,10 @@ public class ShopCmd implements CommandExecutor {
                 }
 
                 ShopData shopData = ShopUtil.getShopData(args[1]);
-                if (shopData.hasNPC()) npcMap.remove(shopData.getNPC());
+                if (shopData.hasNPC()) {
+                    npcMap.remove(shopData.getNPC());
+                    player.sendMessage(msgConfig.getMessage("messages.NPCDeleted"));
+                }
 
                 ShopUtil.deleteShop(args[1]);
                 player.sendMessage(msgConfig.getMessage("messages.shopDeleted"));
