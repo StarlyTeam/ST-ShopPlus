@@ -6,6 +6,7 @@ import net.starly.core.jb.util.Pair;
 import net.starly.shopplus.ShopPlusMain;
 import net.starly.shopplus.context.ConfigContent;
 import net.starly.shopplus.data.InvOpenMap;
+import net.starly.shopplus.data.NPCMap;
 import net.starly.shopplus.enums.InventoryOpenType;
 import net.starly.shopplus.shop.ShopData;
 import net.starly.shopplus.shop.ShopUtil;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class ShopCmd implements CommandExecutor {
     private final InvOpenMap invOpenMap;
+    private final NPCMap npcMap;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -143,6 +145,9 @@ public class ShopCmd implements CommandExecutor {
                     player.sendMessage(msgConfig.getMessage("errorMessages.shopNotExists"));
                     return true;
                 }
+
+                ShopData shopData = ShopUtil.getShopData(args[1]);
+                if (shopData.hasNPC()) npcMap.remove(shopData.getNPC());
 
                 ShopUtil.deleteShop(args[1]);
                 player.sendMessage(msgConfig.getMessage("messages.shopDeleted"));
