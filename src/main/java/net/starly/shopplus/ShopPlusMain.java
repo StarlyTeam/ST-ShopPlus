@@ -65,7 +65,7 @@ public class ShopPlusMain extends JavaPlugin {
 
         /* COMMAND
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        getServer().getPluginCommand("shop").setExecutor(new ShopCmd(invOpenMap));
+        getServer().getPluginCommand("shop").setExecutor(new ShopCmd(invOpenMap, npcMap));
         getServer().getPluginCommand("shop").setTabCompleter(new ShopTab(invOpenMap));
 
         /* EVENT

@@ -10,6 +10,7 @@ import net.starly.shopplus.enums.InventoryOpenType;
 import net.starly.shopplus.shop.ShopData;
 import net.starly.shopplus.shop.ShopUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,26 +43,32 @@ public class MarketPriceTask extends BukkitRunnable {
             ShopData shopData = ShopUtil.getShopData(shopName);
             if (!shopData.isMarketPriceEnabled()) return;
 
+            FileConfiguration config = shopData.getConfig().getConfig();
+
             for (int i = 0; i < shopData.getSize(); i++) {
                 ItemStack item = shopData.getItem(i);
                 if (item == null) continue;
 
                 // SELL
                 if (shopData.isSellable(i)) {
-                    int sellPrice_MIN = shopData.getMinSellPrice(i);
-                    int sellPrice_MAX = shopData.getMaxSellPrice(i);
+                    int sellPrice_MIN = config.getInt("shop.prices." + i + ".sell.min");
+                    int sellPrice_MAX = config.getInt("shop.prices." + i + ".sell.max");
                     int newSellPrice = randomInt(sellPrice_MIN, sellPrice_MAX);
-                    shopData.setSellPrice(i, newSellPrice);
+
+                    config.set("shop.prices." + i + ".sell.now", newSellPrice);
                 }
 
                 // BUY
                 if (shopData.isBuyable(i)) {
-                    int buyPrice_MIN = shopData.getMinBuyPrice(i);
-                    int buyPrice_MAX = shopData.getMaxBuyPrice(i);
+                    int buyPrice_MIN = config.getInt("shop.prices." + i + ".buy.min");
+                    int buyPrice_MAX = config.getInt("shop.prices." + i + ".buy.max");
                     int newBuyPrice = randomInt(buyPrice_MIN, buyPrice_MAX);
-                    shopData.setBuyPrice(i, newBuyPrice);
+
+                    config.set("shop.prices." + i + ".buy.now", newBuyPrice);
                 }
             }
+
+            shopData.getConfig().saveConfig();
 
             for (UUID key : invOpenMap.getKeys()) {
                 Pair<InventoryOpenType, ShopData> data = invOpenMap.get(key);
