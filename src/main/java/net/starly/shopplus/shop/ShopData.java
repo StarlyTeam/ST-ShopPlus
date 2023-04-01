@@ -36,6 +36,10 @@ public class ShopData {
 
     /* Enable
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+    public String getName() {
+        return config.getConfig().getName().replace(".yml", "");
+    }
+
     public boolean isEnabled() {
         return getConfig().getBoolean("shop.enabled");
     }
