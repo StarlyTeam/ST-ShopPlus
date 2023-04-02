@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="JDK hotfix">
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="modify: version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -136,6 +136,7 @@
       <workItem from="1680079597027" duration="4200000" />
       <workItem from="1680092001968" duration="48000" />
       <workItem from="1680092354883" duration="19000" />
+      <workItem from="1680331004643" duration="4242000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Git Bugs">
       <created>1678188597809</created>
@@ -256,7 +257,56 @@
       <option name="project" value="LOCAL" />
       <updated>1680015079112</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="fix: Bugs">
+      <created>1680332075690</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1680332075690</updated>
+    </task>
+    <task id="LOCAL-00019" summary="feat: `ShopData#getName()`">
+      <created>1680332086917</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1680332086917</updated>
+    </task>
+    <task id="LOCAL-00020" summary="fix: Bugs">
+      <created>1680332099352</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1680332099352</updated>
+    </task>
+    <task id="LOCAL-00021" summary="feat: `Shift + Right Click` -&gt; Edit Shop">
+      <created>1680332113922</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1680332113922</updated>
+    </task>
+    <task id="LOCAL-00022" summary="project">
+      <created>1680332130459</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1680332130459</updated>
+    </task>
+    <task id="LOCAL-00023" summary="fix: Bugs">
+      <created>1680332901845</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1680332901845</updated>
+    </task>
+    <task id="LOCAL-00024" summary="modify: version">
+      <created>1680333788146</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1680333788146</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,8 +325,12 @@
     <MESSAGE value="refactor: clean code" />
     <MESSAGE value="refactor: package name&#10;fix: Bugs" />
     <MESSAGE value="fix: message bug" />
-    <MESSAGE value="fix: Bugs" />
     <MESSAGE value="JDK hotfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="JDK hotfix" />
+    <MESSAGE value="feat: `ShopData#getName()`" />
+    <MESSAGE value="feat: `Shift + Right Click` -&gt; Edit Shop" />
+    <MESSAGE value="project" />
+    <MESSAGE value="fix: Bugs" />
+    <MESSAGE value="modify: version" />
+    <option name="LAST_COMMIT_MESSAGE" value="modify: version" />
   </component>
 </project>

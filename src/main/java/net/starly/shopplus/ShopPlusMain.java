@@ -12,7 +12,6 @@ import net.starly.shopplus.listener.*;
 import net.starly.shopplus.scheduler.MarketPriceTask;
 import net.starly.shopplus.shop.ShopUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,21 +23,21 @@ public class ShopPlusMain extends JavaPlugin {
     public void onEnable() {
         /* DEPENDENCY
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        if (!isPluginEnabled("ST-Core")) {
+        if (!isPluginEnabled("net.starly.core.StarlyCore")) {
             Bukkit.getLogger().warning("[" + getName() + "] ST-Core 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
-            Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : http://starly.kr/discord");
+            Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : http://starly.kr/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
-        } else if (!isPluginEnabled("Vault")) {
+        } else if (!isPluginEnabled("net.milkbowl.vault.Vault")) {
             Bukkit.getLogger().warning("[" + getName() + "] Vault 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
             Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : https://www.spigotmc.org/resources/vault.34315/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        setupEconomy();
+        economy = getServer().getServicesManager().getRegistration(Economy.class).getProvider();
         if (economy == null) {
             Bukkit.getLogger().warning("[" + getName() + "] Vault와 연동되는 Economy 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
-            Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : https://essentialsx.net/");
+            Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : https://essentialsx.net/downloads.html");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -89,24 +88,23 @@ public class ShopPlusMain extends JavaPlugin {
     public void onDisable() {
         /* TASK
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        MarketPriceTask.stop();
+        try { MarketPriceTask.stop(); } catch (Exception ignored) {}
     }
 
     public static ShopPlusMain getInstance() {
         return instance;
     }
 
-    private boolean isPluginEnabled(String name) {
-        Plugin plugin = getServer().getPluginManager().getPlugin(name);
-        return plugin != null && plugin.isEnabled();
+    private boolean isPluginEnabled(String path) {
+        try {
+            Class.forName(path);
+            return true;
+        } catch (NoClassDefFoundError ignored) {
+        } catch (Exception ex) { ex.printStackTrace(); }
+        return false;
     }
 
     public static Economy getEconomy() {
         return economy;
-    }
-
-    private void setupEconomy() {
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        economy = rsp.getProvider();
     }
 }
