@@ -28,7 +28,8 @@ public class ShopPlusMain extends JavaPlugin {
             Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : http://starly.kr/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
-        } else if (!isPluginEnabled("net.milkbowl.vault.Vault")) {
+        }
+        if (!isPluginEnabled("net.milkbowl.vault.Vault")) {
             Bukkit.getLogger().warning("[" + getName() + "] Vault 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
             Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : https://www.spigotmc.org/resources/vault.34315/");
             Bukkit.getPluginManager().disablePlugin(this);
