@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="modify: website">
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="refactor: style code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/ShopPlusMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/ShopPlusMain.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +141,8 @@
       <workItem from="1680398043945" duration="549000" />
       <workItem from="1680399499579" duration="41000" />
       <workItem from="1680399659056" duration="21000" />
+      <workItem from="1680401490765" duration="46000" />
+      <workItem from="1680411276330" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Git Bugs">
       <created>1678188597809</created>
@@ -330,7 +333,21 @@
       <option name="project" value="LOCAL" />
       <updated>1680399523465</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="project">
+      <created>1680401521713</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1680401521713</updated>
+    </task>
+    <task id="LOCAL-00029" summary="refactor: style code">
+      <created>1680401529094</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1680401529094</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -345,7 +362,6 @@
     <MESSAGE value="feat: `Lore Keeping`" />
     <MESSAGE value="fix: sell bugs" />
     <MESSAGE value="feat: Market Price System" />
-    <MESSAGE value="refactor: style code" />
     <MESSAGE value="refactor: clean code" />
     <MESSAGE value="refactor: package name&#10;fix: Bugs" />
     <MESSAGE value="fix: message bug" />
@@ -354,8 +370,9 @@
     <MESSAGE value="feat: `Shift + Right Click` -&gt; Edit Shop" />
     <MESSAGE value="modify: version" />
     <MESSAGE value="fix: Bugs" />
-    <MESSAGE value="project" />
     <MESSAGE value="modify: website" />
-    <option name="LAST_COMMIT_MESSAGE" value="modify: website" />
+    <MESSAGE value="project" />
+    <MESSAGE value="refactor: style code" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: style code" />
   </component>
 </project>

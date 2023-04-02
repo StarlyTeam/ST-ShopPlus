@@ -100,7 +100,7 @@ public class ShopPlusMain extends JavaPlugin {
         try {
             Class.forName(path);
             return true;
-        } catch (NoClassDefFoundError ignored) {
+        } catch (ClassNotFoundException ignored) {
         } catch (Exception ex) { ex.printStackTrace(); }
         return false;
     }
