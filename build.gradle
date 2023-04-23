@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'net.starly.shop'
-version '1.0.5'
+group 'net.starly.shopplus'
+version '1.0.6'
 
 repositories {
     mavenCentral()

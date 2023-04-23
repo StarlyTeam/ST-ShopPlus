@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="refactor: style code">
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/ShopPlusMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/ShopPlusMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/scheduler/MarketPriceTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/scheduler/MarketPriceTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +144,11 @@
       <workItem from="1680399499579" duration="41000" />
       <workItem from="1680399659056" duration="21000" />
       <workItem from="1680401490765" duration="46000" />
-      <workItem from="1680411276330" duration="5000" />
+      <workItem from="1680411276330" duration="61000" />
+      <workItem from="1680411357839" duration="3000" />
+      <workItem from="1680950617755" duration="1204000" />
+      <workItem from="1681223239416" duration="25000" />
+      <workItem from="1682213306998" duration="254000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Git Bugs">
       <created>1678188597809</created>
@@ -347,7 +353,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680401529094</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="fix: Bugs">
+      <created>1680411300222</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1680411300222</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -369,10 +382,10 @@
     <MESSAGE value="feat: `ShopData#getName()`" />
     <MESSAGE value="feat: `Shift + Right Click` -&gt; Edit Shop" />
     <MESSAGE value="modify: version" />
-    <MESSAGE value="fix: Bugs" />
     <MESSAGE value="modify: website" />
     <MESSAGE value="project" />
     <MESSAGE value="refactor: style code" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: style code" />
+    <MESSAGE value="fix: Bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs" />
   </component>
 </project>
