@@ -72,7 +72,7 @@ public class MarketPriceTask extends BukkitRunnable {
 
             for (UUID key : invOpenMap.getKeys()) {
                 Pair<InventoryOpenType, ShopData> data = invOpenMap.get(key);
-                if (data.getSecond().equals(shopData)) return;
+                if (data.getSecond() != shopData) return;
 
                 Player player = Bukkit.getPlayer(key);
                 if (data.getFirst() == InventoryOpenType.SHOP)
