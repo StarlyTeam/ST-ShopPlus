@@ -1,5 +1,6 @@
 package net.starly.shopplus;
 
+import net.citizensnpcs.api.CitizensAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.starly.core.bstats.Metrics;
 import net.starly.shopplus.command.ShopCmd;
@@ -12,8 +13,8 @@ import net.starly.shopplus.listener.*;
 import net.starly.shopplus.scheduler.MarketPriceTask;
 import net.starly.shopplus.shop.ShopUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ShopPlusMain extends JavaPlugin {
     private static ShopPlusMain instance;
@@ -28,8 +29,7 @@ public class ShopPlusMain extends JavaPlugin {
             Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : http://starly.kr/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
-        }
-        if (!isPluginEnabled("net.milkbowl.vault.Vault")) {
+        } else if (!isPluginEnabled("net.milkbowl.vault.Vault")) {
             Bukkit.getLogger().warning("[" + getName() + "] Vault 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
             Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : https://www.spigotmc.org/resources/vault.34315/");
             Bukkit.getPluginManager().disablePlugin(this);
@@ -70,19 +70,32 @@ public class ShopPlusMain extends JavaPlugin {
 
         /* EVENT
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+        getServer().getPluginManager().registerEvents(new ChatListener(invOpenMap, inputMap), instance);
+        getServer().getPluginManager().registerEvents(new CommandListener(inputMap), instance);
         getServer().getPluginManager().registerEvents(new InventoryClickListener(invOpenMap, inputMap, npcMap), instance);
-        getServer().getPluginManager().registerEvents(new EntityDeathListener(npcMap), instance);
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(invOpenMap), instance);
-        getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(invOpenMap, inputMap), instance);
-        getServer().getPluginManager().registerEvents(new PlayerCommandPreprocessListener(inputMap), instance);
-        getServer().getPluginManager().registerEvents(new PlayerInteractAtEntityListener(invOpenMap, inputMap, npcMap), instance);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(inputMap), instance);
 
-        /* INITIALIZE
-         ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        ShopUtil.getShopNames().stream().map(ShopUtil::getShopData).forEach(shop -> {
-            if (shop.hasNPC()) npcMap.set(shop.getNPC(), shop);
-        });
+        if (!isPluginEnabled("net.citizensnpcs.Citizens")) {
+            Bukkit.getLogger().warning("[" + getName() + "] Citizens 플러그인이 적용되지 않았습니다! (NPC 기능 사용이 불가능합니다)");
+        } else {
+            getServer().getPluginManager().registerEvents(new NPCRemoveListener(npcMap), instance);
+            getServer().getPluginManager().registerEvents(new NPCRightClickListener(invOpenMap, inputMap, npcMap), instance);
+
+            /* INITIALIZE
+            ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    ShopUtil.getShopNames().stream().map(ShopUtil::getShopData).forEach(shop -> {
+                        if (shop.hasNPC()) npcMap.set(shop.getNPC(), shop);
+                    });
+
+                    getLogger().info("성공적으로 모든 NPC를 불러왔습니다.");
+                }
+            }.runTaskLater(instance, 3 * 20L);
+        }
     }
 
     @Override

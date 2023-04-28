@@ -261,7 +261,7 @@ public class InventoryClickListener implements Listener {
                             }
 
                             player.closeInventory();
-                            player.teleport(shopData.getNPC());
+                            player.teleport(shopData.getNPC().getEntity());
                             player.sendMessage(msgConfig.getMessage("messages.teleportedToNPC"));
                         } else {
                             //설정

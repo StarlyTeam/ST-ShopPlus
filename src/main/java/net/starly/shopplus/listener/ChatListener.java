@@ -18,11 +18,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 @AllArgsConstructor
-public class AsyncPlayerChatListener implements Listener {
+public class ChatListener implements Listener {
     private final InvOpenMap invOpenMap;
     private final InputMap inputMap;
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;

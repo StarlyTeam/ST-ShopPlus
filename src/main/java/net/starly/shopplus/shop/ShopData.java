@@ -1,5 +1,7 @@
 package net.starly.shopplus.shop;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import net.starly.core.data.Config;
 import net.starly.shopplus.context.ConfigContent;
 import net.starly.shopplus.enums.ButtonType;
@@ -7,7 +9,6 @@ import net.starly.shopplus.util.GUIStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,6 +17,7 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -360,14 +362,16 @@ public class ShopData {
 
     /* NPC
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-    public Entity getNPC() {
-        String uuid = getConfig().getString("shop.npc");
-        if (uuid == null) return null;
-        return uuid.equals("<none>") ? null : getServer().getEntity(UUID.fromString(uuid));
+    public NPC getNPC() {
+        String uniqueId_ = getConfig().getString("shop.npc");
+        if (uniqueId_ == null) return null;
+
+        UUID npcUniqueId = UUID.fromString(uniqueId_);
+        return CitizensAPI.getNPCRegistry().getByUniqueId(npcUniqueId);
     }
 
-    public void setNPC(Entity entity) {
-        getConfig().setString("shop.npc", entity == null ? "<none>" : entity.getUniqueId() + "");
+    public void setNPC(NPC npc) {
+        getConfig().setString("shop.npc", npc == null ? null : String.valueOf(npc.getUniqueId()));
     }
 
     public boolean hasNPC() {

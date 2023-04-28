@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'net.starly.shopplus'
-version '1.0.7'
+version '1.0.8'
 
 repositories {
     mavenCentral()
@@ -11,6 +11,7 @@ repositories {
         url = "http://starly.kr:8083/repository/maven-public/"
         allowInsecureProtocol = true
     }
+    maven { url = uri("https://maven.citizensnpcs.co/repo") }
 }
 
 dependencies {
@@ -25,6 +26,9 @@ dependencies {
     // OTHER DEPENDENCIES
     compileOnly "net.starly.core:ST-Core:1.6.11"
     compileOnly "net.milkbowl:VaultAPI:1.7"
+    compileOnly("net.citizensnpcs:citizens-main:2.0.30-SNAPSHOT") {
+        exclude group: '*', module: '*'
+    }
 }
 
 tasks.withType(JavaCompile) {

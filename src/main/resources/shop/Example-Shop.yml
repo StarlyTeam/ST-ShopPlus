@@ -6,4 +6,4 @@ shop:
     rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAB3CAAAABAAAAAAeA==
   prices: {}
   stocks: {}
-  npc: "<none>"
+  npc:

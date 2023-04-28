@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 @AllArgsConstructor
-public class PlayerCommandPreprocessListener implements Listener {
+public class CommandListener implements Listener {
     private final InputMap inputMap;
 
     @EventHandler

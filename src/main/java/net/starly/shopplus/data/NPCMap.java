@@ -1,45 +1,28 @@
 package net.starly.shopplus.data;
 
+import net.citizensnpcs.api.npc.NPC;
 import net.starly.shopplus.shop.ShopData;
-import org.bukkit.entity.Entity;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class NPCMap {
-    private final Map<UUID, ShopData> map = new HashMap<>();
+    private final Map<NPC, ShopData> map = new HashMap<>();
 
-    public ShopData get(Entity entity) {
-        return get(entity.getUniqueId());
+    public ShopData get(NPC npc) {
+        return map.get(npc);
     }
 
-    public ShopData get(UUID uuid) {
-        return map.get(uuid);
-    }
-
-    public void set(Entity key, ShopData value) {
-        set(key.getUniqueId(), value);
-    }
-
-    public void set(UUID key, ShopData value) {
+    public void set(NPC key, ShopData value) {
         map.put(key, value);
     }
 
-    public boolean has(Entity entity) {
-        return has(entity.getUniqueId());
+    public boolean has(NPC npc) {
+        return map.containsKey(npc);
     }
 
-    public boolean has(UUID uuid) {
-        return map.containsKey(uuid);
-    }
-
-    public void remove(Entity entity) {
-        remove(entity.getUniqueId());
-    }
-
-    public void remove(UUID uuid) {
-        map.remove(uuid);
+    public void remove(NPC npc) {
+        map.remove(npc);
     }
 
     public void clear() {
