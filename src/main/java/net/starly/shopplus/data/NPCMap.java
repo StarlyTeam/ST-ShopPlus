@@ -1,28 +1,25 @@
 package net.starly.shopplus.data;
 
-import net.citizensnpcs.api.npc.NPC;
-import net.starly.shopplus.shop.ShopData;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class NPCMap {
-    private final Map<NPC, ShopData> map = new HashMap<>();
+    private final Map<String, String> map = new HashMap<>();
 
-    public ShopData get(NPC npc) {
-        return map.get(npc);
+    public String get(String name) {
+        return map.get(name);
     }
 
-    public void set(NPC key, ShopData value) {
+    public void set(String key, String value) {
         map.put(key, value);
     }
 
-    public boolean has(NPC npc) {
-        return map.containsKey(npc);
+    public boolean has(String name) {
+        return map.containsKey(name);
     }
 
-    public void remove(NPC npc) {
-        map.remove(npc);
+    public void remove(String name) {
+        map.remove(name);
     }
 
     public void clear() {

@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
 import net.starly.shopplus.ShopPlusMain;
-import net.starly.shopplus.context.ConfigContent;
+import net.starly.shopplus.context.ConfigContext;
 import net.starly.shopplus.data.InputMap;
 import net.starly.shopplus.data.InvOpenMap;
 import net.starly.shopplus.enums.InputType;
 import net.starly.shopplus.enums.InventoryOpenType;
+import net.starly.shopplus.message.MessageContext;
+import net.starly.shopplus.message.enums.MessageType;
 import net.starly.shopplus.shop.ShopData;
+import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,9 +31,9 @@ public class ChatListener implements Listener {
         if (player == null) return;
         if (!inputMap.has(player)) return;
 
-        Config msgConfig = ConfigContent.getInstance().getMsgConfig();
+        MessageContext msgContext = MessageContext.getInstance();
         InputType inputType = inputMap.get(player).getFirst();
-        ShopData shopData = inputMap.get(player).getSecond().getFirst();
+        ShopData shopData = ShopManager.getInstance().getShopData(inputMap.get(player).getSecond().getFirst());
         int slot = inputMap.get(player).getSecond().getSecond();
         inputMap.remove(player);
         event.setCancelled(true);
@@ -40,7 +43,7 @@ public class ChatListener implements Listener {
                 int sellPrice = Integer.parseInt(event.getMessage());
 
                 if (sellPrice != -1 && sellPrice < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
+                    msgContext.get(MessageType.ERROR, "wrongSellPrice").send(player);
                 } else {
                     shopData.setOriginSellPrice(slot, sellPrice);
                     if (!shopData.isMarketPriceEnabled()) shopData.setSellPrice(slot, sellPrice);
@@ -50,10 +53,10 @@ public class ChatListener implements Listener {
                         shopData.setBuyPrice(slot, -1);
                     }
 
-                    player.sendMessage(msgConfig.getMessage("messages.sellPriceSet").replace("{price}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "sellPriceSet", msg -> msg.replace("{price}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
+                msgContext.get(MessageType.ERROR, "wrongSellPrice").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -63,7 +66,7 @@ public class ChatListener implements Listener {
                 int buyPrice = Integer.parseInt(event.getMessage());
 
                 if (buyPrice != -1 && buyPrice < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
+                    msgContext.get(MessageType.ERROR, "wrongBuyPrice").send(player);
                 } else {
                     shopData.setOriginBuyPrice(slot, buyPrice);
                     if (!shopData.isMarketPriceEnabled()) shopData.setBuyPrice(slot, buyPrice);
@@ -73,10 +76,10 @@ public class ChatListener implements Listener {
                         shopData.setBuyPrice(slot, -1);
                     }
 
-                    player.sendMessage(msgConfig.getMessage("messages.buyPriceSet").replace("{price}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "buyPriceSet", msg -> msg.replace("{price}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
+                msgContext.get(MessageType.ERROR, "wrongBuyPrice").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -86,13 +89,13 @@ public class ChatListener implements Listener {
                 int sellPrice = Integer.parseInt(event.getMessage());
 
                 if (sellPrice != -1 && sellPrice < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
+                    msgContext.get(MessageType.ERROR, "wrongSellPrice").send(player);
                 } else {
                     shopData.setSellPrice(slot, sellPrice);
-                    player.sendMessage(msgConfig.getMessage("messages.sellPriceSet").replace("{price}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "sellPriceSet", msg -> msg.replace("{price}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongSellPrice"));
+                msgContext.get(MessageType.ERROR, "wrongSellPrice").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -102,13 +105,13 @@ public class ChatListener implements Listener {
                 int buyPrice = Integer.parseInt(event.getMessage());
 
                 if (buyPrice != -1 && buyPrice < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
+                    msgContext.get(MessageType.ERROR, "wrongBuyPrice").send(player);
                 } else {
                     shopData.setBuyPrice(slot, buyPrice);
-                    player.sendMessage(msgConfig.getMessage("messages.buyPriceSet").replace("{price}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "buyPriceSet", msg -> msg.replace("{price}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongBuyPrice"));
+                msgContext.get(MessageType.ERROR, "wrongBuyPrice").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -118,13 +121,13 @@ public class ChatListener implements Listener {
                 int stock = Integer.parseInt(event.getMessage());
 
                 if (stock != -1 && stock < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongStock"));
+                    msgContext.get(MessageType.ERROR, "wrongStock").send(player);
                 } else {
                     shopData.setStock(slot, stock);
-                    player.sendMessage(msgConfig.getMessage("messages.stockSet").replace("{stock}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "stockSet", msg -> msg.replace("{stock}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongStock"));
+                msgContext.get(MessageType.ERROR, "wrongStock").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -134,13 +137,13 @@ public class ChatListener implements Listener {
                 int price = Integer.parseInt(event.getMessage());
 
                 if (price != -1 && price < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongMarketPrice"));
+                    msgContext.get(MessageType.ERROR, "wrongMarketPrice").send(player);
                 } else {
                     shopData.setMinSellPrice(slot, price);
-                    player.sendMessage(msgConfig.getMessage("messages.MarketPriceSet_MinSell").replace("{price}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "MarketPriceSet_MinSell", msg -> msg.replace("{price}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongMarketPrice"));
+                msgContext.get(MessageType.ERROR, "wrongMarketPrice").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -150,13 +153,13 @@ public class ChatListener implements Listener {
                 int price = Integer.parseInt(event.getMessage());
 
                 if (price != -1 && price < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongMarketPrice"));
+                    msgContext.get(MessageType.ERROR, "wrongMarketPrice").send(player);
                 } else {
                     shopData.setMaxSellPrice(slot, price);
-                    player.sendMessage(msgConfig.getMessage("messages.MarketPriceSet_MaxSell").replace("{price}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "MarketPriceSet_MaxSell", msg -> msg.replace("{price}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongMarketPrice"));
+                msgContext.get(MessageType.ERROR, "wrongMarketPrice").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -166,13 +169,13 @@ public class ChatListener implements Listener {
                 int price = Integer.parseInt(event.getMessage());
 
                 if (price != -1 && price < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongMarketPrice"));
+                    msgContext.get(MessageType.ERROR, "wrongMarketPrice").send(player);
                 } else {
                     shopData.setMinBuyPrice(slot, price);
-                    player.sendMessage(msgConfig.getMessage("messages.MarketPriceSet_MinBuy").replace("{price}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "MarketPriceSet_MinBuy", msg -> msg.replace("{price}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongMarketPrice"));
+                msgContext.get(MessageType.ERROR, "wrongMarketPrice").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -182,13 +185,13 @@ public class ChatListener implements Listener {
                 int price = Integer.parseInt(event.getMessage());
 
                 if (price != -1 && price < 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongMarketPrice"));
+                    msgContext.get(MessageType.ERROR, "wrongMarketPrice").send(player);
                 } else {
                     shopData.setMaxBuyPrice(slot, price);
-                    player.sendMessage(msgConfig.getMessage("messages.MarketPriceSet_MaxBuy").replace("{price}", event.getMessage()));
+                    msgContext.get(MessageType.NORMAL, "MarketPriceSet_MaxBuy", msg -> msg.replace("{price}", event.getMessage())).send(player);
                 }
             } catch (NumberFormatException ignored) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongMarketPrice"));
+                msgContext.get(MessageType.ERROR, "wrongMarketPrice").send(player);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;

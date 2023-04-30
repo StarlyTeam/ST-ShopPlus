@@ -1,20 +1,26 @@
 package net.starly.shopplus;
 
-import net.citizensnpcs.api.CitizensAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.starly.core.bstats.Metrics;
 import net.starly.shopplus.command.ShopCmd;
 import net.starly.shopplus.command.tabcomplete.ShopTab;
-import net.starly.shopplus.context.ConfigContent;
+import net.starly.shopplus.context.ConfigContext;
 import net.starly.shopplus.data.InputMap;
 import net.starly.shopplus.data.InvOpenMap;
 import net.starly.shopplus.data.NPCMap;
 import net.starly.shopplus.listener.*;
+import net.starly.shopplus.message.MessageLoader;
 import net.starly.shopplus.scheduler.MarketPriceTask;
-import net.starly.shopplus.shop.ShopUtil;
+import net.starly.shopplus.shop.ShopData;
+import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ShopPlusMain extends JavaPlugin {
     private static ShopPlusMain instance;
@@ -24,17 +30,18 @@ public class ShopPlusMain extends JavaPlugin {
     public void onEnable() {
         /* DEPENDENCY
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        if (!isPluginEnabled("net.starly.core.StarlyCore")) {
+        if (!isPluginEnabled("ST-Core")) {
             Bukkit.getLogger().warning("[" + getName() + "] ST-Core 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
             Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : http://starly.kr/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
-        } else if (!isPluginEnabled("net.milkbowl.vault.Vault")) {
+        } else if (!isPluginEnabled("Vault")) {
             Bukkit.getLogger().warning("[" + getName() + "] Vault 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
             Bukkit.getLogger().warning("[" + getName() + "] 다운로드 링크 : https://www.spigotmc.org/resources/vault.34315/");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
         economy = getServer().getServicesManager().getRegistration(Economy.class).getProvider();
         if (economy == null) {
             Bukkit.getLogger().warning("[" + getName() + "] Vault와 연동되는 Economy 플러그인이 적용되지 않았습니다! 플러그인을 비활성화합니다.");
@@ -50,7 +57,24 @@ public class ShopPlusMain extends JavaPlugin {
 
         /* CONFIG
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        ConfigContent.getInstance();
+        try {
+            File configFile = new File(getDataFolder(), "config.yml");
+            if (!configFile.exists()) {
+                saveDefaultConfig();
+                saveResource("shop/Example-Shop.yml", false);
+            }
+            ConfigContext.getInstance().initialize(YamlConfiguration.loadConfiguration(configFile));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            File messageFile = new File(getDataFolder(), "message.yml");
+            if (!messageFile.exists()) saveResource("message.yml", false);
+            MessageLoader.load(YamlConfiguration.loadConfiguration(messageFile));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         /* VARIABLES
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -61,7 +85,7 @@ public class ShopPlusMain extends JavaPlugin {
         /* TASK
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
         MarketPriceTask.setInvOpenMap(invOpenMap);
-        MarketPriceTask.start();
+        MarketPriceTask.start(ConfigContext.getInstance().get("marketPrice.updateInterval", Integer.class) * 20L);
 
         /* COMMAND
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -76,7 +100,7 @@ public class ShopPlusMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(invOpenMap), instance);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(inputMap), instance);
 
-        if (!isPluginEnabled("net.citizensnpcs.Citizens")) {
+        if (!isPluginEnabled("Citizens")) {
             Bukkit.getLogger().warning("[" + getName() + "] Citizens 플러그인이 적용되지 않았습니다! (NPC 기능 사용이 불가능합니다)");
         } else {
             getServer().getPluginManager().registerEvents(new NPCRemoveListener(npcMap), instance);
@@ -84,17 +108,13 @@ public class ShopPlusMain extends JavaPlugin {
 
             /* INITIALIZE
             ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-            new BukkitRunnable() {
+            ShopManager shopManager = ShopManager.getInstance();
+            shopManager.getShopNames().forEach(shopName -> {
+                ShopData shopData = shopManager.getShopData(shopName);
+                if (shopData.hasNPC()) npcMap.set(shopData.getNPC(), shopName);
+            });
 
-                @Override
-                public void run() {
-                    ShopUtil.getShopNames().stream().map(ShopUtil::getShopData).forEach(shop -> {
-                        if (shop.hasNPC()) npcMap.set(shop.getNPC(), shop);
-                    });
-
-                    getLogger().info("성공적으로 모든 NPC를 불러왔습니다.");
-                }
-            }.runTaskLater(instance, 3 * 20L);
+            getLogger().info("성공적으로 모든 NPC를 불러왔습니다.");
         }
     }
 
@@ -102,20 +122,20 @@ public class ShopPlusMain extends JavaPlugin {
     public void onDisable() {
         /* TASK
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        try { MarketPriceTask.stop(); } catch (Exception ignored) {}
+        MarketPriceTask.stop();
+
+        /* SAVE DATA
+         ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+        ShopManager.getInstance().getShopNames().stream().map(ShopManager.getInstance()::getShopData).forEach(ShopData::saveConfig);
     }
 
     public static ShopPlusMain getInstance() {
         return instance;
     }
 
-    private boolean isPluginEnabled(String path) {
-        try {
-            Class.forName(path);
-            return true;
-        } catch (ClassNotFoundException ignored) {
-        } catch (Exception ex) { ex.printStackTrace(); }
-        return false;
+    private boolean isPluginEnabled(String name) {
+        Plugin plugin = getServer().getPluginManager().getPlugin(name);
+        return plugin != null && plugin.isEnabled();
     }
 
     public static Economy getEconomy() {

@@ -4,11 +4,10 @@ import lombok.Setter;
 import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
 import net.starly.shopplus.ShopPlusMain;
-import net.starly.shopplus.context.ConfigContent;
 import net.starly.shopplus.data.InvOpenMap;
 import net.starly.shopplus.enums.InventoryOpenType;
 import net.starly.shopplus.shop.ShopData;
-import net.starly.shopplus.shop.ShopUtil;
+import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -22,29 +21,27 @@ import java.util.UUID;
 public class MarketPriceTask extends BukkitRunnable {
     @Setter
     private static InvOpenMap invOpenMap = new InvOpenMap();
-    private static MarketPriceTask instance;
+    private static BukkitRunnable task;
 
-    public static void start() {
-        Config config = ConfigContent.getInstance().getConfig();
-        instance = new MarketPriceTask();
+    public static void start(long interval) {
+        task = new MarketPriceTask();
 
-        instance.runTaskTimerAsynchronously(ShopPlusMain.getInstance(), 0, config.getInt("marketPrice.updateInterval") * 20L);
+        task.runTaskTimerAsynchronously(ShopPlusMain.getInstance(), 0, interval);
     }
 
     public static void stop() {
-        instance.cancel();
+        task.cancel();
     }
 
     @Override
     public void run() {
-        List<String> shops = ShopUtil.getShopNames();
+        List<String> shops = ShopManager.getInstance().getShopNames();
 
         for (String shopName : shops) {
-            ShopData shopData = ShopUtil.getShopData(shopName);
+            ShopData shopData = ShopManager.getInstance().getShopData(shopName);
             if (!shopData.isMarketPriceEnabled()) return;
 
-            Config config = shopData.getConfig();
-
+            FileConfiguration config = shopData.getConfig();
             for (int slot = 0; slot < shopData.getSize(); slot++) {
                 ItemStack item = shopData.getItem(slot);
                 if (item == null) continue;
@@ -68,11 +65,9 @@ public class MarketPriceTask extends BukkitRunnable {
                 }
             }
 
-            config.saveConfig();
-
             for (UUID key : invOpenMap.getKeys()) {
                 Pair<InventoryOpenType, ShopData> data = invOpenMap.get(key);
-                if (data.getSecond() != shopData) return;
+                if (!data.getSecond().getName().equals(shopData.getName())) return;
 
                 Player player = Bukkit.getPlayer(key);
                 if (data.getFirst() == InventoryOpenType.SHOP)

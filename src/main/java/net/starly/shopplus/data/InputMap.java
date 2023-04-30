@@ -10,21 +10,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class InputMap {
-    private final Map<UUID, Pair<InputType, Pair<ShopData, Integer>>> map = new HashMap<>();
+    private final Map<UUID, Pair<InputType, Pair<String, Integer>>> map = new HashMap<>();
 
-    public Pair<InputType, Pair<ShopData, Integer>> get(Player player) {
+    public Pair<InputType, Pair<String, Integer>> get(Player player) {
         return get(player.getUniqueId());
     }
 
-    public Pair<InputType, Pair<ShopData, Integer>> get(UUID uuid) {
+    public Pair<InputType, Pair<String, Integer>> get(UUID uuid) {
         return map.get(uuid);
     }
 
-    public void set(Player key, Pair<InputType, Pair<ShopData, Integer>> value) {
+    public void set(Player key, Pair<InputType, Pair<String, Integer>> value) {
         set(key.getUniqueId(), value);
     }
 
-    public void set(UUID key, Pair<InputType, Pair<ShopData, Integer>> value) {
+    public void set(UUID key, Pair<InputType, Pair<String, Integer>> value) {
         map.put(key, value);
     }
 

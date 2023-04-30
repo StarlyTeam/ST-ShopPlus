@@ -112,7 +112,7 @@ public class GUIStackUtil {
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName("§6NPC 설정");
                 List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
-                lore.addAll(Arrays.asList("§e› §f이 곳을 클릭하여 상점 NPC를 설정할 수 있습니다.", "§e› §fShift + 좌클릭시 NPC 설정을 초기화합니다.", "§e› §fShift + 우클릭시 설정된 NPC로 이동합니다."));
+                lore.addAll(Arrays.asList("§e› §f이 곳을 클릭하여 상점 NPC를 설정할 수 있습니다.", "§e› §fShift + 좌클릭시 NPC 설정을 초기화합니다."));
                 itemMeta.setLore(lore);
                 itemStack.setItemMeta(itemMeta);
                 break;

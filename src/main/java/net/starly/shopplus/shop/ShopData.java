@@ -3,12 +3,13 @@ package net.starly.shopplus.shop;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.starly.core.data.Config;
-import net.starly.shopplus.context.ConfigContent;
+import net.starly.shopplus.context.ConfigContext;
 import net.starly.shopplus.enums.ButtonType;
 import net.starly.shopplus.util.GUIStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,45 +18,64 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.bukkit.Bukkit.getServer;
 
 public class ShopData {
-    private final Config config;
 
-    protected ShopData(Config config) {
-        this.config = config;
+    private final File configFile;
+    private final FileConfiguration config;
+
+    protected ShopData(File configFile) {
+        this.configFile = configFile;
+        if (!configFile.exists()) {
+            try {
+                configFile.createNewFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        this.config = YamlConfiguration.loadConfiguration(configFile);
     }
 
-    public Config getConfig() {
-        config.reloadConfig();
+    /* Config
+     ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+    public FileConfiguration getConfig() {
         return config;
+    }
+
+    public void saveConfig() {
+        try {
+            config.save(configFile);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 
     /* Enable
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     public String getName() {
-        return config.getConfig().getName().replace(".yml", "");
+        return configFile.getName().replace(".yml", "");
     }
 
     public boolean isEnabled() {
-        return getConfig().getBoolean("shop.enabled");
+        return config.getBoolean("shop.enabled");
     }
 
     public void setEnabled(boolean enabled) {
-        getConfig().setBoolean("shop.enabled", enabled);
+        config.set("shop.enabled", enabled);
     }
 
     public boolean isMarketPriceEnabled() {
-        return getConfig().getBoolean("shop.marketPrice");
+        return config.getBoolean("shop.marketPrice");
     }
 
     public void setMarketPriceEnabled(boolean enabled) {
-        getConfig().setBoolean("shop.marketPrice", enabled);
+        config.set("shop.marketPrice", enabled);
     }
 
 
@@ -66,36 +86,36 @@ public class ShopData {
     }
 
     public int getSellPrice(int slot) {
-        if (isMarketPriceEnabled()) return getConfig().getInt("shop.prices." + slot + ".sell.now");
+        if (isMarketPriceEnabled()) return config.getInt("shop.prices." + slot + ".sell.now");
         else return getOriginSellPrice(slot);
     }
 
     public void setSellPrice(int slot, int price) {
-        getConfig().setInt("shop.prices." + slot + ".sell.now", price);
+        config.set("shop.prices." + slot + ".sell.now", price);
     }
 
     public int getOriginSellPrice(int slot) {
-        return getConfig().getInt("shop.prices." + slot + ".sell.origin");
+        return config.getInt("shop.prices." + slot + ".sell.origin");
     }
 
     public void setOriginSellPrice(int slot, int price) {
-        getConfig().setInt("shop.prices." + slot + ".sell.origin", price);
+        config.set("shop.prices." + slot + ".sell.origin", price);
     }
 
     public int getMinSellPrice(int slot) {
-        return getConfig().getInt("shop.prices." + slot + ".sell.min");
+        return config.getInt("shop.prices." + slot + ".sell.min");
     }
 
     public void setMinSellPrice(int slot, int price) {
-        getConfig().setInt("shop.prices." + slot + ".sell.min", price);
+        config.set("shop.prices." + slot + ".sell.min", price);
     }
 
     public int getMaxSellPrice(int slot) {
-        return getConfig().getInt("shop.prices." + slot + ".sell.max");
+        return config.getInt("shop.prices." + slot + ".sell.max");
     }
 
     public void setMaxSellPrice(int slot, int price) {
-        getConfig().setInt("shop.prices." + slot + ".sell.max", price);
+        config.set("shop.prices." + slot + ".sell.max", price);
     }
 
 
@@ -106,36 +126,36 @@ public class ShopData {
     }
 
     public int getBuyPrice(int slot) {
-        if (isMarketPriceEnabled()) return getConfig().getInt("shop.prices." + slot + ".buy.now");
+        if (isMarketPriceEnabled()) return config.getInt("shop.prices." + slot + ".buy.now");
         else return getOriginBuyPrice(slot);
     }
 
     public void setBuyPrice(int slot, int price) {
-        getConfig().setInt("shop.prices." + slot + ".buy.now", price);
+        config.set("shop.prices." + slot + ".buy.now", price);
     }
 
     public int getOriginBuyPrice(int slot) {
-        return getConfig().getInt("shop.prices." + slot + ".buy.origin");
+        return config.getInt("shop.prices." + slot + ".buy.origin");
     }
 
     public void setOriginBuyPrice(int slot, int price) {
-        getConfig().setInt("shop.prices." + slot + ".buy.origin", price);
+        config.set("shop.prices." + slot + ".buy.origin", price);
     }
 
     public int getMinBuyPrice(int slot) {
-        return getConfig().getInt("shop.prices." + slot + ".buy.min");
+        return config.getInt("shop.prices." + slot + ".buy.min");
     }
 
     public void setMinBuyPrice(int slot, int price) {
-        getConfig().setInt("shop.prices." + slot + ".buy.min", price);
+        config.set("shop.prices." + slot + ".buy.min", price);
     }
 
     public int getMaxBuyPrice(int slot) {
-        return getConfig().getInt("shop.prices." + slot + ".buy.max");
+        return config.getInt("shop.prices." + slot + ".buy.max");
     }
 
     public void setMaxBuyPrice(int slot, int price) {
-        getConfig().setInt("shop.prices." + slot + ".buy.max", price);
+        config.set("shop.prices." + slot + ".buy.max", price);
     }
 
 
@@ -146,22 +166,22 @@ public class ShopData {
     }
 
     public int getStock(int slot) {
-        return getConfig().getInt("shop.stocks." + slot);
+        return config.getInt("shop.stocks." + slot);
     }
 
     public void setStock(int slot, int stock) {
-        getConfig().setInt("shop.stocks." + slot, stock);
+        config.set("shop.stocks." + slot, stock);
     }
 
 
     /* Item
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     public Map<Integer, ItemStack> getItems() {
-        Object obj = getConfig().getObject("shop.items");
+        Object obj = config.get("shop.items");
         if (obj == null) {
             try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); BukkitObjectOutputStream boos = new BukkitObjectOutputStream(bos)) {
                 boos.writeObject(new HashMap<>());
-                getConfig().setObject("shop.items", bos.toByteArray());
+                config.set("shop.items", bos.toByteArray());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -184,29 +204,28 @@ public class ShopData {
     public void setItems(Map<Integer, ItemStack> items) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); BukkitObjectOutputStream boos = new BukkitObjectOutputStream(bos)) {
             boos.writeObject(items);
-            config.setObject("shop.items", bos.toByteArray());
+            config.set("shop.items", bos.toByteArray());
 
 
-            FileConfiguration config_ = getConfig().getConfig();
             items.forEach((slot, itemStack) -> {
                 if (itemStack == null) {
-                    config_.set("shop.items." + slot, null);
-                    config_.set("shop.prices." + slot, null);
-                    config_.set("shop.stocks." + slot, null);
-                } else if (config_.getInt("shop.prices." + slot + ".sell.now") == 0) {
-                    config_.set("shop.prices." + slot + ".sell.origin", -1);
-                    config_.set("shop.prices." + slot + ".sell.now", -1);
-                    config_.set("shop.prices." + slot + ".sell.min", -1);
-                    config_.set("shop.prices." + slot + ".sell.max", -1);
-                    config_.set("shop.prices." + slot + ".buy.origin", -1);
-                    config_.set("shop.prices." + slot + ".buy.now", -1);
-                    config_.set("shop.prices." + slot + ".buy.min", -1);
-                    config_.set("shop.prices." + slot + ".buy.max", -1);
-                    config_.set("shop.stocks." + slot, 0);
+                    config.set("shop.items." + slot, null);
+                    config.set("shop.prices." + slot, null);
+                    config.set("shop.stocks." + slot, null);
+                } else if (config.getInt("shop.prices." + slot + ".sell.now") == 0) {
+                    config.set("shop.prices." + slot + ".sell.origin", -1);
+                    config.set("shop.prices." + slot + ".sell.now", -1);
+                    config.set("shop.prices." + slot + ".sell.min", -1);
+                    config.set("shop.prices." + slot + ".sell.max", -1);
+                    config.set("shop.prices." + slot + ".buy.origin", -1);
+                    config.set("shop.prices." + slot + ".buy.now", -1);
+                    config.set("shop.prices." + slot + ".buy.min", -1);
+                    config.set("shop.prices." + slot + ".buy.max", -1);
+                    config.set("shop.stocks." + slot, 0);
                 }
             });
 
-            config.saveConfig();
+            config.save(configFile);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -224,39 +243,34 @@ public class ShopData {
     /* Inventory
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     public int getSize() {
-        return getConfig().getInt("shop.size");
+        return config.getInt("shop.size");
     }
 
     public String getTitle() {
-        return getConfig().getString("shop.title");
+        return config.getString("shop.title");
     }
 
     public Inventory getShopInv() {
         Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle());
         Map<Integer, ItemStack> items = getItems();
 
-        Config mainConfig = ConfigContent.getInstance().getConfig();
-        String cannotBuy = mainConfig.getString("text.cannotBuy");
-        String cannotSell = mainConfig.getString("text.cannotSell");
-        String unlimited = mainConfig.getString("text.unlimited");
-        String soldOut = mainConfig.getString("text.soldOut");
-
-        FileConfiguration config_ = getConfig().getConfig();
+        ConfigContext configContext = ConfigContext.getInstance();
+        String cannotBuy = configContext.get("text.cannotBuy", String.class);
+        String cannotSell = configContext.get("text.cannotSell", String.class);
+        String unlimited = configContext.get("text.unlimited", String.class);
+        String soldOut = configContext.get("text.soldOut", String.class);
 
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            int sellPrice = config_.getInt("shop.prices." + slot + ".sell.now");
-            int buyPrice = config_.getInt("shop.prices." + slot + ".buy.now");
-            int stock = config_.getInt("shop.stocks." + slot);
+            int sellPrice = config.getInt("shop.prices." + slot + ".sell.now");
+            int buyPrice = config.getInt("shop.prices." + slot + ".buy.now");
+            int stock = config.getInt("shop.stocks." + slot);
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
             if (!lore.isEmpty()) lore.add("§r");
-            lore.addAll(ConfigContent
-                    .getInstance()
-                    .getConfig()
-                    .getStringList("lore.shopItem")
+            lore.addAll(((List<String>) configContext.get("lore.shopItem", List.class))
                     .stream()
                     .map(line ->
                             ChatColor
@@ -308,19 +322,18 @@ public class ShopData {
         Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle() + "§r [아이템 세부설정]");
         Map<Integer, ItemStack> items = getItems();
 
-        Config mainConfig = ConfigContent.getInstance().getConfig();
-        String cannotBuy = mainConfig.getString("text.cannotBuy");
-        String cannotSell = mainConfig.getString("text.cannotSell");
-        String unlimited = mainConfig.getString("text.unlimited");
+        ConfigContext configContext = ConfigContext.getInstance();
+        String cannotBuy = configContext.get("text.cannotBuy", String.class);
+        String cannotSell = configContext.get("text.cannotSell", String.class);
+        String unlimited = configContext.get("text.unlimited", String.class);
 
-        Config shopConfig = getConfig();
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            int originSellPrice = shopConfig.getInt("shop.prices." + slot + ".sell.origin");
-            int originBuyPrice = shopConfig.getInt("shop.prices." + slot + ".buy.origin");
-            int sellPrice = shopConfig.getInt("shop.prices." + slot + ".sell.now");
-            int buyPrice = shopConfig.getInt("shop.prices." + slot + ".buy.now");
+            int originSellPrice = config.getInt("shop.prices." + slot + ".sell.origin");
+            int originBuyPrice = config.getInt("shop.prices." + slot + ".buy.origin");
+            int sellPrice = config.getInt("shop.prices." + slot + ".sell.now");
+            int buyPrice = config.getInt("shop.prices." + slot + ".buy.now");
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = Arrays.asList("§r§7---------------------------------------",
@@ -334,7 +347,7 @@ public class ShopData {
                             (getStock(slot) == -1 ?
                                     ChatColor.translateAlternateColorCodes('&', unlimited)
                                     : "§6" + getStock(slot) + "개")
-                            : ChatColor.translateAlternateColorCodes('&', mainConfig.getString("text.soldOut"))),
+                            : ChatColor.translateAlternateColorCodes('&', configContext.get("text.soldOut", String.class))),
                     "§r§7---------------------------------------",
                     "§r§e› §f판매가격 설정 : 좌클릭",
                     "§r§e› §f구매가격 설정 : 우클릭",
@@ -362,16 +375,12 @@ public class ShopData {
 
     /* NPC
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-    public NPC getNPC() {
-        String uniqueId_ = getConfig().getString("shop.npc");
-        if (uniqueId_ == null) return null;
-
-        UUID npcUniqueId = UUID.fromString(uniqueId_);
-        return CitizensAPI.getNPCRegistry().getByUniqueId(npcUniqueId);
+    public String getNPC() {
+        return config.getString("shop.npc");
     }
 
-    public void setNPC(NPC npc) {
-        getConfig().setString("shop.npc", npc == null ? null : String.valueOf(npc.getUniqueId()));
+    public void setNPC(String name) {
+        config.set("shop.npc", name);
     }
 
     public boolean hasNPC() {

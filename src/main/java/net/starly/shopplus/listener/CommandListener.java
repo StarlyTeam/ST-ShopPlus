@@ -1,9 +1,9 @@
 package net.starly.shopplus.listener;
 
 import lombok.AllArgsConstructor;
-import net.starly.core.data.Config;
-import net.starly.shopplus.context.ConfigContent;
 import net.starly.shopplus.data.InputMap;
+import net.starly.shopplus.message.MessageContext;
+import net.starly.shopplus.message.enums.MessageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,8 +19,8 @@ public class CommandListener implements Listener {
         if (player == null) return;
         if (!inputMap.has(player)) return;
 
-        Config msgConfig = ConfigContent.getInstance().getMsgConfig();
-        player.sendMessage(msgConfig.getMessage("messages.cancelledInput"));
+        MessageContext msgContext = MessageContext.getInstance();
+        msgContext.get(MessageType.NORMAL, "cancelledInput").send(player);
         inputMap.remove(player);
     }
 }

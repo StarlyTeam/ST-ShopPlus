@@ -1,22 +1,27 @@
 package net.starly.shopplus.command;
 
 import lombok.AllArgsConstructor;
-import net.starly.core.data.Config;
 import net.starly.core.jb.util.Pair;
 import net.starly.shopplus.ShopPlusMain;
-import net.starly.shopplus.context.ConfigContent;
+import net.starly.shopplus.context.ConfigContext;
 import net.starly.shopplus.data.InvOpenMap;
 import net.starly.shopplus.data.NPCMap;
 import net.starly.shopplus.enums.InventoryOpenType;
+import net.starly.shopplus.message.MessageContext;
+import net.starly.shopplus.message.MessageLoader;
+import net.starly.shopplus.message.enums.MessageType;
 import net.starly.shopplus.shop.ShopData;
-import net.starly.shopplus.shop.ShopUtil;
+import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 @AllArgsConstructor
@@ -28,15 +33,15 @@ public class ShopCmd implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) return true;
         Player player = (Player) sender;
-        Config msgConfig = ConfigContent.getInstance().getMsgConfig();
+        MessageContext msgContext = MessageContext.getInstance();
 
         if (args.length == 0) {
             if (!player.hasPermission("starly.shop.help")) {
-                player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                msgContext.get(MessageType.ERROR, "noPermission").send(player);
                 return true;
             }
 
-            msgConfig.getMessages("messages.help").forEach(player::sendMessage);
+            msgContext.get(MessageType.NORMAL, "help").send(player);
             return true;
         }
 
@@ -44,19 +49,19 @@ public class ShopCmd implements CommandExecutor {
             case "생성":
             case "create": {
                 if (!player.hasPermission("starly.shop.create")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    msgContext.get(MessageType.ERROR, "noPermission").send(player);
                     return true;
                 } else if (args.length == 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noShopName"));
+                    msgContext.get(MessageType.ERROR, "noShopName").send(player);
                     return true;
                 } else if (args.length == 2) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noShopLine"));
+                    msgContext.get(MessageType.ERROR, "noShopLine").send(player);
                     return true;
                 } else if (args.length == 3) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noShopTitle"));
+                    msgContext.get(MessageType.ERROR, "noShopTitle").send(player);
                     return true;
-                } else if (ShopUtil.getShopNames().contains(args[1])) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shopAlreadyExists"));
+                } else if (ShopManager.getInstance().getShopNames().contains(args[1])) {
+                    msgContext.get(MessageType.ERROR, "shopAlreadyExists").send(player);
                     return true;
                 }
 
@@ -65,41 +70,41 @@ public class ShopCmd implements CommandExecutor {
                     line = Integer.parseInt(args[2]);
 
                     if (line < 1 || line > 6) {
-                        player.sendMessage(msgConfig.getMessage("errorMessages.wrongShopLine"));
+                        msgContext.get(MessageType.ERROR, "wrongShopLine").send(player);
                         return true;
                     }
                 } catch (NumberFormatException e) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shopLineMustBeNumber"));
+                    msgContext.get(MessageType.ERROR, "shopLineMustBeNumber").send(player);
                     return true;
                 }
 
-                ShopUtil.createShop(args[1], line, ChatColor.translateAlternateColorCodes('&', String.join(" ", Arrays.copyOfRange(args, 3, args.length))));
-                player.sendMessage(msgConfig.getMessage("messages.shopCreated"));
+                ShopManager.getInstance().createShop(args[1], line, ChatColor.translateAlternateColorCodes('&', String.join(" ", Arrays.copyOfRange(args, 3, args.length))));
+                msgContext.get(MessageType.NORMAL, "shopCreated").send(player);
                 return true;
             }
 
             case "열기":
             case "open": {
                 if (args.length == 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noShopName"));
+                    msgContext.get(MessageType.ERROR, "noShopName").send(player);
                     return true;
                 } else if (args.length != 2) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                    msgContext.get(MessageType.ERROR, "wrongCommand").send(player);
                     return true;
                 }
 
                 if (!player.hasPermission("starly.shop.open." + args[1])) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    msgContext.get(MessageType.ERROR, "noPermission").send(player);
                     return true;
-                } else if (!ShopUtil.getShopNames().contains(args[1])) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shopNotExists"));
+                } else if (!ShopManager.getInstance().getShopNames().contains(args[1])) {
+                    msgContext.get(MessageType.ERROR, "shopNotExists").send(player);
                     return true;
-                } else if (!(player.isOp() || ShopUtil.getShopData(args[1]).isEnabled())) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shopNotOpened"));
+                } else if (!(player.isOp() || ShopManager.getInstance().getShopData(args[1]).isEnabled())) {
+                    msgContext.get(MessageType.ERROR, "shopNotOpened").send(player);
                     return true;
                 }
 
-                ShopData shopData = ShopUtil.getShopData(args[1]);
+                ShopData shopData = ShopManager.getInstance().getShopData(args[1]);
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopInv());
                     invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData));
@@ -110,22 +115,22 @@ public class ShopCmd implements CommandExecutor {
             case "편집":
             case "edit": {
                 if (args.length == 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noShopName"));
+                    msgContext.get(MessageType.ERROR, "noShopName").send(player);
                     return true;
                 } else if (args.length != 2) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                    msgContext.get(MessageType.ERROR, "wrongCommand").send(player);
                     return true;
                 }
 
                 if (!player.hasPermission("starly.shop.edit." + args[1])) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    msgContext.get(MessageType.ERROR, "noPermission").send(player);
                     return true;
-                } else if (!ShopUtil.getShopNames().contains(args[1])) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shopNotExists"));
+                } else if (!ShopManager.getInstance().getShopNames().contains(args[1])) {
+                    msgContext.get(MessageType.ERROR, "shopNotExists").send(player);
                     return true;
                 }
 
-                ShopData shopData = ShopUtil.getShopData(args[1]);
+                ShopData shopData = ShopManager.getInstance().getShopData(args[1]);
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopSettingInv());
                     invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
@@ -136,35 +141,64 @@ public class ShopCmd implements CommandExecutor {
             case "삭제":
             case "delete": {
                 if (!player.hasPermission("starly.shop.delete")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    msgContext.get(MessageType.ERROR, "noPermission").send(player);
                     return true;
                 } else if (args.length == 1) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noShopName"));
+                    msgContext.get(MessageType.ERROR, "noShopName").send(player);
                     return true;
-                } else if (!ShopUtil.getShopNames().contains(args[1])) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.shopNotExists"));
+                } else if (!ShopManager.getInstance().getShopNames().contains(args[1])) {
+                    msgContext.get(MessageType.ERROR, "shopNotExists").send(player);
                     return true;
                 }
 
-                ShopData shopData = ShopUtil.getShopData(args[1]);
+                ShopData shopData = ShopManager.getInstance().getShopData(args[1]);
                 if (shopData.hasNPC()) {
                     npcMap.remove(shopData.getNPC());
-                    player.sendMessage(msgConfig.getMessage("messages.NPCDeleted"));
+                    msgContext.get(MessageType.NORMAL, "NPCDeleted").send(player);
                 }
 
-                ShopUtil.deleteShop(args[1]);
-                player.sendMessage(msgConfig.getMessage("messages.shopDeleted"));
+                ShopManager.getInstance().deleteShop(args[1]);
+                msgContext.get(MessageType.NORMAL, "shopDeleted").send(player);
                 return true;
             }
 
             case "목록":
             case "list": {
                 if (!player.hasPermission("starly.shop.list")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    msgContext.get(MessageType.ERROR, "noPermission").send(player);
                     return true;
                 }
 
-                msgConfig.getMessages("messages.shopList.message").forEach(line -> player.sendMessage(line.replace("{list}", String.join(msgConfig.getString("messages.shopList.delimiter"), ShopUtil.getShopNames()))));
+                msgContext.get(MessageType.NORMAL, "shopList.message", (msg) -> msg.replace("{list}", String.join(msgContext.getOnlyString(MessageType.NORMAL, "shopList.delimiter"), ShopManager.getInstance().getShopNames()))).send(player);
+                return true;
+            }
+
+            case "리로드":
+            case "reload": {
+                if (!player.hasPermission("starly.shop.reload")) {
+                    msgContext.get(MessageType.ERROR, "noPermission").send(player);
+                    return true;
+                }
+
+                ConfigContext.getInstance().reset();
+                MessageContext.getInstance().reset();
+
+                try {
+                    File configFile = new File(ShopPlusMain.getInstance().getDataFolder(), "config.yml");
+                    if (!configFile.exists()) configFile.createNewFile();
+                    ConfigContext.getInstance().initialize(YamlConfiguration.loadConfiguration(configFile));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    File messageFile = new File(ShopPlusMain.getInstance().getDataFolder(), "message.yml");
+                    if (!messageFile.exists()) messageFile.createNewFile();
+                    MessageLoader.load(YamlConfiguration.loadConfiguration(messageFile));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+                msgContext.get(MessageType.NORMAL, "reloadComplete").send(player);
                 return true;
             }
 
@@ -172,16 +206,16 @@ public class ShopCmd implements CommandExecutor {
             case "help":
             case "?": {
                 if (!player.hasPermission("starly.shop.help")) {
-                    player.sendMessage(msgConfig.getMessage("errorMessages.noPermission"));
+                    msgContext.get(MessageType.ERROR, "noPermission").send(player);
                     return true;
                 }
 
-                msgConfig.getMessages("messages.help").forEach(player::sendMessage);
+                msgContext.get(MessageType.NORMAL, "help").send(player);
                 return true;
             }
 
             default: {
-                player.sendMessage(msgConfig.getMessage("errorMessages.wrongCommand"));
+                msgContext.get(MessageType.ERROR, "wrongCommand").send(player);
                 return true;
             }
         }

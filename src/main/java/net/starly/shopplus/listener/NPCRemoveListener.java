@@ -5,6 +5,7 @@ import net.citizensnpcs.api.event.NPCRemoveEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.starly.shopplus.data.NPCMap;
 import net.starly.shopplus.shop.ShopData;
+import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -17,10 +18,10 @@ public class NPCRemoveListener implements Listener {
         NPC npc = event.getNPC();
         if (npc == null) return;
 
-        if (!npcMap.has(npc)) return;
+        if (!npcMap.has(npc.getName())) return;
 
-        ShopData shopData = npcMap.get(npc);
-        npcMap.remove(npc);
+        ShopData shopData = ShopManager.getInstance().getShopData(npcMap.get(npc.getName()));
+        npcMap.remove(npc.getName());
         shopData.setNPC(null);
     }
 }
