@@ -27,8 +27,8 @@ public class MessageLoader {
         PreCondition.nonNull(section, "메세지를 로드할 수 없습니다. : " + type.name());
 
         MessageContext msgContext = MessageContext.getInstance();
-        section.getKeys(false).forEach(key -> {
-            msgContext.set(type, key, section.isList(key) ? String.join("\n", section.getStringList(key)) : section.getString(key));
+        section.getKeys(true).forEach(key -> {
+            msgContext.set(type, key, section.isList(key) ? String.join("\n&r", section.getStringList(key)) : section.getString(key));
         });
     }
 }
