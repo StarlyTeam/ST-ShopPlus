@@ -40,6 +40,7 @@ public class ShopManager {
             File configFile = new File(ShopPlusMain.getInstance().getDataFolder(), "shop/" + name + ".yml");
             configFile.createNewFile();
 
+
             FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
             config.set("shop.enabled", false);
             config.set("shop.marketPrice", false);
@@ -47,6 +48,8 @@ public class ShopManager {
             config.set("shop.size", line * 9);
             config.set("shop.prices", new HashMap<>());
             config.set("shop.npc", null);
+
+            config.save(configFile);
 
 
             map.put(name, new ShopData(configFile));

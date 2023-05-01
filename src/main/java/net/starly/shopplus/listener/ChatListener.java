@@ -201,7 +201,7 @@ public class ChatListener implements Listener {
         inputMap.remove(player);
         Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
             player.openInventory(shopData.getItemDetailSettingInv());
-            invOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
+            invOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData.getName()));
         }, 1);
     }
 }

@@ -107,7 +107,7 @@ public class ShopCmd implements CommandExecutor {
                 ShopData shopData = ShopManager.getInstance().getShopData(args[1]);
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopInv());
-                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData));
+                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData.getName()));
                 }, 1);
                 break;
             }
@@ -133,7 +133,7 @@ public class ShopCmd implements CommandExecutor {
                 ShopData shopData = ShopManager.getInstance().getShopData(args[1]);
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopSettingInv());
-                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
+                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData.getName()));
                 }, 1);
                 break;
             }

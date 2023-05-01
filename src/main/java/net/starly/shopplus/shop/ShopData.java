@@ -3,6 +3,7 @@ package net.starly.shopplus.shop;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.starly.core.data.Config;
+import net.starly.shopplus.ShopPlusMain;
 import net.starly.shopplus.context.ConfigContext;
 import net.starly.shopplus.enums.ButtonType;
 import net.starly.shopplus.util.GUIStackUtil;
@@ -31,13 +32,6 @@ public class ShopData {
 
     protected ShopData(File configFile) {
         this.configFile = configFile;
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
         this.config = YamlConfiguration.loadConfiguration(configFile);
     }
 

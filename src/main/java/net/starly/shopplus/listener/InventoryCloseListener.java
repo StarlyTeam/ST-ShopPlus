@@ -6,6 +6,7 @@ import net.starly.shopplus.ShopPlusMain;
 import net.starly.shopplus.data.InvOpenMap;
 import net.starly.shopplus.enums.InventoryOpenType;
 import net.starly.shopplus.shop.ShopData;
+import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +29,7 @@ public class InventoryCloseListener implements Listener {
         if (!invOpenMap.has(player)) return;
 
         InventoryOpenType openType = invOpenMap.get(player).getFirst();
-        ShopData shopData = invOpenMap.get(player).getSecond();
+        ShopData shopData = ShopManager.getInstance().getShopData(invOpenMap.get(player).getSecond());
         invOpenMap.remove(player);
 
         switch (openType) {
@@ -44,7 +45,7 @@ public class InventoryCloseListener implements Listener {
 
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopSettingInv());
-                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
+                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData.getName()));
                 }, 1);
             }
         }

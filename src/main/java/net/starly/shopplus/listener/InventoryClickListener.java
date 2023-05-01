@@ -20,6 +20,7 @@ import net.starly.shopplus.enums.InventoryOpenType;
 import net.starly.shopplus.message.MessageContext;
 import net.starly.shopplus.message.enums.MessageType;
 import net.starly.shopplus.shop.ShopData;
+import net.starly.shopplus.shop.ShopManager;
 import net.starly.shopplus.util.ItemStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -57,7 +58,7 @@ public class InventoryClickListener implements Listener {
         ConfigContext configContext = ConfigContext.getInstance();
 
         InventoryOpenType openType = invOpenMap.get(player).getFirst();
-        ShopData shopData = invOpenMap.get(player).getSecond();
+        ShopData shopData = ShopManager.getInstance().getShopData(invOpenMap.get(player).getSecond());
 
         ItemStack currentStack = event.getCurrentItem();
         ClickType clickType = event.getClick();
@@ -240,7 +241,7 @@ public class InventoryClickListener implements Listener {
                     case ITEM_SETTING : {
                         Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getItemSettingInv());
-                            invOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_SETTING, shopData));
+                            invOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_SETTING, shopData.getName()));
                         }, 1);
                         break;
                     }
@@ -248,7 +249,7 @@ public class InventoryClickListener implements Listener {
                     case ITEM_DETAIL_SETTING : {
                         Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                             player.openInventory(shopData.getItemDetailSettingInv());
-                            invOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData));
+                            invOpenMap.set(player, new Pair<>(InventoryOpenType.ITEM_DETAIL_SETTING, shopData.getName()));
                         }, 1);
                         break;
                     }

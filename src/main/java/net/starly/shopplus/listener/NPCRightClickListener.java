@@ -51,7 +51,7 @@ public class NPCRightClickListener implements Listener {
             ShopData shopData = ShopManager.getInstance().getShopData(npcMap.get(npc.getName()));
             if (player.isSneaking() && player.hasPermission("starly.shop.edit." + shopData.getName())) {
                 player.openInventory(shopData.getShopSettingInv());
-                invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData));
+                invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData.getName()));
                 return;
             }
 
@@ -65,7 +65,7 @@ public class NPCRightClickListener implements Listener {
 
                 @Override
                 public void run() {
-                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData));
+                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData.getName()));
                 }
             }.runTaskLater(ShopPlusMain.getInstance(), 1L);
         } else {
