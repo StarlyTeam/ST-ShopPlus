@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs (unstable)">
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/message/MessageLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/message/MessageLoader.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,6 +166,7 @@
       <workItem from="1682866290740" duration="21000" />
       <workItem from="1682866408371" duration="4295000" />
       <workItem from="1682921241905" duration="59000" />
+      <workItem from="1682921855472" duration="392000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Git Bugs">
       <created>1678188597809</created>
@@ -418,7 +420,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682920970035</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="fix: Bugs">
+      <created>1682922244168</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1682922244168</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,8 +452,8 @@
     <MESSAGE value="project" />
     <MESSAGE value="refactor: style code" />
     <MESSAGE value="modify: version" />
-    <MESSAGE value="fix: Bugs" />
     <MESSAGE value="fix: Bugs (unstable)" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs (unstable)" />
+    <MESSAGE value="fix: Bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs" />
   </component>
 </project>

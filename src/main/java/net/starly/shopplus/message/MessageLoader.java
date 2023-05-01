@@ -28,7 +28,7 @@ public class MessageLoader {
 
         MessageContext msgContext = MessageContext.getInstance();
         section.getKeys(true).forEach(key -> {
-            msgContext.set(type, key, section.isList(key) ? String.join("\n&r", section.getStringList(key)) : section.getString(key));
+            msgContext.set(type, key, section.isList(key) ? String.join("\n&r{prefix}", section.getStringList(key)) : section.getString(key));
         });
     }
 }

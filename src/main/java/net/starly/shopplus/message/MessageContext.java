@@ -23,7 +23,7 @@ public class MessageContext {
     }
 
     public STMessage get(MessageType type, String key, String def) {
-        return new STMessage(getPrefix(), map.getOrDefault(type, new HashMap<>()).getOrDefault(key, def));
+        return new STMessage(getPrefix(), map.getOrDefault(type, new HashMap<>()).getOrDefault(key, def).replace("{prefix}", getPrefix()));
     }
 
     public STMessage get(MessageType type, String key) {
@@ -35,7 +35,7 @@ public class MessageContext {
     }
 
     public STMessage get(MessageType type, String key, String def, Function<String, String> replacer) {
-        return new STMessage(getPrefix(), replacer.apply(get(type, key, def).getMessage()));
+        return new STMessage(getPrefix(), replacer.apply(get(type, key, def).getMessage()).replace("{prefix}", getPrefix()));
     }
 
     public STMessage get(MessageType type, String key, Function<String, String> replacer) {
