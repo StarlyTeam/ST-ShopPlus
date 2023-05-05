@@ -132,7 +132,10 @@ public class InventoryClickListener implements Listener {
                     }
 
                     getEconomy().withdrawPlayer(player, totalPurchased * shopData.getBuyPrice(slot));
-                    player.sendMessage(msgContext.get(MessageType.NORMAL, "itemBuyed").getMessage().replace("{price}", String.valueOf(shopData.getBuyPrice(slot) * totalPurchased)).replace("{amount}", String.valueOf(totalPurchased)));
+
+
+                    int finalTotalPurchased = totalPurchased;
+                    msgContext.get(MessageType.NORMAL, "itemBuyed", msg -> msg.replace("{price}", String.valueOf(shopData.getBuyPrice(slot) * finalTotalPurchased)).replace("{amount}", String.valueOf(finalTotalPurchased))).send(player);
                 } else if (clickType.name().equals(configContext.get("click.sell", String.class))) {
                     if (shopData.getSellPrice(slot) == -1) {
                         msgContext.get(MessageType.ERROR, "cannotSellThisItem").send(player);

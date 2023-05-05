@@ -39,7 +39,9 @@ public class MarketPriceTask extends BukkitRunnable {
 
         for (String shopName : shops) {
             ShopData shopData = ShopManager.getInstance().getShopData(shopName);
+            System.out.println("A");
             if (!shopData.isMarketPriceEnabled()) return;
+            System.out.println("B");
 
             FileConfiguration config = shopData.getConfig();
             for (int slot = 0; slot < shopData.getSize(); slot++) {

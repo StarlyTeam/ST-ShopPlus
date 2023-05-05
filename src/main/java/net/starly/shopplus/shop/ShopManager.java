@@ -31,8 +31,11 @@ public class ShopManager {
     }
 
     public ShopData getShopData(String name) {
-        if (!map.containsKey(name)) map.put(name, new ShopData(new File(ShopPlusMain.getInstance().getDataFolder(), "shop/" + name + ".yml")));
-        return map.get(name);
+        if (!map.containsKey(name)) {
+            ShopData shopData = new ShopData(new File(ShopPlusMain.getInstance().getDataFolder(), "shop/" + name + ".yml"));
+            map.put(name, shopData);
+            return shopData;
+        } else return map.get(name);
     }
 
     public void createShop(String name, int line, String title) {

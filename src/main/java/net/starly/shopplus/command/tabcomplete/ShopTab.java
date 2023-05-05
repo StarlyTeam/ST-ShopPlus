@@ -26,6 +26,7 @@ public class ShopTab implements TabCompleter {
             completions.add(label.equals("shop") ? "edit" : "편집");
             if (sender.hasPermission("starly.shop.list")) completions.add(label.equals("shop") ? "list" : "목록");
             if (sender.hasPermission("starly.shop.delete")) completions.add(label.equals("shop") ? "delete" : "삭제");
+            if (sender.hasPermission("starly.shop.reload")) completions.add(label.equals("shop") ? "reload" : "리로드");
         } else if (args.length == 2) {
             if (Arrays.asList("open", "열기", "edit", "편집", "delete", "삭제").contains(args[0].toLowerCase())) completions.addAll(ShopManager.getInstance().getShopNames());
             else if (args[0].equalsIgnoreCase("create")) completions.add("<Name>");

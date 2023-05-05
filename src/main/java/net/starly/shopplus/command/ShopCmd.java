@@ -10,6 +10,7 @@ import net.starly.shopplus.enums.InventoryOpenType;
 import net.starly.shopplus.message.MessageContext;
 import net.starly.shopplus.message.MessageLoader;
 import net.starly.shopplus.message.enums.MessageType;
+import net.starly.shopplus.scheduler.MarketPriceTask;
 import net.starly.shopplus.shop.ShopData;
 import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
@@ -197,6 +198,9 @@ public class ShopCmd implements CommandExecutor {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+
+                MarketPriceTask.stop();
+                MarketPriceTask.start(ConfigContext.getInstance().get("marketPrice.updateInterval", Integer.class) * 20L);
 
                 msgContext.get(MessageType.NORMAL, "reloadComplete").send(player);
                 return true;
