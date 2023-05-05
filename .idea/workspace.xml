@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/ShopCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/ShopCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/tabcomplete/ShopTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/tabcomplete/ShopTab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/scheduler/MarketPriceTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/scheduler/MarketPriceTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/message.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/message.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
-    </list>
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="modify: version" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -177,7 +167,7 @@
       <workItem from="1682927805787" duration="7000" />
       <workItem from="1683029729626" duration="72000" />
       <workItem from="1683030672278" duration="22000" />
-      <workItem from="1683254228150" duration="3368000" />
+      <workItem from="1683254228150" duration="3571000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Git Bugs">
       <created>1678188597809</created>
@@ -445,7 +435,21 @@
       <option name="project" value="LOCAL" />
       <updated>1682922451205</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="fix: Bugs">
+      <created>1683259465993</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1683259465994</updated>
+    </task>
+    <task id="LOCAL-00040" summary="modify: version">
+      <created>1683259481130</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1683259481130</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -469,9 +473,9 @@
     <MESSAGE value="modify: website" />
     <MESSAGE value="project" />
     <MESSAGE value="refactor: style code" />
-    <MESSAGE value="modify: version" />
     <MESSAGE value="fix: Bugs (unstable)" />
     <MESSAGE value="fix: Bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs" />
+    <MESSAGE value="modify: version" />
+    <option name="LAST_COMMIT_MESSAGE" value="modify: version" />
   </component>
 </project>
