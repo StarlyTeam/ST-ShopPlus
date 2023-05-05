@@ -29,6 +29,11 @@ public class ShopManager {
         return map.get(name);
     }
 
+
+    public void loadShop(String shopName, File configFile) {
+        map.put(shopName, new ShopData(configFile));
+    }
+
     public void createShop(String name, int line, String title) {
         try {
             File configFile = new File(ShopPlusMain.getInstance().getDataFolder(), "shop/" + name + ".yml");
@@ -58,6 +63,7 @@ public class ShopManager {
         File configFile = new File(ShopPlusMain.getInstance().getDataFolder(), "shop/" + name + ".yml");
         if (configFile.exists()) configFile.delete();
     }
+
 
     public void saveAll() {
         getShopNames().stream().map(ShopManager.getInstance()::getShopData).forEach(ShopData::saveConfig);

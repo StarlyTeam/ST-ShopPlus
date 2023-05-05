@@ -107,7 +107,12 @@ public class ShopPlusMain extends JavaPlugin {
         /* INITIALIZE
         ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
         ShopManager shopManager = ShopManager.getInstance();
-        Arrays.stream(Objects.requireNonNull(new File(getDataFolder(), "shop/").listFiles())).map(File::getName).map(name -> name.substring(0, name.lastIndexOf('.'))).forEach(shopManager::getShopData);
+        Arrays.stream(new File(getDataFolder(), "shop/").listFiles()).forEach(configFile -> {
+            String shopName = configFile.getName();
+            shopName = shopName.substring(0, shopName.lastIndexOf('.'));
+
+            shopManager.loadShop(shopName, configFile);
+        });
 
         /* SUPPORT
         ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
