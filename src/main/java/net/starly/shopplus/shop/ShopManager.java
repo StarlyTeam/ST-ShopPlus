@@ -22,20 +22,11 @@ public class ShopManager {
 
 
     public List<String> getShopNames() {
-        try {
-            return Arrays.stream(new File(ShopPlusMain.getInstance().getDataFolder(), "shop/").list()).map(name -> name.replace(".yml", "")).collect(Collectors.toList());
-        } catch (NullPointerException ex) {
-            new File(ShopPlusMain.getInstance().getDataFolder(), "shop/").mkdirs();
-            return new ArrayList<>();
-        }
+        return new ArrayList<>(map.keySet());
     }
 
     public ShopData getShopData(String name) {
-        if (!map.containsKey(name)) {
-            ShopData shopData = new ShopData(new File(ShopPlusMain.getInstance().getDataFolder(), "shop/" + name + ".yml"));
-            map.put(name, shopData);
-            return shopData;
-        } else return map.get(name);
+        return map.get(name);
     }
 
     public void createShop(String name, int line, String title) {
@@ -62,7 +53,13 @@ public class ShopManager {
     }
 
     public void deleteShop(String name) {
+        map.remove(name);
+
         File configFile = new File(ShopPlusMain.getInstance().getDataFolder(), "shop/" + name + ".yml");
         if (configFile.exists()) configFile.delete();
+    }
+
+    public void saveAll() {
+        getShopNames().stream().map(ShopManager.getInstance()::getShopData).forEach(ShopData::saveConfig);
     }
 }

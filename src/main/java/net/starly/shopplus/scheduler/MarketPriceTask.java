@@ -37,45 +37,44 @@ public class MarketPriceTask extends BukkitRunnable {
     public void run() {
         List<String> shops = ShopManager.getInstance().getShopNames();
 
-        for (String shopName : shops) {
+        shops.forEach(shopName -> {
             ShopData shopData = ShopManager.getInstance().getShopData(shopName);
-            if (!shopData.isMarketPriceEnabled()) return;
+            if (shopData.isMarketPriceEnabled()) {
+                FileConfiguration config = shopData.getConfig();
 
-            FileConfiguration config = shopData.getConfig();
-            for (int slot = 0; slot < shopData.getSize(); slot++) {
-                ItemStack item = shopData.getItem(slot);
-                if (item == null) continue;
+                for (int slot = 0; slot < shopData.getSize(); slot++) {
+                    ItemStack item = shopData.getItem(slot);
+                    if (item == null) continue;
 
-                // SELL
-                if (shopData.isSellable(slot)) {
-                    int sellPrice_MIN = config.getInt("shop.prices." + slot + ".sell.min");
-                    int sellPrice_MAX = config.getInt("shop.prices." + slot + ".sell.max");
-                    int newSellPrice = randomInt(sellPrice_MIN, sellPrice_MAX);
+                    // SELL
+                    if (shopData.isSellable(slot)) {
+                        int sellPrice_MIN = config.getInt("shop.prices." + slot + ".sell.min");
+                        int sellPrice_MAX = config.getInt("shop.prices." + slot + ".sell.max");
+                        int newSellPrice = randomInt(sellPrice_MIN, sellPrice_MAX);
 
-                    shopData.setSellPrice(slot, newSellPrice);
-                }
+                        shopData.setSellPrice(slot, newSellPrice);
+                    }
 
-                // BUY
-                if (shopData.isBuyable(slot)) {
-                    int buyPrice_MIN = config.getInt("shop.prices." + slot + ".buy.min");
-                    int buyPrice_MAX = config.getInt("shop.prices." + slot + ".buy.max");
-                    int newBuyPrice = randomInt(buyPrice_MIN, buyPrice_MAX);
+                    // BUY
+                    if (shopData.isBuyable(slot)) {
+                        int buyPrice_MIN = config.getInt("shop.prices." + slot + ".buy.min");
+                        int buyPrice_MAX = config.getInt("shop.prices." + slot + ".buy.max");
+                        int newBuyPrice = randomInt(buyPrice_MIN, buyPrice_MAX);
 
-                    shopData.setBuyPrice(slot, newBuyPrice);
+                        shopData.setBuyPrice(slot, newBuyPrice);
+                    }
                 }
             }
 
-            for (UUID key : invOpenMap.getKeys()) {
-                Pair<InventoryOpenType, String> data = invOpenMap.get(key);
+            for (UUID playerId : invOpenMap.getKeys()) {
+                Pair<InventoryOpenType, String> data = invOpenMap.get(playerId);
                 if (!data.getSecond().equals(shopData.getName())) return;
 
-                Player player = Bukkit.getPlayer(key);
-                if (data.getFirst() == InventoryOpenType.SHOP)
-                    player.getOpenInventory().getTopInventory().setContents(shopData.getShopInv().getContents());
-                else if (data.getFirst() == InventoryOpenType.ITEM_DETAIL_SETTING)
-                    player.getOpenInventory().getTopInventory().setContents(shopData.getItemDetailSettingInv().getContents());
+                Player player = Bukkit.getPlayer(playerId);
+                if (data.getFirst() == InventoryOpenType.SHOP) player.getOpenInventory().getTopInventory().setContents(shopData.getShopInv().getContents());
+                else if (data.getFirst() == InventoryOpenType.ITEM_DETAIL_SETTING) player.getOpenInventory().getTopInventory().setContents(shopData.getItemDetailSettingInv().getContents());
             }
-        }
+        });
     }
 
 

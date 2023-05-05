@@ -18,9 +18,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ShopPlusMain extends JavaPlugin {
     private static ShopPlusMain instance;
@@ -100,22 +104,26 @@ public class ShopPlusMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(invOpenMap), instance);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(inputMap), instance);
 
-        if (!isPluginEnabled("Citizens")) {
-            Bukkit.getLogger().warning("[" + getName() + "] Citizens 플러그인이 적용되지 않았습니다! (NPC 기능 사용이 불가능합니다)");
-        } else {
+        /* INITIALIZE
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+        ShopManager shopManager = ShopManager.getInstance();
+        Arrays.stream(Objects.requireNonNull(new File(getDataFolder(), "shop/").listFiles())).map(File::getName).map(name -> name.substring(0, name.lastIndexOf('.'))).forEach(shopManager::getShopData);
+
+        /* SUPPORT
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
+        if (isPluginEnabled("Citizens")) {
             getServer().getPluginManager().registerEvents(new NPCRemoveListener(npcMap), instance);
             getServer().getPluginManager().registerEvents(new NPCRightClickListener(invOpenMap, inputMap, npcMap), instance);
 
             /* INITIALIZE
             ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-            ShopManager shopManager = ShopManager.getInstance();
             shopManager.getShopNames().forEach(shopName -> {
                 ShopData shopData = shopManager.getShopData(shopName);
                 if (shopData.hasNPC()) npcMap.set(shopData.getNPC(), shopName);
             });
 
             getLogger().info("성공적으로 모든 NPC를 불러왔습니다.");
-        }
+        } else getLogger().warning("Citizens 플러그인이 적용되지 않았습니다! (NPC 기능 사용이 불가능합니다)");
     }
 
     @Override
@@ -126,7 +134,7 @@ public class ShopPlusMain extends JavaPlugin {
 
         /* SAVE DATA
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        ShopManager.getInstance().getShopNames().stream().map(ShopManager.getInstance()::getShopData).forEach(ShopData::saveConfig);
+        ShopManager.getInstance().saveAll();
     }
 
     public static ShopPlusMain getInstance() {

@@ -61,10 +61,13 @@ public class ShopCmd implements CommandExecutor {
                 } else if (args.length == 3) {
                     msgContext.get(MessageType.ERROR, "noShopTitle").send(player);
                     return true;
-                } else if (ShopManager.getInstance().getShopNames().contains(args[1])) {
+                }
+
+                if (ShopManager.getInstance().getShopData(args[1]) != null) {
                     msgContext.get(MessageType.ERROR, "shopAlreadyExists").send(player);
                     return true;
                 }
+
 
                 int line;
                 try {
@@ -92,20 +95,20 @@ public class ShopCmd implements CommandExecutor {
                 } else if (args.length != 2) {
                     msgContext.get(MessageType.ERROR, "wrongCommand").send(player);
                     return true;
-                }
-
-                if (!player.hasPermission("starly.shop.open." + args[1])) {
+                } else if (!player.hasPermission("starly.shop.open." + args[1])) {
                     msgContext.get(MessageType.ERROR, "noPermission").send(player);
-                    return true;
-                } else if (!ShopManager.getInstance().getShopNames().contains(args[1])) {
-                    msgContext.get(MessageType.ERROR, "shopNotExists").send(player);
-                    return true;
-                } else if (!(player.isOp() || ShopManager.getInstance().getShopData(args[1]).isEnabled())) {
-                    msgContext.get(MessageType.ERROR, "shopNotOpened").send(player);
                     return true;
                 }
 
                 ShopData shopData = ShopManager.getInstance().getShopData(args[1]);
+                if (shopData == null) {
+                    msgContext.get(MessageType.ERROR, "shopNotExists").send(player);
+                    return true;
+                } else if (!(player.isOp() || shopData.isEnabled())) {
+                    msgContext.get(MessageType.ERROR, "shopNotOpened").send(player);
+                    return true;
+                }
+
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopInv());
                     invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData.getName()));
