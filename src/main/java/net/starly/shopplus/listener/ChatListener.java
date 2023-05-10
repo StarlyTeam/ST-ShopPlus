@@ -25,7 +25,7 @@ public class ChatListener implements Listener {
     private final InvOpenMap invOpenMap;
     private final InputMap inputMap;
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;

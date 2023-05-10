@@ -215,7 +215,7 @@ public class ShopData {
                     config.set("shop.prices." + slot + ".buy.now", -1);
                     config.set("shop.prices." + slot + ".buy.min", -1);
                     config.set("shop.prices." + slot + ".buy.max", -1);
-                    config.set("shop.stocks." + slot, 0);
+                    config.set("shop.stocks." + slot, -1);
                 }
             });
 
