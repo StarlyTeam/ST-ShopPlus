@@ -41,7 +41,7 @@ public class ShopManager {
 
 
             FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-            config.set("shop.enabled", false);
+            config.set("shop.enabled", true);
             config.set("shop.marketPrice", false);
             config.set("shop.title", title);
             config.set("shop.size", line * 9);
