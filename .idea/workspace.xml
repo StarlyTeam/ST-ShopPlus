@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="project">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="modify: `config.yml` default value">
       <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -174,21 +173,7 @@
       <workItem from="1683259879227" duration="112000" />
       <workItem from="1683261409042" duration="3020000" />
       <workItem from="1683270175187" duration="1663000" />
-      <workItem from="1683722255339" duration="2865000" />
-    </task>
-    <task id="LOCAL-00002" summary="System Update">
-      <created>1678190148581</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1678190148581</updated>
-    </task>
-    <task id="LOCAL-00003" summary="feat: Stock System">
-      <created>1678198484811</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1678198484811</updated>
+      <workItem from="1683722255339" duration="3481000" />
     </task>
     <task id="LOCAL-00004" summary="feat: `NPC System`&#10;fix: `Stock System`">
       <created>1678588052203</created>
@@ -519,7 +504,21 @@
       <option name="project" value="LOCAL" />
       <updated>1683794248132</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="project">
+      <created>1683806178698</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1683806178698</updated>
+    </task>
+    <task id="LOCAL-00052" summary="modify: `config.yml` default value">
+      <created>1683806194332</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1683806194332</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -548,6 +547,7 @@
     <MESSAGE value="modify: default value" />
     <MESSAGE value="modify: version" />
     <MESSAGE value="project" />
-    <option name="LAST_COMMIT_MESSAGE" value="project" />
+    <MESSAGE value="modify: `config.yml` default value" />
+    <option name="LAST_COMMIT_MESSAGE" value="modify: `config.yml` default value" />
   </component>
 </project>
