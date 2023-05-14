@@ -1,8 +1,7 @@
 package net.starly.shopplus.data;
 
 import net.starly.core.jb.util.Pair;
-import net.starly.shopplus.enums.InventoryOpenType;
-import net.starly.shopplus.shop.ShopData;
+import net.starly.shopplus.enums.InventoryType;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -12,21 +11,21 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class InvOpenMap {
-    private final Map<UUID, Pair<InventoryOpenType, String>> map = new HashMap<>();
+    private final Map<UUID, Pair<InventoryType, String>> map = new HashMap<>();
 
-    public Pair<InventoryOpenType, String> get(Player player) {
+    public Pair<InventoryType, String> get(Player player) {
         return get(player.getUniqueId());
     }
 
-    public Pair<InventoryOpenType, String> get(UUID uuid) {
+    public Pair<InventoryType, String> get(UUID uuid) {
         return map.get(uuid);
     }
 
-    public void set(Player key, Pair<InventoryOpenType, String> value) {
+    public void set(Player key, Pair<InventoryType, String> value) {
         set(key.getUniqueId(), value);
     }
 
-    public void set(UUID key, Pair<InventoryOpenType, String> value) {
+    public void set(UUID key, Pair<InventoryType, String> value) {
         map.put(key, value);
     }
 

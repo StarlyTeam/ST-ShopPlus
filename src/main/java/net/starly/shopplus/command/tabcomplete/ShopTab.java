@@ -32,8 +32,8 @@ public class ShopTab implements TabCompleter {
             else if (args[0].equalsIgnoreCase("create")) completions.add("<Name>");
             else if (args[0].equalsIgnoreCase("생성")) completions.add("<이름>");
         } else if (args.length == 3) {
-            if (args[0].equalsIgnoreCase("create")) completions.addAll(Arrays.asList("<Line>", "1", "2", "3", "4", "5", "6"));
-            else if (args[0].equalsIgnoreCase("생성")) completions.addAll(Arrays.asList("<줄>", "1", "2", "3", "4", "5", "6"));
+            if (args[0].equalsIgnoreCase("create")) completions.addAll(Arrays.asList("<Line>", "1", "2", "3", "4", "5"));
+            else if (args[0].equalsIgnoreCase("생성")) completions.addAll(Arrays.asList("<줄>", "1", "2", "3", "4", "5"));
         } else if (args.length == 4) {
             if (args[0].equalsIgnoreCase("create")) completions.add("<Title>");
             else if (args[0].equalsIgnoreCase("생성")) completions.add("<제목>");

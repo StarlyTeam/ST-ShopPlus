@@ -173,8 +173,8 @@ errorMessages:
   # 상점 줄수가 숫자가 아닌 경우
   shopLineMustBeNumber: "&c상점 줄수는 숫자로 입력해주세요."
 
-  # 상점 줄수가 1~6이 아닌 경우
-  wrongShopLine: "&c상점 줄수는 1~6까지 입력해주세요."
+  # 상점 줄수가 1~5이 아닌 경우
+  wrongShopLine: "&c상점 줄수는 1~5까지 입력해주세요."
 
 
   # 상점이 존재하지 않는 경우

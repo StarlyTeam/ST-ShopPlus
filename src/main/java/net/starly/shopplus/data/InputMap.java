@@ -10,21 +10,22 @@ import java.util.Map;
 import java.util.UUID;
 
 public class InputMap {
-    private final Map<UUID, Pair<InputType, Pair<String, Integer>>> map = new HashMap<>();
+    // Map<플레이어UUID, Pair<입력종류, Pair<상점이름, Pair<페이지, 슬롯>>>>
+    private final Map<UUID, Pair<InputType, Pair<String, Pair<Integer, Integer>>>> map = new HashMap<>();
 
-    public Pair<InputType, Pair<String, Integer>> get(Player player) {
+    public Pair<InputType, Pair<String, Pair<Integer, Integer>>> get(Player player) {
         return get(player.getUniqueId());
     }
 
-    public Pair<InputType, Pair<String, Integer>> get(UUID uuid) {
+    public Pair<InputType, Pair<String, Pair<Integer, Integer>>> get(UUID uuid) {
         return map.get(uuid);
     }
 
-    public void set(Player key, Pair<InputType, Pair<String, Integer>> value) {
+    public void set(Player key, Pair<InputType, Pair<String, Pair<Integer, Integer>>> value) {
         set(key.getUniqueId(), value);
     }
 
-    public void set(UUID key, Pair<InputType, Pair<String, Integer>> value) {
+    public void set(UUID key, Pair<InputType, Pair<String, Pair<Integer, Integer>>> value) {
         map.put(key, value);
     }
 

@@ -1,14 +1,13 @@
 package net.starly.shopplus.shop;
 
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import net.starly.core.data.Config;
-import net.starly.shopplus.ShopPlusMain;
+import net.starly.core.jb.util.Pair;
 import net.starly.shopplus.context.ConfigContext;
 import net.starly.shopplus.enums.ButtonType;
+import net.starly.shopplus.enums.InventoryType;
 import net.starly.shopplus.util.GUIStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
@@ -49,8 +48,7 @@ public class ShopData {
         }
     }
 
-
-    /* Enable
+    /* Options
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     public String getName() {
         return configFile.getName().replace(".yml", "");
@@ -75,104 +73,121 @@ public class ShopData {
 
     /* Sell
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-    public boolean isSellable(int slot) {
-        return getSellPrice(slot) != -1;
+    public boolean isSellable(int page, int slot) {
+        return getSellPrice(page, slot) != -1;
     }
 
-    public int getSellPrice(int slot) {
-        if (isMarketPriceEnabled()) return config.getInt("shop.prices." + slot + ".sell.now");
-        else return getOriginSellPrice(slot);
+    public int getSellPrice(int page, int slot) {
+        if (isMarketPriceEnabled()) return config.getInt("shop.prices." + page + "." + slot + ".sell.now");
+        else return getOriginSellPrice(page, slot);
     }
 
-    public void setSellPrice(int slot, int price) {
-        config.set("shop.prices." + slot + ".sell.now", price);
+    public void setSellPrice(int page, int slot, int price) {
+        config.set("shop.prices." + page + "." + slot + ".sell.now", price);
     }
 
-    public int getOriginSellPrice(int slot) {
-        return config.getInt("shop.prices." + slot + ".sell.origin");
+    public int getOriginSellPrice(int page, int slot) {
+        return config.getInt("shop.prices." + page + "." + slot + ".sell.origin");
     }
 
-    public void setOriginSellPrice(int slot, int price) {
-        config.set("shop.prices." + slot + ".sell.origin", price);
+    public void setOriginSellPrice(int page, int slot, int price) {
+        config.set("shop.prices." + page + "." + slot + ".sell.origin", price);
     }
 
-    public int getMinSellPrice(int slot) {
-        return config.getInt("shop.prices." + slot + ".sell.min");
+    public int getMinSellPrice(int page, int slot) {
+        return config.getInt("shop.prices." + page + "." + slot + ".sell.min");
     }
 
-    public void setMinSellPrice(int slot, int price) {
-        config.set("shop.prices." + slot + ".sell.min", price);
+    public void setMinSellPrice(int page, int slot, int price) {
+        config.set("shop.prices." + page + "." + slot + ".sell.min", price);
     }
 
-    public int getMaxSellPrice(int slot) {
-        return config.getInt("shop.prices." + slot + ".sell.max");
+    public int getMaxSellPrice(int page, int slot) {
+        return config.getInt("shop.prices." + page + "." + slot + ".sell.max");
     }
 
-    public void setMaxSellPrice(int slot, int price) {
-        config.set("shop.prices." + slot + ".sell.max", price);
+    public void setMaxSellPrice(int page, int slot, int price) {
+        config.set("shop.prices." + page + "." + slot + ".sell.max", price);
     }
 
 
     /* Buy
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-    public boolean isBuyable(int slot) {
-        return getBuyPrice(slot) != -1;
+    public boolean isBuyable(int page, int slot) {
+        return getBuyPrice(page, slot) != -1;
     }
 
-    public int getBuyPrice(int slot) {
-        if (isMarketPriceEnabled()) return config.getInt("shop.prices." + slot + ".buy.now");
-        else return getOriginBuyPrice(slot);
+    public int getBuyPrice(int page, int slot) {
+        if (isMarketPriceEnabled()) return config.getInt("shop.prices." + page + "." + slot + ".buy.now");
+        else return getOriginBuyPrice(page, slot);
     }
 
-    public void setBuyPrice(int slot, int price) {
-        config.set("shop.prices." + slot + ".buy.now", price);
+    public void setBuyPrice(int page, int slot, int price) {
+        config.set("shop.prices." + page + "." + slot + ".buy.now", price);
     }
 
-    public int getOriginBuyPrice(int slot) {
-        return config.getInt("shop.prices." + slot + ".buy.origin");
+    public int getOriginBuyPrice(int page, int slot) {
+        return config.getInt("shop.prices." + page + "." + slot + ".buy.origin");
     }
 
-    public void setOriginBuyPrice(int slot, int price) {
-        config.set("shop.prices." + slot + ".buy.origin", price);
+    public void setOriginBuyPrice(int page, int slot, int price) {
+        config.set("shop.prices." + page + "." + slot + ".buy.origin", price);
     }
 
-    public int getMinBuyPrice(int slot) {
-        return config.getInt("shop.prices." + slot + ".buy.min");
+    public int getMinBuyPrice(int page, int slot) {
+        return config.getInt("shop.prices." + page + "." + slot + ".buy.min");
     }
 
-    public void setMinBuyPrice(int slot, int price) {
-        config.set("shop.prices." + slot + ".buy.min", price);
+    public void setMinBuyPrice(int page, int slot, int price) {
+        config.set("shop.prices." + page + "." + slot + ".buy.min", price);
     }
 
-    public int getMaxBuyPrice(int slot) {
-        return config.getInt("shop.prices." + slot + ".buy.max");
+    public int getMaxBuyPrice(int page, int slot) {
+        return config.getInt("shop.prices." + page + "." + slot + ".buy.max");
     }
 
-    public void setMaxBuyPrice(int slot, int price) {
-        config.set("shop.prices." + slot + ".buy.max", price);
+    public void setMaxBuyPrice(int page, int slot, int price) {
+        config.set("shop.prices." + page + "." + slot + ".buy.max", price);
     }
 
 
     /* Stock
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-    public boolean hasStock(int slot) {
-        return getStock(slot) == -1 || getStock(slot) > 0;
+    public boolean hasStock(int page, int slot) {
+        return getStock(page, slot) == -1 || getStock(page, slot) > 0;
     }
 
-    public int getStock(int slot) {
-        return config.getInt("shop.stocks." + slot);
+    public int getStock(int page, int slot) {
+        return config.getInt("shop.stocks." + page + "." + slot);
     }
 
-    public void setStock(int slot, int stock) {
-        config.set("shop.stocks." + slot, stock);
+    public void setStock(int page, int slot, int stock) {
+        config.set("shop.stocks." + page + "." + slot, stock);
     }
 
 
     /* Item
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-    public Map<Integer, ItemStack> getItems() {
-        Object obj = config.get("shop.items");
-        if (obj == null) {
+    public int getMaxPage() {
+        return getItems().keySet().stream().mapToInt(Pair::getFirst).max().orElse(0);
+    }
+
+    public ItemStack getItem(int page, int slot) {
+        return getItems(page).get(slot);
+    }
+
+    public Map<Integer, ItemStack> getItems(int page) {
+        List<Map.Entry<Pair<Integer, Integer>, ItemStack>> tempItems = new ArrayList<>(getItems().entrySet());
+        tempItems.removeIf(value -> value.getKey().getFirst() != page);
+
+        Map<Integer, ItemStack> items = new HashMap<>();
+        tempItems.forEach(value -> items.put(value.getKey().getSecond(), value.getValue()));
+        return items;
+    }
+
+    public Map<Pair<Integer, Integer>, ItemStack> getItems() {
+        Object itemsData = config.get("shop.items");
+        if (itemsData == null) {
             try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); BukkitObjectOutputStream boos = new BukkitObjectOutputStream(bos)) {
                 boos.writeObject(new HashMap<>());
                 config.set("shop.items", bos.toByteArray());
@@ -181,55 +196,62 @@ public class ShopData {
             }
 
             return new HashMap<>();
-        }
-
-        try (ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) obj); BukkitObjectInputStream bois = new BukkitObjectInputStream(bis)) {
-            return (Map<Integer, ItemStack>) bois.readObject();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        } else {
+            try (ByteArrayInputStream bis = new ByteArrayInputStream((byte[]) itemsData); BukkitObjectInputStream bois = new BukkitObjectInputStream(bis)) {
+                return (Map<Pair<Integer, Integer>, ItemStack>) bois.readObject();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return null;
+            }
         }
     }
 
-    public ItemStack getItem(int slot) {
-        return getItems().get(slot);
+    public void setItems(int page, Map<Integer, ItemStack> items) {
+        Map<Pair<Integer, Integer>, ItemStack> newItems = getItems();
+        items.forEach((slot, itemStack) -> newItems.put(new Pair<>(page, slot), itemStack));
+        setItems(newItems);
     }
 
-    public void setItems(Map<Integer, ItemStack> items) {
+    public void setItems(Map<Pair<Integer, Integer>, ItemStack> items) {
+        Map<Pair<Integer, Integer>, ItemStack> filteredItems = new HashMap<>();
+        items.entrySet().stream().filter(entry -> entry.getValue() != null).forEach(entry -> filteredItems.put(entry.getKey(), entry.getValue()));
+        items = filteredItems;
+
+
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); BukkitObjectOutputStream boos = new BukkitObjectOutputStream(bos)) {
             boos.writeObject(items);
             config.set("shop.items", bos.toByteArray());
 
 
-            items.forEach((slot, itemStack) -> {
+            items.forEach((slotData, itemStack) -> {
+                int page = slotData.getFirst();
+                int slot = slotData.getSecond();
+
                 if (itemStack == null) {
-                    config.set("shop.items." + slot, null);
-                    config.set("shop.prices." + slot, null);
-                    config.set("shop.stocks." + slot, null);
-                } else if (config.getInt("shop.prices." + slot + ".sell.now") == 0) {
-                    config.set("shop.prices." + slot + ".sell.origin", -1);
-                    config.set("shop.prices." + slot + ".sell.now", -1);
-                    config.set("shop.prices." + slot + ".sell.min", -1);
-                    config.set("shop.prices." + slot + ".sell.max", -1);
-                    config.set("shop.prices." + slot + ".buy.origin", -1);
-                    config.set("shop.prices." + slot + ".buy.now", -1);
-                    config.set("shop.prices." + slot + ".buy.min", -1);
-                    config.set("shop.prices." + slot + ".buy.max", -1);
-                    config.set("shop.stocks." + slot, -1);
+                    config.set("shop.items." + page + "." + slot, null);
+                    config.set("shop.prices." + page + "." + slot, null);
+                    config.set("shop.stocks." + page + "." + slot, null);
+                } else if (!config.contains("shop.prices." + page + "." + slot)) {
+                    ConfigurationSection priceSection = config.createSection("shop.prices." + page + "." + slot);
+                    priceSection.set("sell.origin", -1);
+                    priceSection.set("sell.now", -1);
+                    priceSection.set("sell.min", -1);
+                    priceSection.set("sell.max", -1);
+                    priceSection.set("buy.origin", -1);
+                    priceSection.set("buy.now", -1);
+                    priceSection.set("buy.min", -1);
+                    priceSection.set("buy.max", -1);
+                    config.set("shop.stocks." + page + "." + slot, -1);
                 }
             });
-
-            config.save(configFile);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void setItem(int slot, ItemStack itemStack) {
-        Map<Integer, ItemStack> items = getItems();
-        items.remove(slot);
-        items.put(slot, itemStack);
-
+    public void setItem(int page, int slot, ItemStack itemStack) {
+        Map<Pair<Integer, Integer>, ItemStack> items = getItems();
+        items.put(new Pair<>(page, slot), itemStack);
         setItems(items);
     }
 
@@ -244,9 +266,20 @@ public class ShopData {
         return config.getString("shop.title");
     }
 
-    public Inventory getShopInv() {
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle());
-        Map<Integer, ItemStack> items = getItems();
+    @SuppressWarnings("unchecked")
+    public Inventory getShopInv(int page) {
+        Inventory inventory = Bukkit.createInventory(null, getSize(), String.format("%s §r[%d]", getTitle(), page));
+        Map<Integer, ItemStack> items = new HashMap<>();
+
+        List<Map.Entry<Pair<Integer, Integer>, ItemStack>> tempItems = new ArrayList<>(getItems().entrySet());
+        tempItems.removeIf(value -> value.getKey().getFirst() != page);
+        tempItems.sort((obj1, obj2) -> {
+            int o1 = obj1.getKey().getSecond();
+            int o2 = obj2.getKey().getSecond();
+
+            return Integer.compare(o1, o2);
+        });
+        tempItems.forEach(entry -> items.put(entry.getKey().getSecond(), entry.getValue()));
 
         ConfigContext configContext = ConfigContext.getInstance();
         String cannotBuy = configContext.get("text.cannotBuy", String.class);
@@ -257,9 +290,9 @@ public class ShopData {
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            int sellPrice = config.getInt("shop.prices." + slot + ".sell.now");
-            int buyPrice = config.getInt("shop.prices." + slot + ".buy.now");
-            int stock = config.getInt("shop.stocks." + slot);
+            int sellPrice = getSellPrice(page, slot);
+            int buyPrice = getBuyPrice(page, slot);
+            int stock = getStock(page, slot);
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
@@ -270,24 +303,20 @@ public class ShopData {
                             ChatColor
                                     .translateAlternateColorCodes('&', line)
                                     .replace("{sellPrice}", ChatColor
-                                            .translateAlternateColorCodes('&',
-                                                    (sellPrice != -1 ?
-                                                            sellPrice : cannotSell) + ""))
+                                            .translateAlternateColorCodes('&', String.valueOf(sellPrice != -1 ? sellPrice : cannotSell)))
                                     .replace("{buyPrice}", ChatColor
-                                            .translateAlternateColorCodes('&',
-                                                    (buyPrice != -1 ?
-                                                            buyPrice : cannotBuy) + ""))
+                                            .translateAlternateColorCodes('&', String.valueOf(buyPrice != -1 ? buyPrice : cannotBuy)))
                                     .replace("{stock}", ChatColor
-                                            .translateAlternateColorCodes('&',
-                                                    stock != 0 ?
-                                                            (stock == -1 ? unlimited : stock + "")
-                                                            : soldOut)))
+                                            .translateAlternateColorCodes('&', stock != 0 ? (stock == -1 ? unlimited : String.valueOf(stock)) : soldOut)))
                     .collect(Collectors.toList()));
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
             inventory.setItem(slot, itemStack);
         });
+
+        inventory.setItem(inventory.getSize() - 6, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        inventory.setItem(inventory.getSize() - 4, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
 
         return inventory;
     }
@@ -304,17 +333,19 @@ public class ShopData {
         return inventory;
     }
 
-    public Inventory getItemSettingInv() {
+    public Inventory getItemSettingInv(int page) {
+        Inventory inventory = Bukkit.createInventory(null, getSize(), String.format("%s §r [아이템 설정: %d]", getTitle(), page));
+        getItems(page).forEach(inventory::setItem);
 
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle() + "§r [아이템 설정]");
-        getItems().forEach(inventory::setItem);
+        inventory.setItem(inventory.getSize() - 6, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        inventory.setItem(inventory.getSize() - 4, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
 
         return inventory;
     }
 
-    public Inventory getItemDetailSettingInv() {
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getTitle() + "§r [아이템 세부설정]");
-        Map<Integer, ItemStack> items = getItems();
+    public Inventory getItemDetailSettingInv(int page) {
+        Inventory inventory = Bukkit.createInventory(null, getSize(), String.format("%s §r [아이템 세부설정: %d]", getTitle(), page));
+        Map<Integer, ItemStack> items = getItems(page);
 
         ConfigContext configContext = ConfigContext.getInstance();
         String cannotBuy = configContext.get("text.cannotBuy", String.class);
@@ -324,10 +355,10 @@ public class ShopData {
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            int originSellPrice = config.getInt("shop.prices." + slot + ".sell.origin");
-            int originBuyPrice = config.getInt("shop.prices." + slot + ".buy.origin");
-            int sellPrice = config.getInt("shop.prices." + slot + ".sell.now");
-            int buyPrice = config.getInt("shop.prices." + slot + ".buy.now");
+            int originSellPrice = config.getInt("shop.prices." + page + "." + slot + ".sell.origin");
+            int originBuyPrice = config.getInt("shop.prices." + page + "." + slot + ".buy.origin");
+            int sellPrice = config.getInt("shop.prices." + page + "." + slot + ".sell.now");
+            int buyPrice = config.getInt("shop.prices." + page + "." + slot + ".buy.now");
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = Arrays.asList("§r§7---------------------------------------",
@@ -337,10 +368,10 @@ public class ShopData {
                     "§r§e› §f판매가격 : " + (originSellPrice == -1 ?
                             ChatColor.translateAlternateColorCodes('&', cannotSell)
                             : "§6" + originSellPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + sellPrice + "§7)" : "")),
-                    "§r§e› §f재고 : " + (hasStock(slot) ?
-                            (getStock(slot) == -1 ?
+                    "§r§e› §f재고 : " + (hasStock(page, slot) ?
+                            (getStock(page, slot) == -1 ?
                                     ChatColor.translateAlternateColorCodes('&', unlimited)
-                                    : "§6" + getStock(slot) + "개")
+                                    : "§6" + getStock(page, slot) + "개")
                             : ChatColor.translateAlternateColorCodes('&', configContext.get("text.soldOut", String.class))),
                     "§r§7---------------------------------------",
                     "§r§e› §f판매가격 설정 : 좌클릭",
@@ -363,7 +394,21 @@ public class ShopData {
             inventory.setItem(slot, itemStack);
         });
 
+        inventory.setItem(inventory.getSize() - 6, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        inventory.setItem(inventory.getSize() - 4, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+
+
         return inventory;
+    }
+
+    public Inventory getInv(InventoryType type, int page) {
+        switch (type) {
+            case SHOP: return getShopInv(page);
+            case SHOP_SETTING: return getShopSettingInv();
+            case ITEM_SETTING: return getItemSettingInv(page);
+            case ITEM_DETAIL_SETTING: return getItemDetailSettingInv(page);
+            default: return null;
+        }
     }
 
 

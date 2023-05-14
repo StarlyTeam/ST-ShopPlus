@@ -8,7 +8,7 @@ import net.starly.shopplus.ShopPlusMain;
 import net.starly.shopplus.data.InputMap;
 import net.starly.shopplus.data.InvOpenMap;
 import net.starly.shopplus.data.NPCMap;
-import net.starly.shopplus.enums.InventoryOpenType;
+import net.starly.shopplus.enums.InventoryType;
 import net.starly.shopplus.message.MessageContext;
 import net.starly.shopplus.message.enums.MessageType;
 import net.starly.shopplus.shop.ShopData;
@@ -51,7 +51,7 @@ public class NPCRightClickListener implements Listener {
             ShopData shopData = ShopManager.getInstance().getShopData(npcMap.get(npc.getName()));
             if (player.isSneaking() && player.hasPermission("starly.shop.edit." + shopData.getName())) {
                 player.openInventory(shopData.getShopSettingInv());
-                invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData.getName()));
+                invOpenMap.set(player, new Pair<>(InventoryType.SHOP_SETTING, shopData.getName()));
                 return;
             }
 
@@ -60,12 +60,12 @@ public class NPCRightClickListener implements Listener {
                 return;
             }
 
-            player.openInventory(shopData.getShopInv());
+            player.openInventory(shopData.getShopInv(1));
             new BukkitRunnable() {
 
                 @Override
                 public void run() {
-                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData.getName()));
+                    invOpenMap.set(player, new Pair<>(InventoryType.SHOP, shopData.getName() + "|" + 1));
                 }
             }.runTaskLater(ShopPlusMain.getInstance(), 1L);
         } else {

@@ -10,21 +10,16 @@ import net.starly.shopplus.data.InvOpenMap;
 import net.starly.shopplus.data.NPCMap;
 import net.starly.shopplus.listener.*;
 import net.starly.shopplus.message.MessageLoader;
-import net.starly.shopplus.scheduler.MarketPriceTask;
+import net.starly.shopplus.runnable.MarketPriceScheduler;
 import net.starly.shopplus.shop.ShopData;
 import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ShopPlusMain extends JavaPlugin {
     private static ShopPlusMain instance;
@@ -88,8 +83,8 @@ public class ShopPlusMain extends JavaPlugin {
 
         /* TASK
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        MarketPriceTask.setInvOpenMap(invOpenMap);
-        MarketPriceTask.start(ConfigContext.getInstance().get("marketPrice.updateInterval", Integer.class) * 20L);
+        MarketPriceScheduler.setInvOpenMap(invOpenMap);
+        MarketPriceScheduler.start(ConfigContext.getInstance().get("marketPrice.updateInterval", Integer.class) * 20L);
 
         /* COMMAND
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -109,7 +104,7 @@ public class ShopPlusMain extends JavaPlugin {
         ShopManager shopManager = ShopManager.getInstance();
         Arrays.stream(new File(getDataFolder(), "shop/").listFiles()).forEach(configFile -> {
             String shopName = configFile.getName();
-            shopName = shopName.substring(0, shopName.lastIndexOf('.'));
+            shopName = shopName.substring(0, shopName.lastIndexOf("."));
 
             shopManager.loadShop(shopName, configFile);
         });
@@ -135,7 +130,7 @@ public class ShopPlusMain extends JavaPlugin {
     public void onDisable() {
         /* TASK
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-        MarketPriceTask.stop();
+        MarketPriceScheduler.stop();
 
         /* SAVE DATA
          ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */

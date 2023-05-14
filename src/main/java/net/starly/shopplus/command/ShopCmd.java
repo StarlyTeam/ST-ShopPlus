@@ -6,11 +6,11 @@ import net.starly.shopplus.ShopPlusMain;
 import net.starly.shopplus.context.ConfigContext;
 import net.starly.shopplus.data.InvOpenMap;
 import net.starly.shopplus.data.NPCMap;
-import net.starly.shopplus.enums.InventoryOpenType;
+import net.starly.shopplus.enums.InventoryType;
 import net.starly.shopplus.message.MessageContext;
 import net.starly.shopplus.message.MessageLoader;
 import net.starly.shopplus.message.enums.MessageType;
-import net.starly.shopplus.scheduler.MarketPriceTask;
+import net.starly.shopplus.runnable.MarketPriceScheduler;
 import net.starly.shopplus.shop.ShopData;
 import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
@@ -66,6 +66,9 @@ public class ShopCmd implements CommandExecutor {
                 if (ShopManager.getInstance().getShopData(args[1]) != null) {
                     msgContext.get(MessageType.ERROR, "shopAlreadyExists").send(player);
                     return true;
+                } else if (!args[1].matches("([^\\/:*?\"<>|])*")) {
+                    player.sendMessage("EXCEPTION NAME ARGS.");
+                    return true;
                 }
 
 
@@ -73,7 +76,7 @@ public class ShopCmd implements CommandExecutor {
                 try {
                     line = Integer.parseInt(args[2]);
 
-                    if (line < 1 || line > 6) {
+                    if (line < 1 || line > 5) {
                         msgContext.get(MessageType.ERROR, "wrongShopLine").send(player);
                         return true;
                     }
@@ -82,7 +85,7 @@ public class ShopCmd implements CommandExecutor {
                     return true;
                 }
 
-                ShopManager.getInstance().createShop(args[1], line, ChatColor.translateAlternateColorCodes('&', String.join(" ", Arrays.copyOfRange(args, 3, args.length))));
+                ShopManager.getInstance().createShop(args[1], line + 1, ChatColor.translateAlternateColorCodes('&', String.join(" ", Arrays.copyOfRange(args, 3, args.length))));
                 msgContext.get(MessageType.NORMAL, "shopCreated").send(player);
                 return true;
             }
@@ -110,8 +113,8 @@ public class ShopCmd implements CommandExecutor {
                 }
 
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
-                    player.openInventory(shopData.getShopInv());
-                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP, shopData.getName()));
+                    player.openInventory(shopData.getShopInv(1));
+                    invOpenMap.set(player, new Pair<>(InventoryType.SHOP, shopData.getName() + "|" + 1));
                 }, 1);
                 break;
             }
@@ -137,7 +140,7 @@ public class ShopCmd implements CommandExecutor {
                 ShopData shopData = ShopManager.getInstance().getShopData(args[1]);
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopSettingInv());
-                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData.getName()));
+                    invOpenMap.set(player, new Pair<>(InventoryType.SHOP_SETTING, shopData.getName()));
                 }, 1);
                 break;
             }
@@ -202,8 +205,8 @@ public class ShopCmd implements CommandExecutor {
                     ex.printStackTrace();
                 }
 
-                MarketPriceTask.stop();
-                MarketPriceTask.start(ConfigContext.getInstance().get("marketPrice.updateInterval", Integer.class) * 20L);
+                MarketPriceScheduler.stop();
+                MarketPriceScheduler.start(ConfigContext.getInstance().get("marketPrice.updateInterval", Integer.class) * 20L);
 
                 msgContext.get(MessageType.NORMAL, "reloadComplete").send(player);
                 return true;

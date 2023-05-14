@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import net.starly.core.jb.util.Pair;
 import net.starly.shopplus.ShopPlusMain;
 import net.starly.shopplus.data.InvOpenMap;
-import net.starly.shopplus.enums.InventoryOpenType;
+import net.starly.shopplus.enums.InventoryType;
 import net.starly.shopplus.shop.ShopData;
 import net.starly.shopplus.shop.ShopManager;
 import org.bukkit.Bukkit;
@@ -28,24 +28,26 @@ public class InventoryCloseListener implements Listener {
         if (player == null) return;
         if (!invOpenMap.has(player)) return;
 
-        InventoryOpenType openType = invOpenMap.get(player).getFirst();
-        ShopData shopData = ShopManager.getInstance().getShopData(invOpenMap.get(player).getSecond());
+        InventoryType openType = invOpenMap.get(player).getFirst();
+        String[] openData = invOpenMap.get(player).getSecond().split("\\|");
+        int page = openData.length == 2 ? Integer.parseInt(openData[1]) : 0;
+        ShopData shopData = ShopManager.getInstance().getShopData(openData[0]);
         invOpenMap.remove(player);
 
         switch (openType) {
             case ITEM_SETTING:
             case ITEM_DETAIL_SETTING: {
-                if (openType == InventoryOpenType.ITEM_SETTING) {
+                if (openType == InventoryType.ITEM_SETTING) {
                     Inventory inv = event.getInventory();
                     Map<Integer, ItemStack> items = new HashMap<>();
-                    for (int i = 0; i < inv.getSize(); i++) items.put(i, inv.getItem(i));
 
-                    shopData.setItems(items);
+                    for (int i = 0; i < inv.getSize() - 9; i++) items.put(i, inv.getItem(i));
+                    shopData.setItems(page, items);
                 }
 
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
                     player.openInventory(shopData.getShopSettingInv());
-                    invOpenMap.set(player, new Pair<>(InventoryOpenType.SHOP_SETTING, shopData.getName()));
+                    invOpenMap.set(player, new Pair<>(InventoryType.SHOP_SETTING, shopData.getName()));
                 }, 1);
             }
         }
