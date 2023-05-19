@@ -188,19 +188,21 @@ public class InventoryClickListener implements Listener {
                         return;
                     }
 
-                    for (int i = 0; i < 36; i++) {
-                        ItemStack itemStack = player.getInventory().getItem(i);
-                        if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-                        if (!matches.contains(itemStack)) continue;
-                        itemStack = itemStack.clone();
+                    for (int i = 0; i < originStack.getAmount(); i++) {
+                        for (int j = 0; j < 36; j++) {
+                            ItemStack itemStack = player.getInventory().getItem(j);
+                            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
+                            if (!matches.contains(itemStack)) continue;
+                            itemStack = itemStack.clone();
 
-                        if (itemStack.getAmount() == 1) {
-                            player.getInventory().setItem(i, null);
-                        } else {
-                            itemStack.setAmount(itemStack.getAmount() - 1);
-                            player.getInventory().setItem(i, itemStack);
+                            if (itemStack.getAmount() == 1) {
+                                player.getInventory().setItem(j, null);
+                            } else {
+                                itemStack.setAmount(itemStack.getAmount() - 1);
+                                player.getInventory().setItem(j, itemStack);
+                            }
+                            break;
                         }
-                        break;
                     }
 
                     getEconomy().depositPlayer(player, shopData.getSellPrice(currentPage, slot));
@@ -223,7 +225,7 @@ public class InventoryClickListener implements Listener {
 
                     AtomicInteger totalSelled = new AtomicInteger();
                     matches.forEach(s -> totalSelled.addAndGet(s.getAmount()));
-                    if (totalSelled.get() > 64) totalSelled.set(64);
+                    if (totalSelled.get() > originStack.getAmount() * 64) totalSelled.set(64);
 
                     int totalRemoved = 0;
                     for (int i = 0; i < 36; i++) {
