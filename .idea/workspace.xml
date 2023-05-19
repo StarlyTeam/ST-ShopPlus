@@ -4,26 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="project">
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="modify: version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/ShopPlusMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/ShopPlusMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/ShopCmd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/ShopCmd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/tabcomplete/ShopTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/command/tabcomplete/ShopTab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/data/InputMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/data/InputMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/data/InvOpenMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/data/InvOpenMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/enums/ButtonType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/enums/ButtonType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/enums/InventoryOpenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/enums/InventoryType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/ChatListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/ChatListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryCloseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryCloseListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/NPCRightClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/NPCRightClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/scheduler/MarketPriceTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/runnable/MarketPriceScheduler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/util/GUIStackUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/util/GUIStackUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/util/ItemStackUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/message.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/message.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/shop/Example-Shop.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shop/Example-Shop.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +71,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/개발/TEAM/Starly/Projects/Plugins/Free&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/개발/TEAM/Starly/Projects/Plugins/Free/ST-GiftBox&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
@@ -195,21 +179,14 @@
       <workItem from="1683884387728" duration="622000" />
       <workItem from="1683891153328" duration="5720000" />
       <workItem from="1683943228925" duration="8289000" />
-      <workItem from="1684036715717" duration="18000" />
-    </task>
-    <task id="LOCAL-00005" summary="feat: `Lore Keeping`">
-      <created>1678596198930</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1678596198930</updated>
-    </task>
-    <task id="LOCAL-00006" summary="fix: sell bugs">
-      <created>1678608424652</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1678608424652</updated>
+      <workItem from="1684036715717" duration="3421000" />
+      <workItem from="1684046743501" duration="28000" />
+      <workItem from="1684048831601" duration="22000" />
+      <workItem from="1684056927147" duration="6000" />
+      <workItem from="1684060507620" duration="12000" />
+      <workItem from="1684223440663" duration="825000" />
+      <workItem from="1684325854776" duration="17000" />
+      <workItem from="1684496687271" duration="1666000" />
     </task>
     <task id="LOCAL-00007" summary="fix: Bugs">
       <created>1678616964690</created>
@@ -540,7 +517,21 @@
       <option name="project" value="LOCAL" />
       <updated>1683806224982</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="feat: pagination shop">
+      <created>1684046192539</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1684046192539</updated>
+    </task>
+    <task id="LOCAL-00055" summary="modify: version">
+      <created>1684498802961</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1684498802961</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -567,9 +558,10 @@
     <MESSAGE value="remove: debug message" />
     <MESSAGE value="fix: Bugs" />
     <MESSAGE value="modify: default value" />
-    <MESSAGE value="modify: version" />
     <MESSAGE value="modify: `config.yml` default value" />
     <MESSAGE value="project" />
-    <option name="LAST_COMMIT_MESSAGE" value="project" />
+    <MESSAGE value="feat: pagination shop" />
+    <MESSAGE value="modify: version" />
+    <option name="LAST_COMMIT_MESSAGE" value="modify: version" />
   </component>
 </project>
