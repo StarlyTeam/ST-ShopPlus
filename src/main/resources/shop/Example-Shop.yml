@@ -1,6 +1,6 @@
 shop:
   enabled: true
-  title: "§6테스트 상점"
+  title: "테스트 상점"
   size: 54
   items: !!binary |-
     rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAB3CAAAABAAAAAAeA==
