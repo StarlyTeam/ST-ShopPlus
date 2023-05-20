@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,15 @@ public class ShopData {
     protected ShopData(File configFile) {
         this.configFile = configFile;
         this.config = YamlConfiguration.loadConfiguration(configFile);
+
+        PREV_SLOT = getSize() - 6;
+        NEXT_SLOT = getSize() - 4;
     }
+
+
+    private final int PREV_SLOT;
+    private final int NEXT_SLOT;
+
 
     /* Config
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -214,7 +223,16 @@ public class ShopData {
 
     public void setItems(Map<Pair<Integer, Integer>, ItemStack> items) {
         Map<Pair<Integer, Integer>, ItemStack> filteredItems = new HashMap<>();
-        items.entrySet().stream().filter(entry -> entry.getValue() != null).forEach(entry -> filteredItems.put(entry.getKey(), entry.getValue()));
+        items
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() != null)
+                .peek(entry -> {
+                    ItemStack itemStack = entry.getValue();
+                    itemStack.setAmount(1);
+                    entry.setValue(itemStack);
+                })
+                .forEach(entry -> filteredItems.put(entry.getKey(), entry.getValue()));
         items = filteredItems;
 
 
@@ -232,16 +250,15 @@ public class ShopData {
                     config.set("shop.prices." + page + "." + slot, null);
                     config.set("shop.stocks." + page + "." + slot, null);
                 } else if (!config.contains("shop.prices." + page + "." + slot)) {
-                    ConfigurationSection priceSection = config.createSection("shop.prices." + page + "." + slot);
-                    priceSection.set("sell.origin", -1);
-                    priceSection.set("sell.now", -1);
-                    priceSection.set("sell.min", -1);
-                    priceSection.set("sell.max", -1);
-                    priceSection.set("buy.origin", -1);
-                    priceSection.set("buy.now", -1);
-                    priceSection.set("buy.min", -1);
-                    priceSection.set("buy.max", -1);
-                    config.set("shop.stocks." + page + "." + slot, -1);
+                    setOriginSellPrice(page, slot, -1);
+                    setSellPrice(page, slot, -1);
+                    setMinSellPrice(page, slot, -1);
+                    setMaxSellPrice(page, slot, -1);
+                    setOriginBuyPrice(page, slot, -1);
+                    setBuyPrice(page, slot, -1);
+                    setMinBuyPrice(page, slot, -1);
+                    setMaxBuyPrice(page, slot, -1);
+                    setStock(page, slot, -1);
                 }
             });
         } catch (Exception ex) {
@@ -266,19 +283,12 @@ public class ShopData {
         return config.getString("shop.title");
     }
 
-    @SuppressWarnings("unchecked")
     public Inventory getShopInv(int page) {
         Inventory inventory = Bukkit.createInventory(null, getSize(), String.format("%s §r[%d]", getTitle(), page));
         Map<Integer, ItemStack> items = new HashMap<>();
 
         List<Map.Entry<Pair<Integer, Integer>, ItemStack>> tempItems = new ArrayList<>(getItems().entrySet());
         tempItems.removeIf(value -> value.getKey().getFirst() != page);
-        tempItems.sort((obj1, obj2) -> {
-            int o1 = obj1.getKey().getSecond();
-            int o2 = obj2.getKey().getSecond();
-
-            return Integer.compare(o1, o2);
-        });
         tempItems.forEach(entry -> items.put(entry.getKey().getSecond(), entry.getValue()));
 
         ConfigContext configContext = ConfigContext.getInstance();
@@ -289,6 +299,8 @@ public class ShopData {
 
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
+
+            DecimalFormat decFormat = new DecimalFormat("###,###");
 
             int sellPrice = getSellPrice(page, slot);
             int buyPrice = getBuyPrice(page, slot);
@@ -303,11 +315,11 @@ public class ShopData {
                             ChatColor
                                     .translateAlternateColorCodes('&', line)
                                     .replace("{sellPrice}", ChatColor
-                                            .translateAlternateColorCodes('&', String.valueOf(sellPrice != -1 ? sellPrice : cannotSell)))
+                                            .translateAlternateColorCodes('&', sellPrice != -1 ? decFormat.format(sellPrice) : cannotSell))
                                     .replace("{buyPrice}", ChatColor
-                                            .translateAlternateColorCodes('&', String.valueOf(buyPrice != -1 ? buyPrice : cannotBuy)))
+                                            .translateAlternateColorCodes('&', buyPrice != -1 ? decFormat.format(buyPrice) : cannotBuy))
                                     .replace("{stock}", ChatColor
-                                            .translateAlternateColorCodes('&', stock != 0 ? (stock == -1 ? unlimited : String.valueOf(stock)) : soldOut)))
+                                            .translateAlternateColorCodes('&', stock != 0 ? (stock == -1 ? unlimited : decFormat.format(stock)) : soldOut)))
                     .collect(Collectors.toList()));
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
@@ -315,8 +327,10 @@ public class ShopData {
             inventory.setItem(slot, itemStack);
         });
 
-        inventory.setItem(inventory.getSize() - 6, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-        inventory.setItem(inventory.getSize() - 4, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+//        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+//        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+        inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
 
         return inventory;
     }
@@ -337,8 +351,10 @@ public class ShopData {
         Inventory inventory = Bukkit.createInventory(null, getSize(), String.format("%s §r [아이템 설정: %d]", getTitle(), page));
         getItems(page).forEach(inventory::setItem);
 
-        inventory.setItem(inventory.getSize() - 6, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-        inventory.setItem(inventory.getSize() - 4, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+//        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+//        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+        inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
 
         return inventory;
     }
@@ -348,34 +364,30 @@ public class ShopData {
         Map<Integer, ItemStack> items = getItems(page);
 
         ConfigContext configContext = ConfigContext.getInstance();
-        String cannotBuy = configContext.get("text.cannotBuy", String.class);
-        String cannotSell = configContext.get("text.cannotSell", String.class);
-        String unlimited = configContext.get("text.unlimited", String.class);
+        final String cannotBuy = configContext.get("text.cannotBuy", String.class);
+        final String cannotSell = configContext.get("text.cannotSell", String.class);
+        final String unlimited = configContext.get("text.unlimited", String.class);
+        final String soldOut = configContext.get("text.soldOut", String.class);
 
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            int originSellPrice = config.getInt("shop.prices." + page + "." + slot + ".sell.origin");
-            int originBuyPrice = config.getInt("shop.prices." + page + "." + slot + ".buy.origin");
-            int sellPrice = config.getInt("shop.prices." + page + "." + slot + ".sell.now");
-            int buyPrice = config.getInt("shop.prices." + page + "." + slot + ".buy.now");
+            DecimalFormat decFormat = new DecimalFormat("###,###");
+
+            int originSellPrice = getOriginSellPrice(page, slot);
+            int originBuyPrice = getOriginBuyPrice(page, slot);
+            int sellPrice = getSellPrice(page, slot);
+            int buyPrice = getBuyPrice(page, slot);
+            int stock = getStock(page, slot);
 
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = Arrays.asList("§r§7---------------------------------------",
-                    "§r§e› §f구매가격 : " + (originBuyPrice == -1 ?
-                            ChatColor.translateAlternateColorCodes('&', cannotBuy)
-                            : "§6" + originBuyPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + buyPrice + "§7)" : "")),
-                    "§r§e› §f판매가격 : " + (originSellPrice == -1 ?
-                            ChatColor.translateAlternateColorCodes('&', cannotSell)
-                            : "§6" + originSellPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + sellPrice + "§7)" : "")),
-                    "§r§e› §f재고 : " + (hasStock(page, slot) ?
-                            (getStock(page, slot) == -1 ?
-                                    ChatColor.translateAlternateColorCodes('&', unlimited)
-                                    : "§6" + getStock(page, slot) + "개")
-                            : ChatColor.translateAlternateColorCodes('&', configContext.get("text.soldOut", String.class))),
+                    "§r§e› §f구매가격 : " + (originBuyPrice == -1 ? ChatColor.translateAlternateColorCodes('&', cannotBuy) : "§6" + originBuyPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + decFormat.format(buyPrice) + "§7)" : "")),
+                    "§r§e› §f판매가격 : " + (originSellPrice == -1 ? ChatColor.translateAlternateColorCodes('&', cannotSell) : "§6" + originSellPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + decFormat.format(sellPrice) + "§7)" : "")),
+                    "§r§e› §f재고 : " + (ChatColor.translateAlternateColorCodes('&', hasStock(page, slot) ? (stock == -1 ? unlimited : "&6" + stock + "개") : soldOut)),
                     "§r§7---------------------------------------",
-                    "§r§e› §f판매가격 설정 : 좌클릭",
                     "§r§e› §f구매가격 설정 : 우클릭",
+                    "§r§e› §f판매가격 설정 : 좌클릭",
                     "§r§e› §f슬롯 상품 삭제 : Shift + 좌클릭",
                     "§r§e› §f잔여재고 설정 : Shift + 우클릭",
                     "§r§e› §f잔여재고 추가 : Q",
@@ -394,8 +406,10 @@ public class ShopData {
             inventory.setItem(slot, itemStack);
         });
 
-        inventory.setItem(inventory.getSize() - 6, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-        inventory.setItem(inventory.getSize() - 4, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+//        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+//        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+        inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
 
 
         return inventory;

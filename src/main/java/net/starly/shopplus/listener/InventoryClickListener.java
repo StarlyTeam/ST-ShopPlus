@@ -63,7 +63,49 @@ public class InventoryClickListener implements Listener {
         if (event.getClickedInventory() == player.getInventory()) return;
 
         if (openType != InventoryType.SHOP_SETTING) {
-            if (slot > shopData.getSize() - 9) {
+//            if (openType == InventoryType.ITEM_SETTING && clickType.isRightClick()) return;
+//
+//            event.setCancelled(true);
+//
+//            int newPage;
+//            if (slot == shopData.getSize() - 4) {
+//                // NEXT_PAGE
+//                if (openType != InventoryType.ITEM_SETTING
+//                        && currentPage >= shopData.getMaxPage()) {
+//                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
+//                    return;
+//                }
+//
+//                newPage = currentPage + 1;
+//            } else if (slot == shopData.getSize() - 6) {
+//                // PREVIOUS_PAGE
+//                if (currentPage <= 1) {
+//                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
+//                    return;
+//                }
+//
+//                newPage = currentPage - 1;
+//            } else newPage = 0;
+//
+//
+//            if (newPage != 0) {
+//                if (openType == InventoryType.ITEM_SETTING) {
+//                    Inventory inv = event.getInventory();
+//                    Map<Integer, ItemStack> items = new HashMap<>();
+//                    for (int i = 0; i < inv.getSize(); i++) items.put(i, inv.getItem(i));
+//                    shopData.setItems(currentPage, items);
+//                }
+//
+//                invOpenMap.remove(player);
+//                Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+//                    player.openInventory(shopData.getInv(openType, newPage));
+//                    invOpenMap.set(player, new Pair<>(openType, shopData.getName() + "|" + newPage));
+//                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+//                }, 1);
+//                return;
+//            } else event.setCancelled(false); TODO: custom page btn
+
+            if (slot > event.getClickedInventory().getSize() - 9) {
                 event.setCancelled(true);
 
                 int newPage;
@@ -101,8 +143,8 @@ public class InventoryClickListener implements Listener {
                         invOpenMap.set(player, new Pair<>(openType, shopData.getName() + "|" + newPage));
                         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
                     }, 1);
+                    return;
                 }
-                return;
             }
         }
 
@@ -188,21 +230,19 @@ public class InventoryClickListener implements Listener {
                         return;
                     }
 
-                    for (int i = 0; i < originStack.getAmount(); i++) {
-                        for (int j = 0; j < 36; j++) {
-                            ItemStack itemStack = player.getInventory().getItem(j);
-                            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-                            if (!matches.contains(itemStack)) continue;
-                            itemStack = itemStack.clone();
+                    for (int j = 0; j < 36; j++) {
+                        ItemStack itemStack = player.getInventory().getItem(j);
+                        if (itemStack == null || itemStack.getType() == Material.AIR) continue;
+                        if (!matches.contains(itemStack)) continue;
+                        itemStack = itemStack.clone();
 
-                            if (itemStack.getAmount() == 1) {
-                                player.getInventory().setItem(j, null);
-                            } else {
-                                itemStack.setAmount(itemStack.getAmount() - 1);
-                                player.getInventory().setItem(j, itemStack);
-                            }
-                            break;
+                        if (itemStack.getAmount() == 1) {
+                            player.getInventory().setItem(j, null);
+                        } else {
+                            itemStack.setAmount(itemStack.getAmount() - 1);
+                            player.getInventory().setItem(j, itemStack);
                         }
+                        break;
                     }
 
                     getEconomy().depositPlayer(player, shopData.getSellPrice(currentPage, slot));
@@ -225,7 +265,7 @@ public class InventoryClickListener implements Listener {
 
                     AtomicInteger totalSelled = new AtomicInteger();
                     matches.forEach(s -> totalSelled.addAndGet(s.getAmount()));
-                    if (totalSelled.get() > originStack.getAmount() * 64) totalSelled.set(64);
+                    if (totalSelled.get() > 64) totalSelled.set(64);
 
                     int totalRemoved = 0;
                     for (int i = 0; i < 36; i++) {

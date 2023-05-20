@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="modify: version">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/shop/Example-Shop.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shop/Example-Shop.yml" afterDir="false" />
-    </list>
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="project" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -186,28 +182,7 @@
       <workItem from="1684060507620" duration="12000" />
       <workItem from="1684223440663" duration="825000" />
       <workItem from="1684325854776" duration="17000" />
-      <workItem from="1684496687271" duration="1666000" />
-    </task>
-    <task id="LOCAL-00007" summary="fix: Bugs">
-      <created>1678616964690</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1678616964690</updated>
-    </task>
-    <task id="LOCAL-00008" summary="feat: Market Price System">
-      <created>1679234450645</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1679234450645</updated>
-    </task>
-    <task id="LOCAL-00009" summary="fix: Bugs">
-      <created>1679818968070</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1679818968070</updated>
+      <workItem from="1684496687271" duration="1719000" />
     </task>
     <task id="LOCAL-00010" summary="fix: Bugs">
       <created>1679837567630</created>
@@ -531,14 +506,34 @@
       <option name="project" value="LOCAL" />
       <updated>1684498802961</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="fix: Bug(x64 sell)">
+      <created>1684498816510</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1684498816511</updated>
+    </task>
+    <task id="LOCAL-00057" summary="modify: default config value">
+      <created>1684498831105</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1684498831105</updated>
+    </task>
+    <task id="LOCAL-00058" summary="project">
+      <created>1684498849888</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1684498849888</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix: Git Bugs" />
     <MESSAGE value="System Update" />
     <MESSAGE value="feat: System Update" />
     <MESSAGE value="feat: Stock System" />
@@ -559,9 +554,11 @@
     <MESSAGE value="fix: Bugs" />
     <MESSAGE value="modify: default value" />
     <MESSAGE value="modify: `config.yml` default value" />
-    <MESSAGE value="project" />
     <MESSAGE value="feat: pagination shop" />
     <MESSAGE value="modify: version" />
-    <option name="LAST_COMMIT_MESSAGE" value="modify: version" />
+    <MESSAGE value="fix: Bug(x64 sell)" />
+    <MESSAGE value="modify: default config value" />
+    <MESSAGE value="project" />
+    <option name="LAST_COMMIT_MESSAGE" value="project" />
   </component>
 </project>

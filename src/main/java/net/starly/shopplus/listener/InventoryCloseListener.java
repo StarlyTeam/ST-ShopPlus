@@ -41,6 +41,7 @@ public class InventoryCloseListener implements Listener {
                     Inventory inv = event.getInventory();
                     Map<Integer, ItemStack> items = new HashMap<>();
 
+//                    for (int i = 0; i < inv.getSize(); i++) items.put(i, inv.getItem(i)); TODO: custom page btn
                     for (int i = 0; i < inv.getSize() - 9; i++) items.put(i, inv.getItem(i));
                     shopData.setItems(page, items);
                 }
