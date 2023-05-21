@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs">
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="refactor: Style Code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -188,13 +188,9 @@
       <workItem from="1684499512748" duration="7094000" />
       <workItem from="1684558163485" duration="105000" />
       <workItem from="1684629306670" duration="48000" />
-    </task>
-    <task id="LOCAL-00011" summary="fix: Bugs">
-      <created>1679837668089</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1679837668089</updated>
+      <workItem from="1684635202846" duration="79000" />
+      <workItem from="1684639978495" duration="1221000" />
+      <workItem from="1684652136669" duration="21000" />
     </task>
     <task id="LOCAL-00012" summary="refactor: style code">
       <created>1679902305095</created>
@@ -532,14 +528,20 @@
       <option name="project" value="LOCAL" />
       <updated>1684547535291</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="refactor: Style Code">
+      <created>1684635264108</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1684635264108</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="System Update" />
     <MESSAGE value="feat: System Update" />
     <MESSAGE value="feat: Stock System" />
     <MESSAGE value="feat: `NPC System`&#10;fix: `Stock System`" />
@@ -564,6 +566,7 @@
     <MESSAGE value="modify: default config value" />
     <MESSAGE value="project" />
     <MESSAGE value="fix: Bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs" />
+    <MESSAGE value="refactor: Style Code" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: Style Code" />
   </component>
 </project>
