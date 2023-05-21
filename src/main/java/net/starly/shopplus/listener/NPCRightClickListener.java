@@ -55,7 +55,10 @@ public class NPCRightClickListener implements Listener {
                 return;
             }
 
-            if (!(player.isOp() || shopData.isEnabled())) {
+            if (!player.hasPermission("starly.shop.open." + shopData.getName())) {
+                msgContext.get(MessageType.ERROR, "noPermission").send(player);
+                return;
+            } else if (!(player.isOp() || shopData.isEnabled())) {
                 msgContext.get(MessageType.ERROR, "shopNotOpened").send(player);
                 return;
             }
