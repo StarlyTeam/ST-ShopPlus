@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="project" />
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -183,13 +185,9 @@
       <workItem from="1684223440663" duration="825000" />
       <workItem from="1684325854776" duration="17000" />
       <workItem from="1684496687271" duration="1719000" />
-    </task>
-    <task id="LOCAL-00010" summary="fix: Bugs">
-      <created>1679837567630</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1679837567630</updated>
+      <workItem from="1684499512748" duration="7094000" />
+      <workItem from="1684558163485" duration="105000" />
+      <workItem from="1684629306670" duration="48000" />
     </task>
     <task id="LOCAL-00011" summary="fix: Bugs">
       <created>1679837668089</created>
@@ -527,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684498849888</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="fix: Bugs">
+      <created>1684547535290</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1684547535291</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -551,7 +556,6 @@
     <MESSAGE value="refactor: style code" />
     <MESSAGE value="fix: Bugs (unstable)" />
     <MESSAGE value="remove: debug message" />
-    <MESSAGE value="fix: Bugs" />
     <MESSAGE value="modify: default value" />
     <MESSAGE value="modify: `config.yml` default value" />
     <MESSAGE value="feat: pagination shop" />
@@ -559,6 +563,7 @@
     <MESSAGE value="fix: Bug(x64 sell)" />
     <MESSAGE value="modify: default config value" />
     <MESSAGE value="project" />
-    <option name="LAST_COMMIT_MESSAGE" value="project" />
+    <MESSAGE value="fix: Bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs" />
   </component>
 </project>

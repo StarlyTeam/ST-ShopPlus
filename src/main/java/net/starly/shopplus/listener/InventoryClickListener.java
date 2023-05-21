@@ -248,7 +248,6 @@ public class InventoryClickListener implements Listener {
                     getEconomy().depositPlayer(player, shopData.getSellPrice(currentPage, slot));
                     if (shopData.getStock(currentPage, slot) != -1) shopData.setStock(currentPage, slot, shopData.getStock(currentPage, slot) + 1);
                     msgContext.get(MessageType.NORMAL, "itemSelled", msg -> msg.replace("{price}", String.valueOf(shopData.getSellPrice(currentPage, slot))).replace("{amount}", "1")).send(player);
-
                 } else if (clickType.name().equals(configContext.get("click.sell-64", String.class))) {
                     if (shopData.getSellPrice(currentPage, slot) == -1) {
                         msgContext.get(MessageType.ERROR, "cannotSellThisItem").send(player);
