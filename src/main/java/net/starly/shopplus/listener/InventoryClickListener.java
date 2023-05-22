@@ -43,6 +43,8 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getClickedInventory() == null) return;
+
         Player player = (Player) event.getWhoClicked();
         if (player == null) return;
         if (!invOpenMap.has(player)) return;
