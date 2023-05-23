@@ -327,10 +327,8 @@ public class ShopData {
             inventory.setItem(slot, itemStack);
         });
 
-//        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-//        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
-        inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-        inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
 
         return inventory;
     }
@@ -351,10 +349,8 @@ public class ShopData {
         Inventory inventory = Bukkit.createInventory(null, getSize(), String.format("%s §r [아이템 설정: %d]", getTitle(), page));
         getItems(page).forEach(inventory::setItem);
 
-//        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-//        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
-        inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-        inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
+        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
 
         return inventory;
     }
@@ -406,11 +402,8 @@ public class ShopData {
             inventory.setItem(slot, itemStack);
         });
 
-//        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-//        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
-        inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
-        inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
-
+        if (inventory.getItem(PREV_SLOT) == null) inventory.setItem(PREV_SLOT, GUIStackUtil.getButton(ButtonType.PREV_PAGE));
+        if (inventory.getItem(NEXT_SLOT) == null) inventory.setItem(NEXT_SLOT, GUIStackUtil.getButton(ButtonType.NEXT_PAGE));
 
         return inventory;
     }

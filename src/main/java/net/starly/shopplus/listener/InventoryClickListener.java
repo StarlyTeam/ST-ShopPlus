@@ -65,89 +65,47 @@ public class InventoryClickListener implements Listener {
         if (event.getClickedInventory() == player.getInventory()) return;
 
         if (openType != InventoryType.SHOP_SETTING) {
-//            if (openType == InventoryType.ITEM_SETTING && clickType.isRightClick()) return;
-//
-//            event.setCancelled(true);
-//
-//            int newPage;
-//            if (slot == shopData.getSize() - 4) {
-//                // NEXT_PAGE
-//                if (openType != InventoryType.ITEM_SETTING
-//                        && currentPage >= shopData.getMaxPage()) {
-//                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
-//                    return;
-//                }
-//
-//                newPage = currentPage + 1;
-//            } else if (slot == shopData.getSize() - 6) {
-//                // PREVIOUS_PAGE
-//                if (currentPage <= 1) {
-//                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
-//                    return;
-//                }
-//
-//                newPage = currentPage - 1;
-//            } else newPage = 0;
-//
-//
-//            if (newPage != 0) {
-//                if (openType == InventoryType.ITEM_SETTING) {
-//                    Inventory inv = event.getInventory();
-//                    Map<Integer, ItemStack> items = new HashMap<>();
-//                    for (int i = 0; i < inv.getSize(); i++) items.put(i, inv.getItem(i));
-//                    shopData.setItems(currentPage, items);
-//                }
-//
-//                invOpenMap.remove(player);
-//                Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
-//                    player.openInventory(shopData.getInv(openType, newPage));
-//                    invOpenMap.set(player, new Pair<>(openType, shopData.getName() + "|" + newPage));
-//                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
-//                }, 1);
-//                return;
-//            } else event.setCancelled(false); TODO: custom page btn
+            if (openType == InventoryType.ITEM_SETTING && clickType.isRightClick()) return;
 
-            if (slot > event.getClickedInventory().getSize() - 9) {
-                event.setCancelled(true);
+            event.setCancelled(true);
 
-                int newPage;
-                if (slot == shopData.getSize() - 4) {
-                    // NEXT_PAGE
-                    if (openType != InventoryType.ITEM_SETTING
-                            && currentPage >= shopData.getMaxPage()) {
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
-                        return;
-                    }
-
-                    newPage = currentPage + 1;
-                } else if (slot == shopData.getSize() - 6) {
-                    // PREVIOUS_PAGE
-                    if (currentPage <= 1) {
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
-                        return;
-                    }
-
-                    newPage = currentPage - 1;
-                } else newPage = 0;
-
-
-                if (newPage != 0) {
-                    if (openType == InventoryType.ITEM_SETTING) {
-                        Inventory inv = event.getInventory();
-                        Map<Integer, ItemStack> items = new HashMap<>();
-                        for (int i = 0; i < inv.getSize() - 9; i++) items.put(i, inv.getItem(i));
-                        shopData.setItems(currentPage, items);
-                    }
-
-                    invOpenMap.remove(player);
-                    Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
-                        player.openInventory(shopData.getInv(openType, newPage));
-                        invOpenMap.set(player, new Pair<>(openType, shopData.getName() + "|" + newPage));
-                        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
-                    }, 1);
+            int newPage;
+            if (slot == shopData.getSize() - 4) {
+                // NEXT_PAGE
+                if (openType != InventoryType.ITEM_SETTING
+                        && currentPage >= shopData.getMaxPage()) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
                     return;
                 }
-            }
+
+                newPage = currentPage + 1;
+            } else if (slot == shopData.getSize() - 6) {
+                // PREVIOUS_PAGE
+                if (currentPage <= 1) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
+                    return;
+                }
+
+                newPage = currentPage - 1;
+            } else newPage = 0;
+
+
+            if (newPage != 0) {
+                if (openType == InventoryType.ITEM_SETTING) {
+                    Inventory inv = event.getInventory();
+                    Map<Integer, ItemStack> items = new HashMap<>();
+                    for (int i = 0; i < inv.getSize(); i++) items.put(i, inv.getItem(i));
+                    shopData.setItems(currentPage, items);
+                }
+
+                invOpenMap.remove(player);
+                Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {
+                    player.openInventory(shopData.getInv(openType, newPage));
+                    invOpenMap.set(player, new Pair<>(openType, shopData.getName() + "|" + newPage));
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+                }, 1);
+                return;
+            } else if (openType == InventoryType.ITEM_SETTING) event.setCancelled(false);
         }
 
         if (currentStack == null || currentStack.getType() == Material.AIR) return;
@@ -226,7 +184,7 @@ public class InventoryClickListener implements Listener {
 
                     ItemStack originStack = shopData.getItem(currentPage, slot);
 
-                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(stack -> originStack.isSimilar(stack)).collect(Collectors.toList());
+                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(originStack::isSimilar).collect(Collectors.toList());
                     if (matches.isEmpty()) {
                         msgContext.get(MessageType.ERROR, "noItemInInventory").send(player);
                         return;
