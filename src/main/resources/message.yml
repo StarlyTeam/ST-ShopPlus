@@ -55,7 +55,7 @@ messages:
   # 아이템을 판매한 경우
   # {price} : 판매금액
   # {amount} : 판매한 아이템 개수
-  itemSelled: "&a&n&l{price}&f원을 지급받고 &a&n&l{amount}&f개를 판매했습니다."
+  itemSold: "&a&n&l{price}&f원을 지급받고 &a&n&l{amount}&f개를 판매했습니다."
 
   # 아이템을 구매한 경우
   # {price} : 구매금액
