@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'net.starly.shopplus'
-version '1.2.2'
+version '1.2.3'
 
 repositories {
     mavenCentral()
@@ -24,7 +24,7 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:R0.1:1.12.2"
 
     // OTHER DEPENDENCIES
-    compileOnly "net.starly.core:ST-Core:1.6.11"
+    compileOnly "net.starly.core:ST-Core:1.8"
     compileOnly "net.milkbowl:VaultAPI:1.7"
     compileOnly("net.citizensnpcs:citizens-main:2.0.30-SNAPSHOT") {
         exclude group: '*', module: '*'
