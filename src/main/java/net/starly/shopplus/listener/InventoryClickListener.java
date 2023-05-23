@@ -183,31 +183,14 @@ public class InventoryClickListener implements Listener {
                     }
 
                     ItemStack originStack = shopData.getItem(currentPage, slot);
-
-                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(originStack::isSimilar).collect(Collectors.toList());
-                    if (matches.isEmpty()) {
+                    if (!InventoryUtil.removeItem(player, originStack, 1)) {
                         msgContext.get(MessageType.ERROR, "noItemInInventory").send(player);
                         return;
                     }
 
-                    for (int j = 0; j < 36; j++) {
-                        ItemStack itemStack = player.getInventory().getItem(j);
-                        if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-                        if (!matches.contains(itemStack)) continue;
-                        itemStack = itemStack.clone();
-
-                        if (itemStack.getAmount() == 1) {
-                            player.getInventory().setItem(j, null);
-                        } else {
-                            itemStack.setAmount(itemStack.getAmount() - 1);
-                            player.getInventory().setItem(j, itemStack);
-                        }
-                        break;
-                    }
-
                     getEconomy().depositPlayer(player, shopData.getSellPrice(currentPage, slot));
                     if (shopData.getStock(currentPage, slot) != -1) shopData.setStock(currentPage, slot, shopData.getStock(currentPage, slot) + 1);
-                    msgContext.get(MessageType.NORMAL, "itemSelled", msg -> msg.replace("{price}", String.valueOf(shopData.getSellPrice(currentPage, slot))).replace("{amount}", "1")).send(player);
+                    msgContext.get(MessageType.NORMAL, "itemSold", msg -> msg.replace("{price}", String.valueOf(shopData.getSellPrice(currentPage, slot))).replace("{amount}", "1")).send(player);
                 } else if (clickType.name().equals(configContext.get("click.sell-64", String.class))) {
                     if (shopData.getSellPrice(currentPage, slot) == -1) {
                         msgContext.get(MessageType.ERROR, "cannotSellThisItem").send(player);
@@ -215,40 +198,18 @@ public class InventoryClickListener implements Listener {
                     }
 
                     ItemStack originStack = shopData.getItem(currentPage, slot);
-
-                    List<ItemStack> matches = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(stack -> originStack.isSimilar(stack)).collect(Collectors.toList());
-                    if (matches.isEmpty()) {
+                    int sellable = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(originStack::isSimilar).mapToInt(ItemStack::getAmount).sum();
+                    int totalSold = Math.min(64, sellable);
+                    if (!InventoryUtil.removeItem(player, originStack, totalSold)) {
                         msgContext.get(MessageType.ERROR, "noItemInInventory").send(player);
                         return;
                     }
 
-                    AtomicInteger totalSelled = new AtomicInteger();
-                    matches.forEach(s -> totalSelled.addAndGet(s.getAmount()));
-                    if (totalSelled.get() > 64) totalSelled.set(64);
-
-                    int totalRemoved = 0;
-                    for (int i = 0; i < 36; i++) {
-                        if (totalSelled.get() == totalRemoved) break;
-
-                        ItemStack itemStack = player.getInventory().getItem(i);
-                        if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-                        if (!matches.contains(itemStack)) continue;
-                        itemStack = itemStack.clone();
-
-                        if (itemStack.getAmount() <= (totalSelled.get() - totalRemoved)) {
-                            player.getInventory().setItem(i, null);
-                            totalRemoved += itemStack.getAmount();
-                        } else {
-                            itemStack.setAmount(itemStack.getAmount() - (totalSelled.get() - totalRemoved));
-                            player.getInventory().setItem(i, itemStack);
-                            totalRemoved += (totalSelled.get() - totalRemoved);
-                        }
+                    if (shopData.getStock(currentPage, slot) != -1) {
+                        shopData.setStock(currentPage, slot, shopData.getStock(currentPage, slot) + totalSold);
                     }
-
-                    if (shopData.getStock(currentPage, slot) != -1)
-                        shopData.setStock(currentPage, slot, shopData.getStock(currentPage, slot) + totalSelled.get());
-                    getEconomy().depositPlayer(player, totalSelled.get() * shopData.getSellPrice(currentPage, slot));
-                    msgContext.get(MessageType.NORMAL, "itemSelled", msg -> msg.replace("{price}", String.valueOf(totalSelled.get() * shopData.getSellPrice(currentPage, slot))).replace("{amount}", String.valueOf(totalSelled.get()))).send(player);
+                    getEconomy().depositPlayer(player, totalSold * shopData.getSellPrice(currentPage, slot));
+                    msgContext.get(MessageType.NORMAL, "itemSold", msg -> msg.replace("{price}", String.valueOf(totalSold * shopData.getSellPrice(currentPage, slot))).replace("{amount}", String.valueOf(totalSold))).send(player);
                 } else return;
 
                 event.getClickedInventory().setContents(shopData.getShopInv(currentPage).getContents());
