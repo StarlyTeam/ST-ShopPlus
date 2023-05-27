@@ -83,7 +83,7 @@ public class ShopData {
     /* Sell
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     public boolean isSellable(int page, int slot) {
-        return getSellPrice(page, slot) != -1;
+        return getOriginSellPrice(page, slot) != -1;
     }
 
     public int getSellPrice(int page, int slot) {
@@ -123,7 +123,7 @@ public class ShopData {
     /* Buy
      ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
     public boolean isBuyable(int page, int slot) {
-        return getBuyPrice(page, slot) != -1;
+        return getOriginBuyPrice(page, slot) != -1;
     }
 
     public int getBuyPrice(int page, int slot) {

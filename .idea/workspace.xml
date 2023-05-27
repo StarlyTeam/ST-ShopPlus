@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs" />
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="refactor: extract code to utility method&#10;refactor: fix expression">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -191,41 +193,11 @@
       <workItem from="1684652136669" duration="21000" />
       <workItem from="1684678579146" duration="556000" />
       <workItem from="1684752788999" duration="741000" />
-    </task>
-    <task id="LOCAL-00016" summary="fix: Bugs">
-      <created>1680013186706</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1680013186706</updated>
-    </task>
-    <task id="LOCAL-00017" summary="JDK hotfix">
-      <created>1680015079112</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1680015079112</updated>
-    </task>
-    <task id="LOCAL-00018" summary="fix: Bugs">
-      <created>1680332075690</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1680332075690</updated>
-    </task>
-    <task id="LOCAL-00019" summary="feat: `ShopData#getName()`">
-      <created>1680332086917</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1680332086917</updated>
-    </task>
-    <task id="LOCAL-00020" summary="fix: Bugs">
-      <created>1680332099352</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1680332099352</updated>
+      <workItem from="1684845928413" duration="3507000" />
+      <workItem from="1684924929401" duration="245000" />
+      <workItem from="1685084756638" duration="90000" />
+      <workItem from="1685085094643" duration="30000" />
+      <workItem from="1685111684069" duration="551000" />
     </task>
     <task id="LOCAL-00021" summary="feat: `Shift + Right Click` -&gt; Edit Shop">
       <created>1680332113922</created>
@@ -535,16 +507,59 @@
       <option name="project" value="LOCAL" />
       <updated>1684752830478</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="modify: version">
+      <created>1684848854391</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1684848854391</updated>
+    </task>
+    <task id="LOCAL-00066" summary="project">
+      <created>1684848858129</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1684848858129</updated>
+    </task>
+    <task id="LOCAL-00067" summary="feat: changeable page button">
+      <created>1684848896678</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1684848896678</updated>
+    </task>
+    <task id="LOCAL-00068" summary="refactor: fix expression">
+      <created>1684849226886</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1684849226886</updated>
+    </task>
+    <task id="LOCAL-00069" summary="refactor: extract code to utility method&#10;refactor: fix expression">
+      <created>1684849282087</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1684849282087</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: System Update" />
-    <MESSAGE value="feat: Stock System" />
-    <MESSAGE value="feat: `NPC System`&#10;fix: `Stock System`" />
     <MESSAGE value="feat: `Lore Keeping`" />
     <MESSAGE value="fix: sell bugs" />
     <MESSAGE value="feat: Market Price System" />
@@ -564,9 +579,12 @@
     <MESSAGE value="fix: Bug(x64 sell)" />
     <MESSAGE value="modify: default config value" />
     <MESSAGE value="refactor: Style Code" />
+    <MESSAGE value="fix: Bugs" />
     <MESSAGE value="modify: version" />
     <MESSAGE value="project" />
-    <MESSAGE value="fix: Bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs" />
+    <MESSAGE value="feat: changeable page button" />
+    <MESSAGE value="refactor: fix expression" />
+    <MESSAGE value="refactor: extract code to utility method&#10;refactor: fix expression" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: extract code to utility method&#10;refactor: fix expression" />
   </component>
 </project>
