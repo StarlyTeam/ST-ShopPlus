@@ -200,7 +200,7 @@ public class InventoryClickListener implements Listener {
                     ItemStack originStack = shopData.getItem(currentPage, slot);
                     int sellable = Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(originStack::isSimilar).mapToInt(ItemStack::getAmount).sum();
                     int totalSold = Math.min(64, sellable);
-                    if (!InventoryUtil.removeItem(player, originStack, totalSold)) {
+                    if (totalSold == 0 || !InventoryUtil.removeItem(player, originStack, totalSold)) {
                         msgContext.get(MessageType.ERROR, "noItemInInventory").send(player);
                         return;
                     }
