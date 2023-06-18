@@ -299,7 +299,7 @@ public class ShopData {
 
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
-            if (slot == getSize() - 4 || slot == getSize() - 6) return;
+            if (slot == PREV_SLOT || slot == NEXT_SLOT) return;
 
             DecimalFormat decFormat = new DecimalFormat("###,###");
 
