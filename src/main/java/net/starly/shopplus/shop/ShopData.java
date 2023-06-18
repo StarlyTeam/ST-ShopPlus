@@ -299,31 +299,32 @@ public class ShopData {
 
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
-            if (slot == PREV_SLOT || slot == NEXT_SLOT) return;
 
-            DecimalFormat decFormat = new DecimalFormat("###,###");
+            if (!(slot == PREV_SLOT || slot == NEXT_SLOT)) {
+                DecimalFormat decFormat = new DecimalFormat("###,###");
 
-            int sellPrice = getSellPrice(page, slot);
-            int buyPrice = getBuyPrice(page, slot);
-            int stock = getStock(page, slot);
+                int sellPrice = getSellPrice(page, slot);
+                int buyPrice = getBuyPrice(page, slot);
+                int stock = getStock(page, slot);
 
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
-            if (!lore.isEmpty()) lore.add("§r");
-            lore.addAll(((List<String>) configContext.get("lore.shopItem", List.class))
-                    .stream()
-                    .map(line ->
-                            ChatColor
-                                    .translateAlternateColorCodes('&', line)
-                                    .replace("{sellPrice}", ChatColor
-                                            .translateAlternateColorCodes('&', sellPrice != -1 ? decFormat.format(sellPrice) : cannotSell))
-                                    .replace("{buyPrice}", ChatColor
-                                            .translateAlternateColorCodes('&', buyPrice != -1 ? decFormat.format(buyPrice) : cannotBuy))
-                                    .replace("{stock}", ChatColor
-                                            .translateAlternateColorCodes('&', stock != 0 ? (stock == -1 ? unlimited : decFormat.format(stock)) : soldOut)))
-                    .collect(Collectors.toList()));
-            itemMeta.setLore(lore);
-            itemStack.setItemMeta(itemMeta);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
+                if (!lore.isEmpty()) lore.add("§r");
+                lore.addAll(((List<String>) configContext.get("lore.shopItem", List.class))
+                        .stream()
+                        .map(line ->
+                                ChatColor
+                                        .translateAlternateColorCodes('&', line)
+                                        .replace("{sellPrice}", ChatColor
+                                                .translateAlternateColorCodes('&', sellPrice != -1 ? decFormat.format(sellPrice) : cannotSell))
+                                        .replace("{buyPrice}", ChatColor
+                                                .translateAlternateColorCodes('&', buyPrice != -1 ? decFormat.format(buyPrice) : cannotBuy))
+                                        .replace("{stock}", ChatColor
+                                                .translateAlternateColorCodes('&', stock != 0 ? (stock == -1 ? unlimited : decFormat.format(stock)) : soldOut)))
+                        .collect(Collectors.toList()));
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+            }
 
             inventory.setItem(slot, itemStack);
         });
