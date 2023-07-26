@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="refactor: extract code to utility method&#10;refactor: fix expression">
+    <list default="true" id="ce833408-e3d7-47cb-819f-58c41d139e43" name="Changes" comment="fix: Bugs">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryClickListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryCloseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/listener/InventoryCloseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/starly/shopplus/shop/ShopData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,11 +33,6 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="ST-Shop+" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ST-Shop+" type="f1a62948:ProjectNode" />
-                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
             <select />
@@ -63,21 +62,21 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/개발/TEAM/Starly/Projects/Plugins/Free/ST-GiftBox&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.notifications&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/개발/Y-Locker",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\개발\TEAM\Starly\Projects\Plugins\Premium\ST-Shop+\src\main\java\net\starly\shopplus" />
@@ -198,41 +197,13 @@
       <workItem from="1685084756638" duration="90000" />
       <workItem from="1685085094643" duration="30000" />
       <workItem from="1685111684069" duration="551000" />
-    </task>
-    <task id="LOCAL-00021" summary="feat: `Shift + Right Click` -&gt; Edit Shop">
-      <created>1680332113922</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1680332113922</updated>
-    </task>
-    <task id="LOCAL-00022" summary="project">
-      <created>1680332130459</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1680332130459</updated>
-    </task>
-    <task id="LOCAL-00023" summary="fix: Bugs">
-      <created>1680332901845</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1680332901845</updated>
-    </task>
-    <task id="LOCAL-00024" summary="modify: version">
-      <created>1680333788146</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1680333788146</updated>
-    </task>
-    <task id="LOCAL-00025" summary="fix: Bugs">
-      <created>1680398554936</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1680398554936</updated>
+      <workItem from="1687061089843" duration="906000" />
+      <workItem from="1687062676360" duration="50000" />
+      <workItem from="1687685651153" duration="604000" />
+      <workItem from="1687686827546" duration="638000" />
+      <workItem from="1687700577584" duration="11000" />
+      <workItem from="1688993897688" duration="919000" />
+      <workItem from="1690269830873" duration="6524000" />
     </task>
     <task id="LOCAL-00026" summary="project">
       <created>1680399517357</created>
@@ -542,7 +513,42 @@
       <option name="project" value="LOCAL" />
       <updated>1684849282087</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="fix: `build.gradle`">
+      <created>1687061228291</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1687061228291</updated>
+    </task>
+    <task id="LOCAL-00071" summary="fix: Bugs">
+      <created>1687061283365</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1687061283365</updated>
+    </task>
+    <task id="LOCAL-00072" summary="modify: version">
+      <created>1687061308544</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1687061308544</updated>
+    </task>
+    <task id="LOCAL-00073" summary="refactor: style code">
+      <created>1687061342457</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1687061342457</updated>
+    </task>
+    <task id="LOCAL-00074" summary="fix: Bugs">
+      <created>1687061386095</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1687061386095</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -560,7 +566,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: `Lore Keeping`" />
     <MESSAGE value="fix: sell bugs" />
     <MESSAGE value="feat: Market Price System" />
     <MESSAGE value="refactor: clean code" />
@@ -570,7 +575,6 @@
     <MESSAGE value="feat: `ShopData#getName()`" />
     <MESSAGE value="feat: `Shift + Right Click` -&gt; Edit Shop" />
     <MESSAGE value="modify: website" />
-    <MESSAGE value="refactor: style code" />
     <MESSAGE value="fix: Bugs (unstable)" />
     <MESSAGE value="remove: debug message" />
     <MESSAGE value="modify: default value" />
@@ -579,12 +583,14 @@
     <MESSAGE value="fix: Bug(x64 sell)" />
     <MESSAGE value="modify: default config value" />
     <MESSAGE value="refactor: Style Code" />
-    <MESSAGE value="fix: Bugs" />
-    <MESSAGE value="modify: version" />
     <MESSAGE value="project" />
     <MESSAGE value="feat: changeable page button" />
     <MESSAGE value="refactor: fix expression" />
     <MESSAGE value="refactor: extract code to utility method&#10;refactor: fix expression" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: extract code to utility method&#10;refactor: fix expression" />
+    <MESSAGE value="fix: `build.gradle`" />
+    <MESSAGE value="modify: version" />
+    <MESSAGE value="refactor: style code" />
+    <MESSAGE value="fix: Bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Bugs" />
   </component>
 </project>
