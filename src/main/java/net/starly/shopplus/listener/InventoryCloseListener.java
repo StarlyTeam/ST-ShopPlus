@@ -15,8 +15,11 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class InventoryCloseListener implements Listener {
@@ -38,12 +41,17 @@ public class InventoryCloseListener implements Listener {
             case ITEM_SETTING:
             case ITEM_DETAIL_SETTING: {
                 if (openType == InventoryType.ITEM_SETTING) {
-                    Inventory inv = event.getInventory();
                     Map<Integer, ItemStack> items = new HashMap<>();
 
-                    for (int i = 0; i < inv.getSize(); i++) items.put(i, inv.getItem(i));
-                    for (int i = 0; i < inv.getSize() - 9; i++) items.put(i, inv.getItem(i));
-                    shopData.setItems(page, items);
+                    Inventory inv = event.getInventory();
+                    for (int i = 0; i < shopData.getSize(); i++) items.put(i, inv.getItem(i));
+
+                    List<Integer> keys = items.keySet().stream().filter(key -> items.get(key) != null).collect(Collectors.toList());
+                    keys.remove((Object) (shopData.getSize() - 6));
+                    keys.remove((Object) (shopData.getSize() - 4));
+                    if (!keys.isEmpty()) {
+                        shopData.setItems(page, items);
+                    }
                 }
 
                 Bukkit.getServer().getScheduler().runTaskLater(ShopPlusMain.getInstance(), () -> {

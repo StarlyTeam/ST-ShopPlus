@@ -87,15 +87,22 @@ public class InventoryClickListener implements Listener {
                 }
 
                 newPage = currentPage - 1;
-            } else newPage = 0;
+            } else newPage = -1;
 
 
-            if (newPage != 0) {
+            if (newPage != -1) {
                 if (openType == InventoryType.ITEM_SETTING) {
-                    Inventory inv = event.getInventory();
                     Map<Integer, ItemStack> items = new HashMap<>();
-                    for (int i = 0; i < inv.getSize(); i++) items.put(i, inv.getItem(i));
-                    shopData.setItems(currentPage, items);
+
+                    Inventory inv = event.getInventory();
+                    for (int i = 0; i < shopData.getSize(); i++) items.put(i, inv.getItem(i));
+
+                    List<Integer> keys = items.keySet().stream().filter(key -> items.get(key) != null).collect(Collectors.toList());
+                    keys.remove((Object) (shopData.getSize() - 6));
+                    keys.remove((Object) (shopData.getSize() - 4));
+                    if (!keys.isEmpty()) {
+                        shopData.setItems(currentPage, items);
+                    }
                 }
 
                 invOpenMap.remove(player);

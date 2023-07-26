@@ -7,7 +7,6 @@ import net.starly.shopplus.enums.InventoryType;
 import net.starly.shopplus.util.GUIStackUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
@@ -216,9 +215,21 @@ public class ShopData {
     }
 
     public void setItems(int page, Map<Integer, ItemStack> items) {
-        Map<Pair<Integer, Integer>, ItemStack> newItems = getItems();
-        items.forEach((slot, itemStack) -> newItems.put(new Pair<>(page, slot), itemStack));
-        setItems(newItems);
+        if (items == null) {
+            Map<Pair<Integer, Integer>, ItemStack> originItems = getItems();
+
+            Map<Pair<Integer, Integer>, ItemStack> newItems = new HashMap<>();
+            originItems.forEach((slotData, value) -> {
+                int itemPage = slotData.getFirst();
+                if (itemPage != page) newItems.put(slotData, value);
+            });
+
+            setItems(newItems);
+        } else {
+            Map<Pair<Integer, Integer>, ItemStack> newItems = getItems();
+            items.forEach((slot, itemStack) -> newItems.put(new Pair<>(page, slot), itemStack));
+            setItems(newItems);
+        }
     }
 
     public void setItems(Map<Pair<Integer, Integer>, ItemStack> items) {
@@ -245,11 +256,7 @@ public class ShopData {
                 int page = slotData.getFirst();
                 int slot = slotData.getSecond();
 
-                if (itemStack == null) {
-                    config.set("shop.items." + page + "." + slot, null);
-                    config.set("shop.prices." + page + "." + slot, null);
-                    config.set("shop.stocks." + page + "." + slot, null);
-                } else if (!config.contains("shop.prices." + page + "." + slot)) {
+                if (!config.contains("shop.prices." + page + "." + slot)) {
                     setOriginSellPrice(page, slot, -1);
                     setSellPrice(page, slot, -1);
                     setMinSellPrice(page, slot, -1);
@@ -284,6 +291,9 @@ public class ShopData {
     }
 
     public Inventory getShopInv(int page) {
+        computeMaxPage();
+
+
         Inventory inventory = Bukkit.createInventory(null, getSize(), String.format("%s §r[%d]", getTitle(), page));
         Map<Integer, ItemStack> items = new HashMap<>();
 
@@ -358,6 +368,9 @@ public class ShopData {
     }
 
     public Inventory getItemDetailSettingInv(int page) {
+        computeMaxPage();
+
+
         Inventory inventory = Bukkit.createInventory(null, getSize(), String.format("%s §r [아이템 세부설정: %d]", getTitle(), page));
         Map<Integer, ItemStack> items = getItems(page);
 
@@ -370,36 +383,38 @@ public class ShopData {
         items.forEach((slot, itemStack) -> {
             if (itemStack == null) return;
 
-            DecimalFormat decFormat = new DecimalFormat("###,###");
+            if (!(slot == PREV_SLOT || slot == NEXT_SLOT)) {
+                DecimalFormat decFormat = new DecimalFormat("###,###");
 
-            int originSellPrice = getOriginSellPrice(page, slot);
-            int originBuyPrice = getOriginBuyPrice(page, slot);
-            int sellPrice = getSellPrice(page, slot);
-            int buyPrice = getBuyPrice(page, slot);
-            int stock = getStock(page, slot);
+                int originSellPrice = getOriginSellPrice(page, slot);
+                int originBuyPrice = getOriginBuyPrice(page, slot);
+                int sellPrice = getSellPrice(page, slot);
+                int buyPrice = getBuyPrice(page, slot);
+                int stock = getStock(page, slot);
 
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            List<String> lore = Arrays.asList("§r§7---------------------------------------",
-                    "§r§e› §f구매가격 : " + (originBuyPrice == -1 ? ChatColor.translateAlternateColorCodes('&', cannotBuy) : "§6" + originBuyPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + decFormat.format(buyPrice) + "§7)" : "")),
-                    "§r§e› §f판매가격 : " + (originSellPrice == -1 ? ChatColor.translateAlternateColorCodes('&', cannotSell) : "§6" + originSellPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + decFormat.format(sellPrice) + "§7)" : "")),
-                    "§r§e› §f재고 : " + (ChatColor.translateAlternateColorCodes('&', hasStock(page, slot) ? (stock == -1 ? unlimited : "&6" + stock + "개") : soldOut)),
-                    "§r§7---------------------------------------",
-                    "§r§e› §f구매가격 설정 : 우클릭",
-                    "§r§e› §f판매가격 설정 : 좌클릭",
-                    "§r§e› §f슬롯 상품 삭제 : Shift + 좌클릭",
-                    "§r§e› §f잔여재고 설정 : Shift + 우클릭",
-                    "§r§e› §f잔여재고 추가 : Q",
-                    "§r",
-                    "§r§e› §f최소 판매시세 설정 : [1]",
-                    "§r§e› §f최대 판매시세 설정 : [2]",
-                    "§r§e› §f최소 구매시세 설정 : [3]",
-                    "§r§e› §f최대 구매시세 설정 : [4]",
-                    "§r§e› §f시세 설정 초기화 : [5]",
-                    "§r§e› §f현재 판매시세 설정 : [6]",
-                    "§r§e› §f현재 구매시세 설정 : [7]",
-                    "§r§7---------------------------------------");
-            itemMeta.setLore(lore);
-            itemStack.setItemMeta(itemMeta);
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                List<String> lore = Arrays.asList("§r§7---------------------------------------",
+                        "§r§e› §f구매가격 : " + (originBuyPrice == -1 ? ChatColor.translateAlternateColorCodes('&', cannotBuy) : "§6" + originBuyPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + decFormat.format(buyPrice) + "§7)" : "")),
+                        "§r§e› §f판매가격 : " + (originSellPrice == -1 ? ChatColor.translateAlternateColorCodes('&', cannotSell) : "§6" + originSellPrice + (isMarketPriceEnabled() ? " §7(시세 : §6" + decFormat.format(sellPrice) + "§7)" : "")),
+                        "§r§e› §f재고 : " + (ChatColor.translateAlternateColorCodes('&', hasStock(page, slot) ? (stock == -1 ? unlimited : "&6" + stock + "개") : soldOut)),
+                        "§r§7---------------------------------------",
+                        "§r§e› §f구매가격 설정 : 우클릭",
+                        "§r§e› §f판매가격 설정 : 좌클릭",
+                        "§r§e› §f슬롯 상품 삭제 : Shift + 좌클릭",
+                        "§r§e› §f잔여재고 설정 : Shift + 우클릭",
+                        "§r§e› §f잔여재고 추가 : Q",
+                        "§r",
+                        "§r§e› §f최소 판매시세 설정 : [1]",
+                        "§r§e› §f최대 판매시세 설정 : [2]",
+                        "§r§e› §f최소 구매시세 설정 : [3]",
+                        "§r§e› §f최대 구매시세 설정 : [4]",
+                        "§r§e› §f시세 설정 초기화 : [5]",
+                        "§r§e› §f현재 판매시세 설정 : [6]",
+                        "§r§e› §f현재 구매시세 설정 : [7]",
+                        "§r§7---------------------------------------");
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+            }
 
             inventory.setItem(slot, itemStack);
         });
@@ -417,6 +432,31 @@ public class ShopData {
             case ITEM_SETTING: return getItemSettingInv(page);
             case ITEM_DETAIL_SETTING: return getItemDetailSettingInv(page);
             default: return null;
+        }
+    }
+
+    private void computeMaxPage() {
+        int originMaxPage = getMaxPage();
+        int maxPage = getMaxPage();
+
+        Map<Integer, ItemStack> items = getItems(maxPage);
+        items.remove(getSize() - 6);
+        items.remove(getSize() - 4);
+
+        while (items.values().stream().allMatch(Objects::isNull) && maxPage > 2) {
+            items = getItems(maxPage);
+            items.remove(getSize() - 6);
+            items.remove(getSize() - 4);
+
+            System.out.println("원래 마지막 페이지 : " + originMaxPage);
+            System.out.println("현재 마지막 페이지1 : " + maxPage);
+            System.out.println(maxPage + " 페이지의 아이템 개수 : " + items.keySet().size());
+
+
+            System.out.println("삭제될 페이지 : " + maxPage);
+
+            setItems(maxPage, null);
+            maxPage--;
         }
     }
 
