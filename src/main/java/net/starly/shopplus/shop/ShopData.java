@@ -448,13 +448,6 @@ public class ShopData {
             items.remove(getSize() - 6);
             items.remove(getSize() - 4);
 
-            System.out.println("원래 마지막 페이지 : " + originMaxPage);
-            System.out.println("현재 마지막 페이지1 : " + maxPage);
-            System.out.println(maxPage + " 페이지의 아이템 개수 : " + items.keySet().size());
-
-
-            System.out.println("삭제될 페이지 : " + maxPage);
-
             setItems(maxPage, null);
             maxPage--;
         }
